@@ -1,0 +1,69 @@
+npm -v
+cd "C:\Users\phamg\OneDrive\Máy tính\ĐỀ CƯƠNG + BÁO CÁO\HỌC HÈ\webshop-watch"
+npm run dev
+
+# HƯỚNG DẪN CHẠY LẠI WEB SAU KHI BẬT MÁY
+
+1. Vào thư mục dự án:
+cd "C:\Users\phamg\OneDrive\Máy tính\ĐỀ CƯƠNG + BÁO CÁO\HỌC HÈ\webshop-watch"
+
+2. (Chỉ cần 1 lần hoặc khi đổi máy) Cài thư viện:
+npm install
+
+3. Chạy server Node.js:
+npm run dev
+# hoặc
+node server.js
+
+4. Mở trình duyệt và truy cập các trang qua địa chỉ:
+http://localhost:3000/index.html
+http://localhost:3000/donghotreotuong.html
+http://localhost:3000/daydongho.html
+# KHÔNG dùng Go Live, KHÔNG mở file HTML bằng double click!
+
+5. Nếu có lỗi, kiểm tra terminal và đảm bảo MySQL đã chạy.
+
+# Tài khoản đăng nhập mẫu:
+Admin: admin@shop.com / admin123
+Customer: khanh@gmail.com / 123456
+
+# Danh sách đường link truy cập các trang:
+http://localhost:3000/index.html
+http://localhost:3000/about.html
+http://localhost:3000/admin.html
+http://localhost:3000/casio.html
+http://localhost:3000/citizen.html
+http://localhost:3000/contact.html
+http://localhost:3000/customers.html
+http://localhost:3000/daydongho.html
+http://localhost:3000/donghotreotuong.html
+http://localhost:3000/guide.html
+http://localhost:3000/login.html
+http://localhost:3000/orient.html
+http://localhost:3000/repair.html
+http://localhost:3000/sanphamkhac.html
+http://localhost:3000/seiko.html
+http://localhost:3000/tissot.html
+http://localhost:3000/profile.html
+
+
+
+ngrok config add-authtoken 30cseaxpAtn6FUBhUu3q83lLDhq_6WLLZiQQzAGtFMiiZf3Vf
+ngrok http 3000
+
+59290374-A654-40C1-BC9C-70012D95BB46
+
+
+❌ Trang cần sửa:
+1. Các trang sản phẩm thương hiệu (5 trang):
+casio.html - ❌ Còn alert() thêm vào giỏ hàng
+citizen.html - ❌ Còn alert() thêm vào giỏ hàng
+seiko.html - ❌ Còn alert() thêm vào giỏ hàng
+orient.html - ❌ Còn alert() thêm vào giỏ hàng
+tissot.html - ❌ Còn alert() thêm vào giỏ hàng
+2. Trang thanh toán:
+checkout.html - ❌ 5 chỗ còn alert() (giỏ hàng trống, đăng nhập, đặt hàng thành công, lỗi)
+3. Trang thanh toán:
+payment.html - ❌ 5 chỗ còn alert() (thông tin đơn hàng, mã đơn hàng, tạo đơn hàng, lỗi)
+4. Trang admin:
+admin.html - ❌ 15+ chỗ còn alert() (quản lý sản phẩm, khách hàng, mã giảm giá, đơn hàng)

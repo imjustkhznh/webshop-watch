@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán - TimeLuxe</title>
+    <link rel="stylesheet" href="static/header.css">
+    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Custom Notification System */
+        .custom-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            padding: 16px 20px;
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 400px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .custom-notification.show {
+            transform: translateX(0);
+        }
+        
+        .custom-notification.error {
+            border-left-color: #f44336;
+        }
+        
+        .custom-notification.warning {
+            border-left-color: #ff9800;
+        }
+        
+        .custom-notification.info {
+            border-left-color: #2196F3;
+        }
+        
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .notification-icon {
+            font-size: 1.2rem;
+            color: #4CAF50;
+        }
+        
+        .custom-notification.error .notification-icon {
+            color: #f44336;
+        }
+        
+        .custom-notification.warning .notification-icon {
+            color: #ff9800;
+        }
+        
+        .custom-notification.info .notification-icon {
+            color: #2196F3;
+        }
+        
+        .notification-text {
+            flex: 1;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        
+        .notification-close:hover {
+            background: #f5f5f5;
+            color: #666;
+        }
+        
+        .payment-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .payment-header h1 {
+            color: #7c6240;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .payment-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .payment-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .payment-container {
+                margin: 20px auto;
+                padding: 20px;
+            }
+
+            .payment-header h1 {
+                font-size: 24px;
+            }
+
+            .payment-header p {
+                font-size: 14px;
+            }
+
+            .payment-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .qr-section {
+                padding: 20px;
+            }
+
+            .qr-code {
+                width: 150px;
+                height: 150px;
+            }
+
+            .order-info {
+                padding: 20px;
+            }
+
+            .bank-info {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .payment-container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .payment-header h1 {
+                font-size: 20px;
+            }
+
+            .qr-code {
+                width: 120px;
+                height: 120px;
+            }
+
+            .bank-detail {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .info-item {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .product-item {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        .qr-section {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px dashed #7c6240;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .bank-info {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .bank-info h3 {
+            color: #7c6240;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .bank-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .bank-detail:last-child {
+            border-bottom: none;
+        }
+
+        .bank-detail .label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .bank-detail .value {
+            color: #7c6240;
+            font-weight: 500;
+        }
+
+        .order-info {
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .order-info h3 {
+            color: #7c6240;
+            margin-bottom: 20px;
+            font-size: 20px;
+            border-bottom: 2px solid #7c6240;
+            padding-bottom: 10px;
+        }
+
+        .info-section {
+            margin-bottom: 25px;
+        }
+
+        .info-section h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 8px 0;
+        }
+
+        .info-item .label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .info-item .value {
+            color: #333;
+            text-align: right;
+        }
+
+        .order-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            margin-top: 20px;
+        }
+
+        .order-summary h4 {
+            color: #7c6240;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .total-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #7c6240;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .total-row.final {
+            font-size: 20px;
+            font-weight: bold;
+            color: #7c6240;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .payment-instructions {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .payment-instructions h4 {
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .payment-instructions ol {
+            color: #856404;
+            padding-left: 20px;
+        }
+
+        .payment-instructions li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #7c6240;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+                 @media (max-width: 768px) {
+             .payment-content {
+                 grid-template-columns: 1fr;
+                 gap: 20px;
+             }
+             
+             .payment-container {
+                 margin: 20px;
+                 padding: 20px;
+             }
+         }
+
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="dhda-header">
+        <div class="dhda-header-top">
+            <div class="dhda-header-top-left">
+                <span><i class="fas fa-phone"></i> 1900-1234</span>
+                <span><i class="fas fa-envelope"></i> info@timeluxe.com</span>
+            </div>
+            <div class="dhda-header-top-right">
+                <span><i class="fas fa-shipping-fast"></i> Miễn phí vận chuyển</span>
+                <span><i class="fas fa-shield-alt"></i> Bảo hành chính hãng</span>
+            </div>
+        </div>
+        <div class="dhda-header-main">
+            <div class="dhda-header-main-content">
+                <div class="dhda-logo">
+                    <a href="index.html">
+                        <img src="static/logo TIME LUXE.png" alt="TimeLuxe">
+                    </a>
+                </div>
+                <div class="dhda-search">
+                    <form id="searchForm">
+                        <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+                <div class="dhda-header-actions">
+                    <div id="guest-section" style="display: flex; align-items: center; gap: 8px;">
+                        <a href="login.html" style="color: #7c6240;"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+                        <a href="register.html" style="color: #7c6240;"><i class="fas fa-user-plus"></i> Đăng ký</a>
+                    </div>
+                    <div id="user-section" style="display: none; align-items: center; gap: 8px;">
+                        <span>Xin chào, <span id="user-display-name"></span></span>
+                        <a href="profile.html" style="color: #7c6240; margin-left: 8px;"><i class="fas fa-user"></i> Cá nhân</a>
+                        <a href="#" id="logout-btn" style="color: #e53935; margin-left: 8px;">Đăng xuất</a>
+                    </div>
+                    <a href="#" class="dhda-cart"><i class="fas fa-shopping-cart"></i> Giỏ hàng <span class="cart-count">0</span></a>
+                </div>
+            </div>
+        </div>
+        <nav class="dhda-nav">
+            <div class="dhda-nav-content">
+                <ul class="dhda-nav-menu">
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="casio.html">Casio</a></li>
+                    <li><a href="citizen.html">Citizen</a></li>
+                    <li><a href="seiko.html">Seiko</a></li>
+                    <li><a href="orient.html">Orient</a></li>
+                    <li><a href="tissot.html">Tissot</a></li>
+                    <li><a href="daydongho.html">Dây đồng hồ</a></li>
+                    <li><a href="donghotreotuong.html">Đồng hồ treo tường</a></li>
+                    <li><a href="sanphamkhac.html">Sản phẩm khác</a></li>
+                    <li><a href="repair.html">Sửa chữa</a></li>
+                    <li><a href="about.html">Giới thiệu</a></li>
+                    <li><a href="contact.html">Liên hệ</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="payment-container">
+        <div class="payment-header">
+            <h1><i class="fas fa-qrcode"></i> Thanh toán chuyển khoản</h1>
+            <p>Vui lòng quét mã QR hoặc chuyển khoản theo thông tin bên dưới</p>
+        </div>
+
+        <div class="payment-content">
+            <div class="qr-section">
+                <h3><i class="fas fa-mobile-alt"></i> Quét mã QR để thanh toán</h3>
+                <div class="qr-code" id="qrCode">
+                    <div style="text-align: center;">
+                        <img src="static/qr.jpg" alt="QR Code" style="max-width: 200px; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <br>
+                        <small style="color: #666;">Quét bằng ứng dụng ngân hàng</small>
+                    </div>
+                </div>
+                
+                <div class="bank-info">
+                    <h3><i class="fas fa-university"></i> Thông tin chuyển khoản</h3>
+                                         <div class="bank-detail">
+                         <span class="label">Ngân hàng:</span>
+                         <span class="value" id="bankName">Techcombank</span>
+                     </div>
+                     <div class="bank-detail">
+                         <span class="label">Số tài khoản:</span>
+                         <span class="value" id="accountNumber">19073793262017</span>
+                     </div>
+                     <div class="bank-detail">
+                         <span class="label">Chủ tài khoản:</span>
+                         <span class="value" id="accountHolder">PHAM GIA KHANH</span>
+                     </div>
+                    <div class="bank-detail">
+                        <span class="label">Nội dung:</span>
+                        <span class="value" id="transferContent">TIMELUXE_[MÃ ĐƠN]</span>
+                    </div>
+                    <div class="bank-detail">
+                        <span class="label">Số tiền:</span>
+                        <span class="value" id="transferAmount">0 VNĐ</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-info">
+                <h3><i class="fas fa-shopping-bag"></i> Thông tin đơn hàng</h3>
+                
+                <div class="info-section">
+                    <h4><i class="fas fa-user"></i> Thông tin khách hàng</h4>
+                    <div class="info-item">
+                        <span class="label">Họ tên:</span>
+                        <span class="value" id="customerName">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Số điện thoại:</span>
+                        <span class="value" id="customerPhone">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Email:</span>
+                        <span class="value" id="customerEmail">-</span>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h4><i class="fas fa-map-marker-alt"></i> Địa chỉ giao hàng</h4>
+                    <div class="info-item">
+                        <span class="label">Địa chỉ:</span>
+                        <span class="value" id="shippingAddress">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Thành phố:</span>
+                        <span class="value" id="shippingCity">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Quận/Huyện:</span>
+                        <span class="value" id="shippingDistrict">-</span>
+                    </div>
+                </div>
+
+                <div class="order-summary">
+                    <h4><i class="fas fa-list"></i> Chi tiết đơn hàng</h4>
+                    <div id="orderItems">
+                        <!-- Sẽ được populate bằng JavaScript -->
+                    </div>
+                    
+                    <div class="total-section">
+                        <div class="total-row">
+                            <span>Tạm tính:</span>
+                            <span id="subtotal">0 VNĐ</span>
+                        </div>
+                        <div class="total-row" id="discountRow" style="display: none;">
+                            <span>Giảm giá:</span>
+                            <span id="discountAmount" style="color: #27ae60;">-0 VNĐ</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Phí vận chuyển:</span>
+                            <span id="shippingFee">50,000 VNĐ</span>
+                        </div>
+                        <div class="total-row final">
+                            <span>Tổng cộng:</span>
+                            <span id="totalAmount">0 VNĐ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-instructions">
+            <h4><i class="fas fa-info-circle"></i> Hướng dẫn thanh toán</h4>
+            <ol>
+                <li>Quét mã QR bằng ứng dụng ngân hàng của bạn</li>
+                <li>Hoặc chuyển khoản trực tiếp đến tài khoản ngân hàng</li>
+                <li>Nhập nội dung chuyển khoản chính xác: <strong id="transferContentDisplay">TIMELUXE_[MÃ ĐƠN]</strong></li>
+                <li>Sau khi chuyển khoản thành công, đơn hàng sẽ được xử lý trong 1-2 giờ</li>
+                <li>Bạn sẽ nhận được email xác nhận khi thanh toán hoàn tất</li>
+            </ol>
+        </div>
+
+                          <div class="action-buttons">
+             <button class="btn btn-primary" onclick="confirmPayment()">
+                 <i class="fas fa-check"></i> Xác nhận đã thanh toán
+             </button>
+             <a href="checkout.html" class="btn btn-secondary">
+                 <i class="fas fa-arrow-left"></i> Quay lại
+             </a>
+         </div>
+     </div>
+
+
+
+     <script src="static/index.js"></script>
+    <script>
+        // Custom Notification Function
+        function showNotification(message, type = 'success', duration = 3000) {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.custom-notification');
+            existingNotifications.forEach(notification => {
+                notification.remove();
+            });
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `custom-notification ${type}`;
+            
+            // Set icon based on type
+            let icon = 'fas fa-check-circle';
+            switch(type) {
+                case 'error':
+                    icon = 'fas fa-exclamation-circle';
+                    break;
+                case 'warning':
+                    icon = 'fas fa-exclamation-triangle';
+                    break;
+                case 'info':
+                    icon = 'fas fa-info-circle';
+                    break;
+                default:
+                    icon = 'fas fa-check-circle';
+            }
+            
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="${icon} notification-icon"></i>
+                    <span class="notification-text">${message}</span>
+                    <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Show notification with animation
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Auto remove after duration
+            if (duration > 0) {
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (notification.parentElement) {
+                            notification.remove();
+                        }
+                    }, 400);
+                }, duration);
+            }
+        }
+        
+        // Lấy thông tin đơn hàng từ localStorage
+        function loadOrderInfo() {
+            const orderData = JSON.parse(localStorage.getItem('pendingOrder') || '{}');
+            
+            if (!orderData.customerInfo) {
+                showNotification('Không tìm thấy thông tin đơn hàng!', 'error');
+                setTimeout(() => {
+                    window.location.href = 'checkout.html';
+                }, 2000);
+                return;
+            }
+
+            // Hiển thị thông tin khách hàng
+            document.getElementById('customerName').textContent = orderData.customerInfo.fullName || '-';
+            document.getElementById('customerPhone').textContent = orderData.customerInfo.phone || '-';
+            document.getElementById('customerEmail').textContent = orderData.customerInfo.email || '-';
+
+            // Hiển thị địa chỉ giao hàng
+            const address = [
+                orderData.customerInfo.address,
+                orderData.customerInfo.district,
+                orderData.customerInfo.city
+            ].filter(Boolean).join(', ');
+            
+            document.getElementById('shippingAddress').textContent = address || '-';
+            document.getElementById('shippingCity').textContent = orderData.customerInfo.city || '-';
+            document.getElementById('shippingDistrict').textContent = orderData.customerInfo.district || '-';
+
+            // Hiển thị chi tiết đơn hàng
+            const orderItemsContainer = document.getElementById('orderItems');
+            orderItemsContainer.innerHTML = '';
+            
+            if (orderData.items && orderData.items.length > 0) {
+                orderData.items.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'product-item';
+                    itemDiv.innerHTML = `
+                        <span>${item.name} x ${item.quantity}</span>
+                        <span>${formatPrice(item.price * item.quantity)}</span>
+                    `;
+                    orderItemsContainer.appendChild(itemDiv);
+                });
+            }
+
+            // Hiển thị tổng tiền
+            const subtotal = orderData.subtotal || 0;
+            const shipping = orderData.shipping || 50000;
+            const discountAmount = orderData.discountAmount || 0;
+            const total = orderData.total || (subtotal + shipping - discountAmount);
+
+            document.getElementById('subtotal').textContent = formatPrice(subtotal);
+            document.getElementById('shippingFee').textContent = formatPrice(shipping);
+            document.getElementById('totalAmount').textContent = formatPrice(total);
+
+            // Hiển thị giảm giá nếu có
+            if (discountAmount > 0) {
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discountAmount').textContent = `-${formatPrice(discountAmount)}`;
+            }
+
+            // Tạo mã đơn hàng và nội dung chuyển khoản
+            const orderId = 'DH' + Date.now().toString().slice(-6);
+            const transferContent = `TIMELUXE_${orderId}`;
+            
+            document.getElementById('transferContent').textContent = transferContent;
+            document.getElementById('transferContentDisplay').textContent = transferContent;
+            document.getElementById('transferAmount').textContent = formatPrice(total);
+
+            // Lưu mã đơn hàng
+            localStorage.setItem('currentOrderId', orderId);
+        }
+
+        function formatPrice(price) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(price);
+        }
+
+        function confirmPayment() {
+            const orderId = localStorage.getItem('currentOrderId');
+            if (!orderId) {
+                showNotification('Không tìm thấy mã đơn hàng!', 'error');
+                return;
+            }
+
+            if (confirm('Bạn đã hoàn tất việc chuyển khoản chưa?')) {
+                // Gửi đơn hàng lên server
+                const orderData = JSON.parse(localStorage.getItem('pendingOrder') || '{}');
+                
+                fetch('/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        ...orderData,
+                        orderId: orderId,
+                        paymentStatus: 'pending'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('Đơn hàng đã được tạo thành công! Chúng tôi sẽ xác nhận thanh toán trong thời gian sớm nhất.', 'success');
+                        localStorage.removeItem('pendingOrder');
+                        localStorage.removeItem('currentOrderId');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 2000);
+                    } else {
+                        showNotification('Có lỗi xảy ra khi tạo đơn hàng: ' + (data.error || 'Lỗi không xác định'), 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Có lỗi kết nối khi tạo đơn hàng', 'error');
+                });
+            }
+        }
+
+                 // Load thông tin đơn hàng khi trang được tải
+         document.addEventListener('DOMContentLoaded', function() {
+             loadOrderInfo();
+             loadBankConfig();
+         });
+
+         function loadBankConfig() {
+             const savedConfig = JSON.parse(localStorage.getItem('bankConfig') || '{}');
+             console.log('Loading bank config:', savedConfig);
+             
+             if (savedConfig.bankName) {
+                 document.getElementById('bankName').textContent = savedConfig.bankName;
+             }
+             if (savedConfig.accountNumber) {
+                 document.getElementById('accountNumber').textContent = savedConfig.accountNumber;
+             }
+             if (savedConfig.accountHolder) {
+                 document.getElementById('accountHolder').textContent = savedConfig.accountHolder;
+             }
+             
+             // Không thay đổi QR code nếu đã có ảnh
+             const qrCodeElement = document.getElementById('qrCode');
+             const existingImg = qrCodeElement.querySelector('img');
+             
+             if (existingImg) {
+                 console.log('QR image already exists, keeping it');
+                 return;
+             }
+             
+             if (savedConfig.qrCode && qrCodeElement) {
+                 console.log('QR code found, displaying image');
+                 if (savedConfig.qrCode.startsWith('http')) {
+                     qrCodeElement.innerHTML = `
+                         <div style="text-align: center;">
+                             <img src="${savedConfig.qrCode}" alt="QR Code" style="max-width: 200px; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                             <br>
+                             <small style="color: #666;">Quét bằng ứng dụng ngân hàng</small>
+                         </div>
+                     `;
+                 } else {
+                     qrCodeElement.innerHTML = `
+                         <div style="text-align: center;">
+                             <img src="data:image/png;base64,${savedConfig.qrCode}" alt="QR Code" style="max-width: 200px; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                             <br>
+                             <small style="color: #666;">Quét bằng ứng dụng ngân hàng</small>
+                         </div>
+                     `;
+                 }
+             } else {
+                 console.log('No QR code found, showing default icon');
+                 qrCodeElement.innerHTML = `
+                     <div style="text-align: center;">
+                         <i class="fas fa-qrcode" style="font-size: 48px; color: #7c6240; margin-bottom: 10px;"></i>
+                         <br>
+                         Mã QR thanh toán
+                         <br>
+                         <small>Quét bằng ứng dụng ngân hàng</small>
+                     </div>
+                 `;
+             }
+         }
+    </script>
+</body>
+</html> 

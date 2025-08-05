@@ -1,0 +1,237 @@
+/* CSS cho trang đăng ký */
+.register-card {
+    max-width: 480px;
+}
+
+.register-form .form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.register-form .input-wrapper {
+    position: relative;
+    margin-bottom: 0;
+}
+
+.register-form .error-message {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    color: #e74c3c;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Style cho link điều khoản */
+.terms-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.terms-link:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Style cho link đăng nhập */
+.login-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.login-link:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Animation cho form đăng ký */
+.register-form {
+    animation: formSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes formSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive cho trang đăng ký */
+@media (max-width: 480px) {
+    .register-card {
+        padding: 32px 24px;
+        margin: 16px;
+    }
+    
+    .register-form .form-group {
+        margin-bottom: 16px;
+    }
+}
+
+/* Validation styles */
+.input-wrapper.error input {
+    border-color: #e74c3c;
+}
+
+.input-wrapper.error .input-icon {
+    color: #e74c3c;
+}
+
+.input-wrapper.success input {
+    border-color: #27ae60;
+}
+
+.input-wrapper.success .input-icon {
+    color: #27ae60;
+}
+
+/* Error message styling */
+.error-message {
+    color: #e74c3c !important;
+    font-size: 12px !important;
+    margin-top: 8px !important;
+    margin-bottom: 4px !important;
+    display: block !important;
+    width: 100% !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+}
+
+/* Ensure proper spacing for form groups */
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.input-wrapper {
+    position: relative;
+    margin-bottom: 0;
+}
+
+/* Password strength indicator */
+.password-strength {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #666;
+}
+
+.password-strength.weak {
+    color: #e74c3c;
+}
+
+.password-strength.medium {
+    color: #f39c12;
+}
+
+.password-strength.strong {
+    color: #27ae60;
+}
+
+/* Ensure input wrapper has proper positioning */
+.input-wrapper {
+    position: relative !important;
+    margin-bottom: 0 !important;
+}
+
+/* Ensure password inputs have proper padding */
+.input-wrapper input[type="password"],
+.input-wrapper input[type="text"] {
+    padding-right: 50px !important;
+}
+
+/* ===== CSS CLIP-PATH SOLUTION ===== */
+
+/* Password toggle button styling with CSS Clip-Path */
+.password-toggle {
+    position: absolute !important;
+    right: 16px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: none !important;
+    border: none !important;
+    color: #a0aec0 !important;
+    cursor: pointer !important;
+    font-size: 1.1rem !important;
+    z-index: 10 !important;
+    transition: color 0.3s ease !important;
+    padding: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 24px !important;
+    height: 24px !important;
+    overflow: hidden !important;
+}
+
+/* Ensure only one icon is visible with CSS Clip-Path */
+.password-toggle i {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    text-align: center !important;
+    line-height: 24px !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Hide any additional icons with CSS Clip-Path */
+.password-toggle i:not(:first-child) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%) !important;
+}
+
+/* Hover effect */
+.password-toggle:hover {
+    color: #667eea !important;
+}
+
+/* Override any conflicting styles from login.css */
+.input-wrapper .password-toggle {
+    position: absolute !important;
+    right: 16px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: none !important;
+    border: none !important;
+    color: #a0aec0 !important;
+    cursor: pointer !important;
+    font-size: 1.1rem !important;
+    z-index: 10 !important;
+    transition: color 0.3s ease !important;
+    padding: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 24px !important;
+    height: 24px !important;
+    overflow: hidden !important;
+}
+
+.input-wrapper .password-toggle i {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    text-align: center !important;
+    line-height: 24px !important;
+    transition: all 0.3s ease !important;
+}
+
+.input-wrapper .password-toggle i:not(:first-child) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%) !important;
+} 

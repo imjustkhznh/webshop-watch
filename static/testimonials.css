@@ -1,0 +1,93 @@
+.testimonials-hero {
+    background: linear-gradient(90deg, #A97C50 0%, #DFB15B 100%);
+    color: #fff;
+    text-align: center;
+    padding: 44px 0 28px 0;
+    border-radius: 0 0 32px 32px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+.testimonials-hero h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+.testimonials-hero p {
+    font-size: 1.12rem;
+    font-weight: 400;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0.95;
+}
+.testimonials-list {
+    max-width: 900px;
+    margin: 40px auto 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+}
+.testimonial-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 28px 24px;
+    max-width: 320px;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.18s, box-shadow 0.18s;
+}
+.testimonial-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+}
+.testimonial-avatar {
+    font-size: 3.2rem;
+    color: #A97C50;
+    margin-bottom: 12px;
+}
+.testimonial-content p {
+    font-size: 1.08rem;
+    color: #232526;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+.testimonial-name {
+    font-weight: 600;
+    color: #A97C50;
+    font-size: 1rem;
+}
+.testimonial-stars {
+    margin-bottom: 8px;
+    color: #FFD700;
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+}
+.testimonial-stars .fa-star,
+.testimonial-stars .fa-star-half-alt {
+    color: #FFD700;
+}
+.testimonial-stars .far.fa-star {
+    color: #e0c7a0;
+}
+@media (max-width: 700px) {
+    .testimonials-hero {
+        padding: 22px 0 12px 0;
+        border-radius: 0 0 18px 18px;
+    }
+    .testimonials-hero h1 {
+        font-size: 1.3rem;
+    }
+    .testimonials-list {
+        gap: 14px;
+        padding: 0 4px;
+    }
+    .testimonial-card {
+        padding: 16px 8px;
+        min-width: 90vw;
+        max-width: 98vw;
+    }
+} 

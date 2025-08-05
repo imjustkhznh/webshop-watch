@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dịch Vụ Sửa Chữa - TimeLuxe</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/header.css">
+    <link rel="stylesheet" href="static/testimonials.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .repair-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            padding: 32px 24px;
+        }
+        .repair-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .repair-header h1 {
+            color: #7c6240;
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+        }
+        .repair-header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .repair-section {
+            margin-bottom: 36px;
+        }
+        .repair-section h2 {
+            color: #7c6240;
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            border-bottom: 2px solid #7c6240;
+            padding-bottom: 6px;
+        }
+        .repair-section h3 {
+            color: #333;
+            font-size: 1.1rem;
+            margin: 18px 0 8px 0;
+        }
+        .repair-section p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .repair-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 12px;
+        }
+        .repair-list li {
+            padding: 8px 0 8px 28px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+        .repair-list li:before {
+            content: "\2713";
+            color: #7c6240;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        .repair-list li:last-child {
+            border-bottom: none;
+        }
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0;
+        }
+        .price-table th, .price-table td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        .price-table th {
+            background: #f5f5f5;
+            color: #7c6240;
+        }
+        .commit-box {
+            background: #e8f5e9;
+            border: 1px solid #b2dfdb;
+            border-radius: 5px;
+            padding: 14px 18px;
+            margin: 18px 0;
+        }
+        .commit-box h4 {
+            color: #388e3c;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        .commit-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .contact-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 18px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .contact-info h3 {
+            color: #7c6240;
+            margin-bottom: 10px;
+        }
+        .contact-info p {
+            margin: 8px 0;
+            color: #555;
+        }
+        .contact-info a {
+            color: #7c6240;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header class="dhda-header">
+        <!-- Top bar -->
+        <div class="dhda-topbar">
+            <div class="container dhda-topbar-flex">
+                <div class="dhda-topbar-left">
+                    <span class="dhda-hotline"><i class="fas fa-phone"></i> Hotline: <a href="tel:0834477085">0834477085</a></span>
+                    <span class="dhda-address"><i class="fas fa-map-marker-alt"></i> 68 Nguyễn Chí Thanh, Hà Nội</span>
+                </div>
+                <div class="dhda-topbar-right">
+                    <div id="guest-section" style="display: flex;">
+                        <a href="login.html" class="dhda-login"><i class="fas fa-user"></i> Đăng nhập</a>
+                    </div>
+                    <div id="user-section" style="display: none; align-items: center; gap: 8px;">
+                        <span>Xin chào, <span id="user-display-name"></span></span>
+                        <a href="#" id="logout-btn" style="color: #e53935; margin-left: 8px;">Đăng xuất</a>
+                    </div>
+                    <a href="#" class="dhda-cart"><i class="fas fa-shopping-cart"></i> Giỏ hàng <span class="cart-count">0</span></a>
+                </div>
+            </div>
+        </div>
+        <!-- Logo + Search + Hotline + Cart -->
+        <div class="dhda-header-main" style="background: #7c6240;">
+            <div class="container dhda-header-main-flex" style="flex-direction: column; align-items: center;">
+                <a href="index.html" class="dhda-logo" style="margin-bottom: 12px;">
+                    <img src="static/logo TIME LUXE.png" alt="TimeLuxe Logo" style="height: 150px; width: 150px; object-fit: contain;" />
+                </a>
+                <form class="dhda-search-bar" style="width: 100%; max-width: 420px; display: flex; justify-content: center;">
+                    <input type="text" placeholder="Tìm kiếm sản phẩm, thương hiệu..." style="flex: 1; max-width: 320px;" />
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+        <!-- Menu ngang -->
+        <nav class="dhda-menu">
+            <div class="container">
+                <ul class="dhda-menu-list">
+                    <li><a href="index.html#brands">THƯƠNG HIỆU</a></li>
+                    <li><a href="donghotreotuong.html">ĐỒNG HỒ TREO TƯỜNG</a></li>
+                    <li><a href="daydongho.html">DÂY ĐỒNG HỒ</a></li>
+                    <li><a href="sanphamkhac.html">SẢN PHẨM KHÁC</a></li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="repair-container">
+            <div class="repair-header">
+                <h1>Dịch Vụ Sửa Chữa Đồng Hồ</h1>
+                <p>Chăm sóc và phục hồi đồng hồ của bạn với đội ngũ kỹ thuật viên chuyên nghiệp, linh kiện chính hãng và quy trình chuẩn quốc tế.</p>
+            </div>
+            <div class="repair-section">
+                <h2>Giới Thiệu Dịch Vụ</h2>
+                <p>TimeLuxe cung cấp dịch vụ sửa chữa, bảo dưỡng đồng hồ uy tín, chuyên nghiệp cho tất cả các dòng đồng hồ cao cấp: cơ, quartz, automatic, Eco-Drive... Chúng tôi cam kết mang lại sự hài lòng tuyệt đối cho khách hàng.</p>
+            </div>
+            <div class="repair-section">
+                <h2>Quy Trình Sửa Chữa</h2>
+                <ol class="repair-list">
+                    <li>Tiếp nhận và kiểm tra tình trạng đồng hồ</li>
+                    <li>Báo giá và tư vấn phương án sửa chữa</li>
+                    <li>Tiến hành sửa chữa, thay thế linh kiện (nếu cần)</li>
+                    <li>Kiểm tra, test lại chức năng và độ kín nước</li>
+                    <li>Bàn giao cho khách hàng, hướng dẫn sử dụng và bảo quản</li>
+                </ol>
+            </div>
+            <div class="repair-section">
+                <h2>Bảng Giá Tham Khảo</h2>
+                <table class="price-table">
+                    <tr><th>Dịch vụ</th><th>Giá từ (VNĐ)</th></tr>
+                    <tr><td>Thay pin đồng hồ Quartz</td><td>100.000</td></tr>
+                    <tr><td>Bảo dưỡng đồng hồ cơ/automatic</td><td>400.000</td></tr>
+                    <tr><td>Thay kính đồng hồ</td><td>200.000</td></tr>
+                    <tr><td>Thay dây da/chính hãng</td><td>250.000</td></tr>
+                    <tr><td>Đánh bóng vỏ, dây</td><td>150.000</td></tr>
+                    <tr><td>Sửa chữa máy, linh kiện</td><td>Liên hệ</td></tr>
+                </table>
+                <p><i>Lưu ý: Giá có thể thay đổi tùy theo dòng đồng hồ và mức độ hư hỏng. Vui lòng liên hệ để được tư vấn chi tiết.</i></p>
+            </div>
+            <div class="repair-section">
+                <h2>Cam Kết Dịch Vụ</h2>
+                <div class="commit-box">
+                    <h4><i class="fas fa-shield-alt"></i> Chúng tôi cam kết:</h4>
+                    <ul>
+                        <li>Linh kiện thay thế chính hãng, rõ nguồn gốc</li>
+                        <li>Kỹ thuật viên giàu kinh nghiệm, tận tâm</li>
+                        <li>Bảo hành sửa chữa 6 tháng</li>
+                        <li>Hỗ trợ tư vấn miễn phí trọn đời sản phẩm</li>
+                        <li>Thời gian sửa chữa nhanh chóng, đúng hẹn</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="contact-info">
+                <h3>Liên Hệ Dịch Vụ Sửa Chữa</h3>
+                <p><i class="fas fa-phone"></i> Hotline: <a href="tel:0834477085">0834477085</a></p>
+                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:timeluxe@gmail.com">timeluxe@gmail.com</a></p>
+                <p><i class="fas fa-map-marker-alt"></i> Địa chỉ: 68 Nguyễn Chí Thanh, Hà Nội</p>
+                <p><i class="fas fa-clock"></i> Giờ làm việc: 8:00 - 22:00 (Thứ 2 - CN)</p>
+            </div>
+        </div>
+    </main>
+    <footer class="site-footer clean-footer">
+        <div class="footer-main">
+            <div class="footer-row info-row">
+                <a href="about.html">Giới thiệu</a>
+                <a href="customers.html">Đánh Giá</a>
+                <a href="guide.html">Hướng dẫn sử dụng</a>
+                <a href="repair.html">Dịch vụ sửa chữa</a>
+            </div>
+            <div class="footer-row">
+                <span><i class="fas fa-phone"></i> 0834477085</span>
+                <span><i class="fas fa-map-marker-alt"></i> 68 Nguyễn Chí Thanh, Hà Nội</span>
+                <span><i class="fas fa-envelope"></i> timeluxe@gmail.com</span>
+            </div>
+            <div class="footer-row social-row">
+                <a href="#" class="fb"><img src="static/icon-facebook.png" alt="Facebook" /></a>
+                <a href="#" class="ig"><img src="static/icon-instagram.png" alt="Instagram" /></a>
+            </div>
+            <div class="footer-row copyright-row">
+                &copy; 2023 TimeLuxe. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    <script src="static/index.js"></script>
+    <script src="static/smooth-scroll.js"></script>
+</body>
+</html> 
