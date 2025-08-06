@@ -261,7 +261,7 @@ window.showCartPopup = function() {
                     const stockQuantity = Number(data.product?.stock) || 0;
                     const currentQty = Number(cart[idx].qty || cart[idx].quantity || 1);
                     if (currentQty >= stockQuantity) {
-                        alert(`🚨 CHỈ CÒN ${stockQuantity} SẢN PHẨM! 🚨\n⚡ Nhanh tay đặt hàng trước khi hết!`);
+                        showNotification(`🚨 CHỈ CÒN ${stockQuantity} SẢN PHẨM!<br>⚡ Nhanh tay đặt hàng trước khi hết!`, 'warning', 5000);
                         return;
                     }
                     cart[idx].qty = currentQty + 1;
