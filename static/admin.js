@@ -1101,3 +1101,93 @@ function showOrderDetail(orderId) {
     // Create modal or use alert for now
             showNotification(detailHTML.replace(/<[^>]*>/g, ''), 'info'); // Strip HTML for notification
 } 
+
+// Hàm load lại danh sách mã giảm giá
+async function loadPromotions() {
+  try {
+    const response = await fetch('/api/admin/discount-codes', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    const data = await response.json();
+    if (response.ok && data.discountCodes) {
+      // Render bảng (desktop)
+      const tbody = document.getElementById('discountCodesTableBody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        data.discountCodes.forEach(code => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${code.code}</td>
+            <td>${code.description || '-'}</td>
+            <td>${code.discount_type === 'percentage' ? 'Phần trăm' : 'Số tiền'}</td>
+            <td>${code.discount_type === 'percentage' ? code.discount_value + '%' : Number(code.discount_value).toLocaleString('vi-VN') + 'đ'}</td>
+            <td>${Number(code.min_order_amount).toLocaleString('vi-VN')}đ</td>
+            <td>${code.used_count}/${code.max_uses || '∞'}</td>
+            <td><span class="status-badge ${code.is_active ? 'status-delivered' : 'status-cancelled'}">${code.is_active ? 'Hoạt động' : 'Tạm dừng'}</span></td>
+            <td>${code.valid_until ? new Date(code.valid_until).toLocaleDateString('vi-VN') : 'Không giới hạn'}</td>
+            <td style="text-align:center; white-space:nowrap; min-width:120px;">
+              <button class="btn btn-warning btn-sm" onclick="editDiscountCode(${code.id})" 
+                data-code="${code.code}"
+                data-description="${code.description || ''}"
+                data-type="${code.discount_type}"
+                data-value="${code.discount_value}"
+                data-min="${code.min_order_amount}"
+                data-max="${code.max_uses || ''}"
+                data-valid="${code.valid_until || ''}"
+                data-active="${code.is_active}">Sửa</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteDiscountCode(${code.id})">Xóa</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+      // Render card (mobile)
+      const cardsContainer = document.getElementById('promotionCardsContainer');
+      if (cardsContainer) {
+        cardsContainer.innerHTML = '';
+        data.discountCodes.forEach(code => {
+          const card = document.createElement('div');
+          card.className = 'promotion-card';
+          card.innerHTML = `
+            <div class="promo-row"><span class="promo-label">Mã:</span><span class="promo-value">${code.code}</span></div>
+            <div class="promo-row"><span class="promo-label">Mô tả:</span><span class="promo-value">${code.description || '-'}</span></div>
+            <div class="promo-row"><span class="promo-label">Loại:</span><span class="promo-value">${code.discount_type === 'percentage' ? 'Phần trăm' : 'Số tiền'}</span></div>
+            <div class="promo-row"><span class="promo-label">Giá trị:</span><span class="promo-value">${code.discount_type === 'percentage' ? code.discount_value + '%' : Number(code.discount_value).toLocaleString('vi-VN') + 'đ'}</span></div>
+            <div class="promo-row"><span class="promo-label">Tối thiểu:</span><span class="promo-value">${Number(code.min_order_amount).toLocaleString('vi-VN')}đ</span></div>
+            <div class="promo-row"><span class="promo-label">Lượt dùng:</span><span class="promo-value">${code.used_count}/${code.max_uses || '∞'}</span></div>
+            <div class="promo-row"><span class="promo-label">Trạng thái:</span><span class="promo-value"><span class="status-badge ${code.is_active ? 'status-delivered' : 'status-cancelled'}">${code.is_active ? 'Hoạt động' : 'Tạm dừng'}</span></span></div>
+            <div class="promo-row"><span class="promo-label">HSD:</span><span class="promo-value">${code.valid_until ? new Date(code.valid_until).toLocaleDateString('vi-VN') : 'Không giới hạn'}</span></div>
+            <div class="promo-actions">
+              <button class="btn btn-warning btn-sm" onclick="editDiscountCode(${code.id})"
+                data-code="${code.code}"
+                data-description="${code.description || ''}"
+                data-type="${code.discount_type}"
+                data-value="${code.discount_value}"
+                data-min="${code.min_order_amount}"
+                data-max="${code.max_uses || ''}"
+                data-valid="${code.valid_until || ''}"
+                data-active="${code.is_active}"><i class='fas fa-edit'></i> Sửa</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteDiscountCode(${code.id})"><i class='fas fa-trash'></i> Xóa</button>
+            </div>
+          `;
+          cardsContainer.appendChild(card);
+        });
+      }
+    } else {
+      showNotification('Không thể tải danh sách mã giảm giá', 'error');
+    }
+  } catch (error) {
+    showNotification('Lỗi kết nối khi tải mã giảm giá', 'error');
+  }
+} 
+
+// Hàm đăng xuất cho mobile
+function logoutAdmin() {
+    if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = 'login.html';
+    }
+} 

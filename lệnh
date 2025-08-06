@@ -54,16 +54,3 @@ ngrok http 3000
 59290374-A654-40C1-BC9C-70012D95BB46
 
 
-❌ Trang cần sửa:
-1. Các trang sản phẩm thương hiệu (5 trang):
-casio.html - ❌ Còn alert() thêm vào giỏ hàng
-citizen.html - ❌ Còn alert() thêm vào giỏ hàng
-seiko.html - ❌ Còn alert() thêm vào giỏ hàng
-orient.html - ❌ Còn alert() thêm vào giỏ hàng
-tissot.html - ❌ Còn alert() thêm vào giỏ hàng
-2. Trang thanh toán:
-checkout.html - ❌ 5 chỗ còn alert() (giỏ hàng trống, đăng nhập, đặt hàng thành công, lỗi)
-3. Trang thanh toán:
-payment.html - ❌ 5 chỗ còn alert() (thông tin đơn hàng, mã đơn hàng, tạo đơn hàng, lỗi)
-4. Trang admin:
-admin.html - ❌ 15+ chỗ còn alert() (quản lý sản phẩm, khách hàng, mã giảm giá, đơn hàng)
