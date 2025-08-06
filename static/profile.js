@@ -321,6 +321,7 @@ function initProfileForm() {
 // Orders functions
 let allOrders = [];
 let currentOrderFilter = 'all';
+let pendingCancelOrderId = null;
 
 async function loadOrders() {
     try {
@@ -387,12 +388,17 @@ function displayOrders() {
                 <div class="order-footer">
                     <div class="order-total">Tổng: ${formattedAmount}</div>
                     <div class="order-actions">
-                        <button class="action-btn btn-detail" onclick="viewOrderDetail(${order.id})">
+                        <button class="action-btn btn-detail" style="background:#2196f3;color:#fff;" onclick="viewOrderDetail(${order.id})">
                             <i class="fas fa-eye"></i> Chi tiết
                         </button>
                         ${order.status === 'delivered' ? `
                             <button class="action-btn btn-reorder" onclick="reorderItems(${order.id})">
                                 <i class="fas fa-redo"></i> Đặt lại
+                            </button>
+                        ` : ''}
+                        ${(order.status === 'pending' || order.status === 'processing') ? `
+                            <button class="action-btn btn-cancel" style="background:#e53935;color:#fff;" onclick="cancelOrder(${order.id})">
+                                <i class="fas fa-times"></i> Hủy đơn
                             </button>
                         ` : ''}
                     </div>
@@ -711,6 +717,12 @@ function reorderItems(orderId) {
     showNotification('Đã thêm tất cả sản phẩm từ đơn hàng vào giỏ hàng!', 'success');
 }
 
+function cancelOrder(orderId) {
+    pendingCancelOrderId = orderId;
+    document.getElementById('cancelOrderText').innerHTML = `Bạn chắc chắn muốn hủy đơn hàng <b>#${orderId}</b> này?`;
+    document.getElementById('cancelOrderModal').style.display = 'flex';
+}
+
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
     const userData = checkAuthStatus();
@@ -775,4 +787,47 @@ document.addEventListener('DOMContentLoaded', function() {
             closeOrderDetailModal();
         }
     });
+
+    // Modal xác nhận hủy đơn hàng
+    document.getElementById('closeCancelOrderBtn').onclick = function() {
+        document.getElementById('cancelOrderModal').style.display = 'none';
+        pendingCancelOrderId = null;
+    };
+    document.getElementById('cancelOrderModal').onclick = function(e) {
+        if (e.target === this) {
+            this.style.display = 'none';
+            pendingCancelOrderId = null;
+        }
+    };
+    document.getElementById('confirmCancelOrderBtn').onclick = function() {
+        if (!pendingCancelOrderId) return;
+        const orderId = pendingCancelOrderId;
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        fetch(`/api/orders/${orderId}/status`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: 'cancelled' })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Đã hủy đơn hàng #' + orderId, 'success');
+                const order = allOrders.find(o => o.id === orderId);
+                if (order) order.status = 'cancelled';
+                displayOrders();
+            } else {
+                showNotification('Không thể hủy đơn hàng!', 'error');
+            }
+            document.getElementById('cancelOrderModal').style.display = 'none';
+            pendingCancelOrderId = null;
+        })
+        .catch(() => {
+            showNotification('Có lỗi khi hủy đơn hàng!', 'error');
+            document.getElementById('cancelOrderModal').style.display = 'none';
+            pendingCancelOrderId = null;
+        });
+    };
 }); 
