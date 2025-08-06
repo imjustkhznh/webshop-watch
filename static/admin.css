@@ -834,14 +834,12 @@ body {
     .table th:nth-child(1), .table td:nth-child(1) { width: 10%; } /* ID columns */
     .table th:nth-child(2), .table td:nth-child(2) { width: 12%; } /* Name columns */
     .table th:nth-child(3), .table td:nth-child(3) { width: 15%; } /* Category/Email */
-    .table th:nth-child(4), .table td:nth-child(4) { width: 15%; } /* Brand/Phone */
-    .table th:nth-child(5), .table td:nth-child(5) { width: 12%; } /* Price/Address */
-    .table th:nth-child(6), .table td:nth-child(6) { width: 10%; } /* Stock/Orders */
-    .table th:nth-child(7), .table td:nth-child(7) { width: 10%; } /* Status */
-    .table th:nth-child(8), .table td:nth-child(8) { 
-        width: 25%; 
-        text-align: center; 
-    }  /* Actions */
+    .table th:nth-child(4), .table td:nth-child(4) { width: 8%; }
+    .table th:nth-child(5), .table td:nth-child(5) { width: 10%; }
+    .table th:nth-child(6), .table td:nth-child(6) { width: 10%; }
+    .table th:nth-child(7), .table td:nth-child(7) { width: 10%; }
+    .table th:nth-child(8), .table td:nth-child(8) { width: 10%; }
+    .table th:nth-child(9), .table td:nth-child(9) { width: 12%; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     
     .mobile-cards {
         display: none;
@@ -1850,6 +1848,24 @@ body {
     .brand-modal .modal-body {
         padding: 20px;
     }
+}
+
+#promotions .table th,
+#promotions .table td {
+    padding: 6px 8px !important;
+    font-size: 13px !important;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#promotions .table-wrapper {
+    overflow-x: auto;
+    max-width: 100%;
+}
+#promotions .table {
+    min-width: 800px;
+    width: 100%;
 }
 
 
