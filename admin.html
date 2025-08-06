@@ -150,6 +150,11 @@
         
         <!-- Top Right Navigation -->
         <div class="admin-top-nav" style="position:fixed;top:20px;right:30px;z-index:1001;display:flex;gap:15px;align-items:center;">
+            <!-- Emergency Close All Modals Button -->
+            <button id="closeAllModalsBtn" onclick="closeAllModals()" style="display:none;background:#e74c3c;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:12px;">
+                <i class="fas fa-times"></i> Đóng tất cả
+            </button>
+            
             <!-- Admin Dropdown -->
             <div id="adminDropdown" style="position:relative;display:flex;align-items:center;gap:8px;cursor:pointer;padding:8px 15px;background-color:#f8f9fa;border:1px solid #ddd;border-radius:5px;font-weight:500;box-shadow:0 1px 4px rgba(0,0,0,0.03);">
     <i class="fas fa-user" style="color:#666;"></i>
@@ -311,6 +316,11 @@
   <!-- Dữ liệu đơn hàng sẽ được render bằng JavaScript -->
 </tbody>
                     </table>
+                    
+                    <!-- Mobile Cards for Dashboard Orders -->
+                    <div class="mobile-cards dashboard-orders-cards">
+                        <!-- Mobile cards will be loaded here by JavaScript -->
+                    </div>
                 </div>
             </div>
             <!-- Products Tab -->
@@ -394,23 +404,30 @@
                         <input type="text" placeholder="Tìm kiếm đơn hàng...">
                         <button><i class="fas fa-search"></i></button>
                     </div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Mã đơn</th>
-                                <th>Ngày đặt</th>
-                                <th>Khách hàng</th>
-                                <th>Địa chỉ giao hàng</th>
-                                <th>Sản phẩm</th>
-                                <th>Tổng tiền</th>
-                                <th>Trạng thái</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ordersTableBody">
-                            <!-- Orders will be loaded here by JavaScript -->
-                        </tbody>
-                    </table>
+                    <div class="table-wrapper">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Mã đơn</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Khách hàng</th>
+                                    <th>Địa chỉ giao hàng</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody">
+                                <!-- Orders will be loaded here by JavaScript -->
+                            </tbody>
+                        </table>
+                        
+                        <!-- Mobile Cards Container for Orders -->
+                        <div class="mobile-cards orders-mobile-cards">
+                            <!-- Mobile cards will be loaded here by JavaScript -->
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Customers Tab -->
@@ -2035,6 +2052,90 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script src="static/admin.js"></script>
+
+<script>
+    // Đóng tất cả modal khi load trang
+    document.addEventListener('DOMContentLoaded', function() {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+        });
+    });
+    
+    // Hàm mở modal
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'block';
+            modal.classList.add('show');
+        }
+    }
+    
+    // Hàm đóng modal
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+        }
+    }
+    
+    // Đóng modal khi click bên ngoài
+    window.addEventListener('click', function(event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+            }
+        });
+        updateCloseAllButton();
+    });
+    
+    // Hàm đóng tất cả modal
+    function closeAllModals() {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+        });
+        updateCloseAllButton();
+    }
+    
+    // Hàm cập nhật trạng thái nút đóng tất cả
+    function updateCloseAllButton() {
+        const closeBtn = document.getElementById('closeAllModalsBtn');
+        const visibleModals = document.querySelectorAll('.modal[style*="display: block"], .modal.show');
+        if (closeBtn) {
+            closeBtn.style.display = visibleModals.length > 0 ? 'block' : 'none';
+        }
+    }
+    
+    // Override các hàm openModal và closeModal để cập nhật nút
+    const originalOpenModal = window.openModal;
+    const originalCloseModal = window.closeModal;
+    
+    window.openModal = function(modalId) {
+        if (originalOpenModal) originalOpenModal(modalId);
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'block';
+            modal.classList.add('show');
+        }
+        updateCloseAllButton();
+    };
+    
+    window.closeModal = function(modalId) {
+        if (originalCloseModal) originalCloseModal(modalId);
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+        }
+        updateCloseAllButton();
+    };
+</script>
 
 </body>
 </html> 

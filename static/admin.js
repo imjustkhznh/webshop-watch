@@ -159,11 +159,11 @@ function displayProducts() {
                     </div>
                     <div class="product-detail">
                         <span class="product-detail-label">Giá</span>
-                        <span class="product-detail-value">${formatPrice(product.price)}</span>
+                        <span class="product-detail-value price">${formatPrice(product.price)}</span>
                     </div>
                     <div class="product-detail">
                         <span class="product-detail-label">Tồn kho</span>
-                        <span class="product-detail-value">${product.stock}</span>
+                        <span class="product-detail-value quantity">${product.stock}</span>
                     </div>
                 </div>
                 <div class="product-actions">
@@ -373,9 +373,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Load initial data
     loadReports();
-    
-    // Load initial data
     loadProducts();
+    loadOrders();
 });
 
 // Mobile menu functions
@@ -428,6 +427,8 @@ function showMobileTab(tabName) {
         updateProductStats();
     } else if (tabName === 'customers') {
         loadCustomers();
+    } else if (tabName === 'orders') {
+        loadOrders();
     }
 }
 
@@ -614,6 +615,38 @@ window.loadCategories = loadCategories;
 window.loadBrands = loadBrands;
 window.loadProductFormData = loadProductFormData;
 
+// Format Vietnamese address names
+function formatVietnameseAddress(address) {
+    if (!address) return 'N/A';
+    
+    // Common Vietnamese address mappings
+    const addressMap = {
+        'chauduc': 'Châu Đức',
+        'châuđức': 'Châu Đức',
+        'bariavungtau': 'Bà Rịa - Vũng Tàu',
+        'bàriavũngtàu': 'Bà Rịa - Vũng Tàu',
+        'hcm': 'TP. Hồ Chí Minh',
+        'hochiminh': 'TP. Hồ Chí Minh',
+        'hanoi': 'Hà Nội',
+        'hànội': 'Hà Nội',
+        'danang': 'Đà Nẵng',
+        'đànẵng': 'Đà Nẵng'
+    };
+    
+    // Convert to lowercase for comparison
+    const lowerAddress = address.toLowerCase();
+    
+    // Check if we have a mapping
+    for (const [key, value] of Object.entries(addressMap)) {
+        if (lowerAddress.includes(key)) {
+            return value;
+        }
+    }
+    
+    // If no mapping found, try to capitalize properly
+    return address.charAt(0).toUpperCase() + address.slice(1).toLowerCase();
+}
+
 // Load orders from API
 async function loadOrders() {
     try {
@@ -733,6 +766,160 @@ async function loadOrders() {
         if (dashboardTbody) {
             dashboardTbody.innerHTML = dashboardHTML;
             console.log('Rendered orders to dashboard table');
+        }
+        
+        // Render mobile cards cho dashboard
+        const dashboardCardsContainer = document.querySelector('.dashboard-orders-cards');
+        if (dashboardCardsContainer) {
+            const mobileCardsHTML = data.orders.map((order, index) => {
+                const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                let statusClass = '';
+                let statusText = '';
+                switch(order.status) {
+                    case 'pending': 
+                        statusClass = 'pending'; 
+                        statusText = 'Chờ xử lý'; 
+                        break;
+                    case 'processing': 
+                        statusClass = 'processing'; 
+                        statusText = 'Đang xử lý'; 
+                        break;
+                    case 'shipped': 
+                        statusClass = 'shipped'; 
+                        statusText = 'Đã giao'; 
+                        break;
+                    case 'delivered': 
+                        statusClass = 'completed'; 
+                        statusText = 'Hoàn thành'; 
+                        break;
+                    case 'cancelled': 
+                        statusClass = 'cancelled'; 
+                        statusText = 'Đã hủy'; 
+                        break;
+                    default: 
+                        statusClass = 'pending'; 
+                        statusText = order.status;
+                }
+                return `
+                    <div class="order-card">
+                        <div class="order-row">
+                            <span class="order-label">Mã đơn:</span>
+                            <span class="order-value order-id">#DH${order.id.toString().padStart(3, '0')}</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Khách hàng:</span>
+                            <span class="order-value">${order.customer_name || 'N/A'}<br><small>${order.customer_phone || 'N/A'}</small><br><small>${order.customer_email || 'N/A'}</small></span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Địa chỉ:</span>
+                            <span class="order-value">${order.customer_address || 'N/A'}<br><small>${formatVietnameseAddress(order.customer_district)}${order.customer_district && order.customer_city ? ', ' : ''}${formatVietnameseAddress(order.customer_city)}</small></span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Sản phẩm:</span>
+                            <span class="order-value">${order.items || 'N/A'}</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Tổng tiền:</span>
+                            <span class="order-value">${totalStr}</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Trạng thái:</span>
+                            <span class="order-value">
+                                <span class="order-status ${statusClass}">${statusText}</span>
+                            </span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-primary btn-sm" onclick="showOrderDetail(${order.id})">Chi tiết</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            dashboardCardsContainer.innerHTML = mobileCardsHTML;
+            console.log('Rendered mobile cards for dashboard orders');
+        }
+        
+        // Render mobile cards cho orders page
+        const ordersCardsContainer = document.querySelector('.orders-mobile-cards');
+        if (ordersCardsContainer) {
+            const ordersMobileCardsHTML = data.orders.map((order, index) => {
+                const d = new Date(order.order_date);
+                const dateStr = d.toLocaleDateString('vi-VN');
+                const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                let statusClass = '';
+                let statusText = '';
+                switch(order.status) {
+                    case 'pending': 
+                        statusClass = 'pending'; 
+                        statusText = 'Chờ xử lý'; 
+                        break;
+                    case 'processing': 
+                        statusClass = 'processing'; 
+                        statusText = 'Đang xử lý'; 
+                        break;
+                    case 'shipped': 
+                        statusClass = 'shipped'; 
+                        statusText = 'Đã giao'; 
+                        break;
+                    case 'delivered': 
+                        statusClass = 'completed'; 
+                        statusText = 'Hoàn thành'; 
+                        break;
+                    case 'cancelled': 
+                        statusClass = 'cancelled'; 
+                        statusText = 'Đã hủy'; 
+                        break;
+                    default: 
+                        statusClass = 'pending'; 
+                        statusText = order.status;
+                }
+                return `
+                    <div class="order-card">
+                        <div class="order-row">
+                            <span class="order-label">Mã đơn:</span>
+                            <span class="order-value order-id">#DH${order.id.toString().padStart(3, '0')}</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Ngày đặt:</span>
+                            <span class="order-value">${dateStr}</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Khách hàng:</span>
+                            <span class="order-value">${order.customer_name || 'N/A'}<br><small>${order.customer_phone || 'N/A'}</small><br><small>${order.customer_email || 'N/A'}</small></span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Địa chỉ:</span>
+                            <span class="order-value">${order.customer_address || 'N/A'}</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Quận/Huyện:</span>
+                            <span class="order-value">${formatVietnameseAddress(order.customer_district)}</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Tỉnh/Thành:</span>
+                            <span class="order-value">${formatVietnameseAddress(order.customer_city)}</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Sản phẩm:</span>
+                            <span class="order-value">${order.items || 'N/A'}</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Tổng tiền:</span>
+                            <span class="order-value">${totalStr}</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Trạng thái:</span>
+                            <span class="order-value">
+                                <span class="order-status ${statusClass}">${statusText}</span>
+                            </span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-primary btn-sm" onclick="showOrderDetail(${order.id})">Chi tiết</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            ordersCardsContainer.innerHTML = ordersMobileCardsHTML;
+            console.log('Rendered mobile cards for orders page');
         }
         
         console.log('Orders loaded successfully!');
@@ -1069,9 +1256,7 @@ function showOrderDetail(orderId) {
     }
     
     const detailHTML = `
-        <div style="padding: 20px; max-width: 600px;">
-            <h3 style="margin-bottom: 20px; color: #333;">Chi tiết đơn hàng #DH${order.id.toString().padStart(3, '0')}</h3>
-            
+        <div style="padding: 20px;">
             <div style="margin-bottom: 20px;">
                 <h4 style="color: #666; margin-bottom: 10px;">Thông tin khách hàng</h4>
                 <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
@@ -1098,8 +1283,15 @@ function showOrderDetail(orderId) {
         </div>
     `;
     
-    // Create modal or use alert for now
-            showNotification(detailHTML.replace(/<[^>]*>/g, ''), 'info'); // Strip HTML for notification
+    // Hiển thị modal chi tiết đơn hàng
+    const modalContent = document.getElementById('orderDetailContent');
+    if (modalContent) {
+        modalContent.innerHTML = detailHTML;
+        document.getElementById('orderDetailModal').style.display = 'block';
+    } else {
+        // Fallback nếu không tìm thấy modal
+        showNotification(detailHTML.replace(/<[^>]*>/g, ''), 'info');
+    }
 } 
 
 // Hàm load lại danh sách mã giảm giá
