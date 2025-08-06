@@ -1003,6 +1003,20 @@
             // Load specific data for each tab
             if (tabName === 'payment-config') {
                 loadPaymentConfig();
+            } else if (tabName === 'promotions') {
+                loadPromotions();
+            } else if (tabName === 'products') {
+                loadProducts();
+            } else if (tabName === 'customers') {
+                loadCustomers();
+            } else if (tabName === 'orders') {
+                loadOrders();
+            } else if (tabName === 'inventory') {
+                loadInventory();
+            } else if (tabName === 'brands') {
+                loadBrands();
+            } else if (tabName === 'reports') {
+                loadReports();
             }
         }
         function openModal(modalId) {
@@ -1106,15 +1120,21 @@
     // Hàm load lại danh sách mã giảm giá
     async function loadPromotions() {
       try {
+        console.log('Loading promotions...');
         const response = await fetch('/api/admin/discount-codes', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
         const data = await response.json();
+        console.log('Promotions data:', data);
         
         if (response.ok && data.discountCodes) {
           const tbody = document.getElementById('discountCodesTableBody');
+          if (!tbody) {
+            console.error('discountCodesTableBody not found');
+            return;
+          }
           tbody.innerHTML = '';
           
           data.discountCodes.forEach(code => {
@@ -1128,7 +1148,7 @@
               <td>${code.used_count}/${code.max_uses || '∞'}</td>
               <td><span class="status-badge ${code.is_active ? 'status-delivered' : 'status-cancelled'}">${code.is_active ? 'Hoạt động' : 'Tạm dừng'}</span></td>
               <td>${code.valid_until ? new Date(code.valid_until).toLocaleDateString('vi-VN') : 'Không giới hạn'}</td>
-              <td>
+              <td style="text-align: center; white-space: nowrap;">
                 <button class="btn btn-warning btn-sm" onclick="editDiscountCode(${code.id})" 
                         data-code="${code.code}" 
                         data-description="${code.description || ''}" 
@@ -1137,17 +1157,27 @@
                         data-min="${code.min_order_amount}" 
                         data-max="${code.max_uses || ''}" 
                         data-valid="${code.valid_until || ''}" 
-                        data-active="${code.is_active}">Sửa</button>
+                        data-active="${code.is_active}" 
+                        style="margin-right: 5px;">Sửa</button>
                 <button class="btn btn-danger btn-sm" onclick="deleteDiscountCode(${code.id})">Xóa</button>
               </td>
             `;
             tbody.appendChild(row);
           });
+          console.log('Promotions loaded successfully');
         } else {
           console.error('Failed to load discount codes:', data.error);
+          const tbody = document.getElementById('discountCodesTableBody');
+          if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #e74c3c;">Không có dữ liệu mã giảm giá</td></tr>';
+          }
         }
       } catch (error) {
         console.error('Error loading discount codes:', error);
+        const tbody = document.getElementById('discountCodesTableBody');
+        if (tbody) {
+          tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #e74c3c;">Lỗi tải dữ liệu mã giảm giá</td></tr>';
+        }
       }
     }
 

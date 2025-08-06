@@ -327,11 +327,49 @@ body {
     vertical-align: middle;
 }
 
-/* Status text in actions column */
-.table td:last-child .status-text {
+/* Promotions table specific styling */
+#promotions .table th:last-child,
+#promotions .table td:last-child {
+    text-align: center;
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+#promotions .table td:last-child .btn {
+    margin: 2px;
     display: inline-block;
-    margin-right: 8px;
-    vertical-align: middle;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    min-width: 60px;
+}
+
+#promotions .table td:last-child .btn-warning {
+    background: #ffc107;
+    color: #000;
+    margin-right: 5px;
+}
+
+#promotions .table td:last-child .btn-warning:hover {
+    background: #e0a800;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#promotions .table td:last-child .btn-danger {
+    background: #dc3545;
+    color: #fff;
+}
+
+#promotions .table td:last-child .btn-danger:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* Action buttons container */
