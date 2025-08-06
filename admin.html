@@ -1138,17 +1138,10 @@
           tbody.innerHTML = '';
           
           data.discountCodes.forEach(code => {
+            console.log('Processing code:', code);
             const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>${code.code}</td>
-              <td>${code.description || '-'}</td>
-              <td>${code.discount_type === 'percentage' ? 'Phần trăm' : 'Số tiền'}</td>
-              <td>${code.discount_type === 'percentage' ? code.discount_value + '%' : Number(code.discount_value).toLocaleString('vi-VN') + 'đ'}</td>
-              <td>${Number(code.min_order_amount).toLocaleString('vi-VN')}đ</td>
-              <td>${code.used_count}/${code.max_uses || '∞'}</td>
-              <td><span class="status-badge ${code.is_active ? 'status-delivered' : 'status-cancelled'}">${code.is_active ? 'Hoạt động' : 'Tạm dừng'}</span></td>
-              <td>${code.valid_until ? new Date(code.valid_until).toLocaleDateString('vi-VN') : 'Không giới hạn'}</td>
-              <td style="text-align: center; white-space: nowrap;">
+            const actionButtons = `
+              <td style="text-align: center; white-space: nowrap; min-width: 120px; display: table-cell; visibility: visible;">
                 <button class="btn btn-warning btn-sm" onclick="editDiscountCode(${code.id})" 
                         data-code="${code.code}" 
                         data-description="${code.description || ''}" 
@@ -1158,11 +1151,25 @@
                         data-max="${code.max_uses || ''}" 
                         data-valid="${code.valid_until || ''}" 
                         data-active="${code.is_active}" 
-                        style="margin-right: 5px;">Sửa</button>
-                <button class="btn btn-danger btn-sm" onclick="deleteDiscountCode(${code.id})">Xóa</button>
+                        style="margin-right: 5px; background: #ffc107; color: #000; border: none; border-radius: 4px; padding: 6px 12px; cursor: pointer; font-size: 12px; font-weight: 500; min-width: 60px; display: inline-block; visibility: visible; opacity: 1;">Sửa</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteDiscountCode(${code.id})" 
+                        style="background: #dc3545; color: #fff; border: none; border-radius: 4px; padding: 6px 12px; cursor: pointer; font-size: 12px; font-weight: 500; min-width: 60px; display: inline-block; visibility: visible; opacity: 1;">Xóa</button>
               </td>
             `;
+            
+            row.innerHTML = `
+              <td>${code.code}</td>
+              <td>${code.description || '-'}</td>
+              <td>${code.discount_type === 'percentage' ? 'Phần trăm' : 'Số tiền'}</td>
+              <td>${code.discount_type === 'percentage' ? code.discount_value + '%' : Number(code.discount_value).toLocaleString('vi-VN') + 'đ'}</td>
+              <td>${Number(code.min_order_amount).toLocaleString('vi-VN')}đ</td>
+              <td>${code.used_count}/${code.max_uses || '∞'}</td>
+              <td><span class="status-badge ${code.is_active ? 'status-delivered' : 'status-cancelled'}">${code.is_active ? 'Hoạt động' : 'Tạm dừng'}</span></td>
+              <td>${code.valid_until ? new Date(code.valid_until).toLocaleDateString('vi-VN') : 'Không giới hạn'}</td>
+              ${actionButtons}
+            `;
             tbody.appendChild(row);
+            console.log('Added row for code:', code.code);
           });
           console.log('Promotions loaded successfully');
         } else {

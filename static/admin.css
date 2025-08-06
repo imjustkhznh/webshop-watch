@@ -330,46 +330,50 @@ body {
 /* Promotions table specific styling */
 #promotions .table th:last-child,
 #promotions .table td:last-child {
-    text-align: center;
-    white-space: nowrap;
-    min-width: 120px;
+    text-align: center !important;
+    white-space: nowrap !important;
+    min-width: 120px !important;
+    display: table-cell !important;
+    visibility: visible !important;
 }
 
 #promotions .table td:last-child .btn {
-    margin: 2px;
-    display: inline-block;
-    padding: 6px 12px;
-    font-size: 12px;
-    font-weight: 500;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    min-width: 60px;
+    margin: 2px !important;
+    display: inline-block !important;
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    border: none !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+    min-width: 60px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 #promotions .table td:last-child .btn-warning {
-    background: #ffc107;
-    color: #000;
-    margin-right: 5px;
+    background: #ffc107 !important;
+    color: #000 !important;
+    margin-right: 5px !important;
 }
 
 #promotions .table td:last-child .btn-warning:hover {
-    background: #e0a800;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    background: #e0a800 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
 }
 
 #promotions .table td:last-child .btn-danger {
-    background: #dc3545;
-    color: #fff;
+    background: #dc3545 !important;
+    color: #fff !important;
 }
 
 #promotions .table td:last-child .btn-danger:hover {
-    background: #c82333;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    background: #c82333 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
 }
 
 /* Action buttons container */
