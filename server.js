@@ -10,33 +10,9 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-const allowedOrigins = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'http://localhost:5500',
-    'http://127.0.0.1:5500',
-    'http://localhost:5501',
-    'http://127.0.0.1:5501',
-    'http://localhost:15502',
-    'http://127.0.0.1:15502',
-    'https://142a0e46dc84.ngrok-free.app'
-];
 app.use(cors({
-    origin: function(origin, callback) {
-        if (!origin) return callback(null, true); // Cho phép request không có origin (như Postman)
-        
-        // Cho phép tất cả domain ngrok
-        if (origin && origin.includes('ngrok-free.app')) {
-            return callback(null, true);
-        }
-        
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            return callback(null, true);
-        } else {
-            return callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true
+  origin: true,
+  credentials: true
 }));
 app.use(express.json());
 app.use(express.static(__dirname));
