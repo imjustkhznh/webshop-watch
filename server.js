@@ -178,8 +178,11 @@ const pool = mysql.createPool({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     waitForConnections: true,
-    connectionLimit: 5, // Clever Cloud free tier limit
-    queueLimit: 0
+    connectionLimit: 3, // Giảm xuống để tránh vượt quá giới hạn
+    queueLimit: 0,
+    acquireTimeout: 60000, // 60 giây timeout
+    timeout: 60000, // 60 giây timeout
+    reconnect: true
 });
 
 // Thay thế hàm createConnection bằng lấy connection từ pool
@@ -190,6 +193,11 @@ const createConnection = async () => {
         return connection;
     } catch (error) {
         console.error('❌ Database connection failed:', error.message);
+        if (error.code === 'ER_CON_COUNT_ERROR') {
+            console.error('⚠️ Too many connections. Waiting 5 seconds before retry...');
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            return await pool.getConnection();
+        }
         throw error;
     }
 };
