@@ -170,17 +170,23 @@ app.delete('/api/customers/:id', async (req, res) => {
     }
 });
 
-// Database connection
+// Tạo connection pool
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 5, // Clever Cloud free tier limit
+    queueLimit: 0
+});
+
+// Thay thế hàm createConnection bằng lấy connection từ pool
 const createConnection = async () => {
     try {
-        const connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            port: process.env.DB_PORT,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME
-        });
-        console.log('✅ Connected to database successfully!');
+        const connection = await pool.getConnection();
+        console.log('✅ Got connection from pool!');
         return connection;
     } catch (error) {
         console.error('❌ Database connection failed:', error.message);
