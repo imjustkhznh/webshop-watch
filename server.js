@@ -43,7 +43,7 @@ app.post('/api/create-sample-orders', async (req, res) => {
         const [products] = await connection.execute('SELECT id FROM products LIMIT 3');
         
         if (customers.length === 0 || products.length === 0) {
-            await connection.end();
+            connection.release();
             return res.status(400).json({ error: 'No customers or products found' });
         }
         
@@ -70,7 +70,7 @@ app.post('/api/create-sample-orders', async (req, res) => {
             );
         }
         
-        await connection.end();
+        connection.release();
         res.json({ message: 'Sample orders created successfully' });
     } catch (error) {
         console.error('Error creating sample orders:', error);
@@ -100,7 +100,7 @@ app.get('/api/customers', async (req, res) => {
         console.log('Executing query:', query);
         const [customers] = await connection.execute(query);
         console.log('Query result:', customers);
-        await connection.end();
+        connection.release();
         
         res.json({ customers });
     } catch (error) {
@@ -127,7 +127,7 @@ app.delete('/api/customers/:id', async (req, res) => {
         console.log('Existing customer result:', existingCustomer);
         
         if (existingCustomer.length === 0) {
-            await connection.end();
+            connection.release();
             return res.status(404).json({ error: 'Customer not found' });
         }
         
@@ -155,13 +155,13 @@ app.delete('/api/customers/:id', async (req, res) => {
             
             // Commit transaction
             await connection.commit();
-            await connection.end();
+            connection.release();
             
             res.json({ message: 'Customer deleted successfully' });
         } catch (error) {
             // Rollback on error
             await connection.rollback();
-            await connection.end();
+            connection.release();
             throw error;
         }
     } catch (error) {
@@ -349,7 +349,7 @@ app.post('/api/register', async (req, res) => {
         );
 
         if (existingUsers.length > 0) {
-            await connection.end();
+            connection.release();
             return res.status(400).json({ error: 'Username or email already exists' });
         }
 
@@ -362,7 +362,7 @@ app.post('/api/register', async (req, res) => {
             [username, email, hashedPassword, full_name, 'customer']
         );
 
-        await connection.end();
+        connection.release();
 
         res.status(201).json({ 
             message: 'User registered successfully',
@@ -391,7 +391,7 @@ app.post('/api/login', async (req, res) => {
             [username, username]
         );
 
-        await connection.end();
+        connection.release();
 
         if (users.length === 0) {
             return res.status(401).json({ error: 'Invalid credentials' });
@@ -470,7 +470,7 @@ app.get('/api/profile', authenticateToken, async (req, res) => {
             [req.user.user_id]
         );
 
-        await connection.end();
+        connection.release();
 
         if (users.length === 0) {
             return res.status(404).json({ error: 'User not found' });
@@ -507,7 +507,7 @@ app.get('/api/search', async (req, res) => {
         const params = [searchTerm, searchTerm, searchTerm, searchTerm];
         
         const [products] = await connection.execute(searchQuery, params);
-        await connection.end();
+        connection.release();
         
         res.json({ products });
     } catch (error) {
@@ -550,7 +550,7 @@ app.get('/api/products', async (req, res) => {
         query += ' ORDER BY p.id DESC';
         
         const [products] = await connection.execute(query, params);
-        await connection.end();
+        connection.release();
         res.json({ products });
     } catch (error) {
         console.error('Products error:', error);
@@ -570,7 +570,7 @@ app.get('/api/products/:id', async (req, res) => {
              LEFT JOIN categories c ON p.category_id = c.id
              WHERE p.id = ?`, [id]
         );
-        await connection.end();
+        connection.release();
         if (products.length === 0) {
             return res.status(404).json({ error: 'Product not found' });
         }
@@ -588,7 +588,7 @@ app.get('/api/products/:id/image', async (req, res) => {
         const [products] = await connection.execute(
             'SELECT image FROM products WHERE id = ?', [id]
         );
-        await connection.end();
+        connection.release();
         
         if (products.length === 0) {
             return res.status(404).json({ error: 'Product not found' });
@@ -621,7 +621,7 @@ app.post('/api/products', async (req, res) => {
             'INSERT INTO products (name, brand_id, category_id, price, stock, description, image) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [name, brand_id, category_id, price, stock, description, image]
         );
-        await connection.end();
+        connection.release();
         res.status(201).json({ success: true, product_id: result.insertId });
     } catch (error) {
         console.error('Add product error:', error);
@@ -639,7 +639,7 @@ app.put('/api/products/:id', async (req, res) => {
             'UPDATE products SET name=?, brand_id=?, category_id=?, price=?, stock=?, description=?, image=? WHERE id=?',
             [name, brand_id, category_id, price, stock, description, image, id]
         );
-        await connection.end();
+        connection.release();
         res.json({ success: true });
     } catch (error) {
         console.error('Update product error:', error);
@@ -653,7 +653,7 @@ app.delete('/api/products/:id', async (req, res) => {
         const { id } = req.params;
         const connection = await createConnection();
         await connection.execute('DELETE FROM products WHERE id = ?', [id]);
-        await connection.end();
+        connection.release();
         res.json({ success: true });
     } catch (error) {
         console.error('Delete product error:', error);
@@ -688,7 +688,7 @@ app.get('/api/orders/user', authenticateToken, async (req, res) => {
         `;
         
         const [rows] = await connection.execute(query, [req.user.user_id]);
-        await connection.end();
+        connection.release();
         
         // Group orders with their details
         const ordersMap = new Map();
@@ -737,7 +737,7 @@ app.put('/api/profile/update', authenticateToken, async (req, res) => {
             [full_name, phone, address, req.user.user_id]
         );
         
-        await connection.end();
+        connection.release();
         res.json({ success: true, message: 'Profile updated successfully' });
         
     } catch (error) {
@@ -753,7 +753,7 @@ app.get('/api/brands', async (req, res) => {
         
         const [brands] = await connection.execute('SELECT * FROM brands ORDER BY name');
 
-        await connection.end();
+        connection.release();
 
         res.json({ brands });
 
@@ -770,7 +770,7 @@ app.get('/api/categories', async (req, res) => {
         
         const [categories] = await connection.execute('SELECT * FROM categories ORDER BY name');
 
-        await connection.end();
+        connection.release();
 
         res.json({ categories });
 
@@ -785,7 +785,7 @@ const startServer = async () => {
     try {
         const connection = await createConnection();
         await initDatabase(connection);
-        await connection.end();
+        connection.release();
 
         app.listen(PORT, () => {
             console.log(`🚀 Server running on port ${PORT}`);
@@ -807,7 +807,7 @@ app.post('/api/promotions', async (req, res) => {
             'INSERT INTO promotions (name, discount, start_date, end_date, description) VALUES (?, ?, ?, ?, ?)',
             [name, discount, start_date, end_date, description]
         );
-        await connection.end();
+        connection.release();
         res.status(201).json({ success: true });
     } catch (error) {
         console.error('Add promotion error:', error);
@@ -819,7 +819,7 @@ app.get('/api/promotions', async (req, res) => {
     try {
         const connection = await createConnection();
         const [promotions] = await connection.execute('SELECT * FROM promotions ORDER BY start_date DESC');
-        await connection.end();
+        connection.release();
         res.json({ promotions });
     } catch (error) {
         console.error('Get promotions error:', error);
@@ -836,7 +836,7 @@ app.put('/api/promotions/:id', async (req, res) => {
             'UPDATE promotions SET name=?, discount=?, start_date=?, end_date=?, description=? WHERE id=?',
             [name, discount, start_date, end_date, description, id]
         );
-        await connection.end();
+        connection.release();
         res.json({ success: true });
     } catch (error) {
         console.error('Update promotion error:', error);
@@ -854,7 +854,7 @@ app.put('/api/customers/:id', async (req, res) => {
             'UPDATE users SET full_name=?, email=?, phone=?, address=? WHERE id=?',
             [name, email, phone, address, id]
         );
-        await connection.end();
+        connection.release();
         res.json({ success: true });
     } catch (error) {
         console.error('Update customer error:', error);
@@ -877,7 +877,7 @@ app.post('/api/inventory/import', async (req, res) => {
             'UPDATE products SET stock = stock + ? WHERE id = ?',
             [quantity, product_id]
         );
-        await connection.end();
+        connection.release();
         res.json({ success: true });
     } catch (error) {
         console.error('Inventory import error:', error);
@@ -915,7 +915,7 @@ app.get('/api/reports/summary', async (req, res) => {
         const [stockRows] = await connection.execute(
             'SELECT SUM(stock) as stock_count FROM products'
         );
-        await connection.end();
+        connection.release();
         res.json({
             revenue: revenueRows[0].revenue || 0,
             order_count: orderRows[0].order_count || 0,
@@ -940,7 +940,7 @@ app.get('/api/reports/daily-revenue', async (req, res) => {
              GROUP BY DATE(order_date)
              ORDER BY date`
         );
-        await connection.end();
+        connection.release();
         res.json({ daily: rows });
     } catch (error) {
         console.error(error);
@@ -961,7 +961,7 @@ app.get('/api/orders/:id', async (req, res) => {
              WHERE o.id = ?`, [id]
         );
         if (orders.length === 0) {
-            await connection.end();
+            connection.release();
             return res.status(404).json({ error: 'Order not found' });
         }
         // Lấy danh sách sản phẩm trong đơn hàng
@@ -971,7 +971,7 @@ app.get('/api/orders/:id', async (req, res) => {
              LEFT JOIN products p ON od.product_id = p.id
              WHERE od.order_id = ?`, [id]
         );
-        await connection.end();
+        connection.release();
         res.json({
             order: {
                 ...orders[0],
@@ -1007,7 +1007,7 @@ app.get('/api/orders', async (req, res) => {
             );
             order.product_names = (items && items.length > 0) ? items.map(i => i.name).join(', ') : '';
         }
-        await connection.end();
+        connection.release();
         res.json({ orders });
     } catch (error) {
         console.error(error);
@@ -1035,7 +1035,7 @@ app.put('/api/orders/:id/status', async (req, res) => {
         );
         
         if (orders.length === 0) {
-            await connection.end();
+            connection.release();
             return res.status(404).json({ error: 'Order not found' });
         }
         
@@ -1045,7 +1045,7 @@ app.put('/api/orders/:id/status', async (req, res) => {
             [status, id]
         );
         
-        await connection.end();
+        connection.release();
         
         res.json({ 
             success: true, 
@@ -1077,7 +1077,7 @@ app.post('/api/brands', async (req, res) => {
         );
         
         if (existingBrands.length > 0) {
-            await connection.end();
+            connection.release();
             return res.status(400).json({ error: 'Thương hiệu này đã tồn tại' });
         }
         
@@ -1087,7 +1087,7 @@ app.post('/api/brands', async (req, res) => {
             [name.trim()]
         );
         
-        await connection.end();
+        connection.release();
         
         res.json({ 
             success: true, 
@@ -1119,7 +1119,7 @@ app.put('/api/brands/:id', async (req, res) => {
         );
         
         if (brands.length === 0) {
-            await connection.end();
+            connection.release();
             return res.status(404).json({ error: 'Thương hiệu không tồn tại' });
         }
         
@@ -1129,7 +1129,7 @@ app.put('/api/brands/:id', async (req, res) => {
         );
         
         if (existingBrands.length > 0) {
-            await connection.end();
+            connection.release();
             return res.status(400).json({ error: 'Thương hiệu này đã tồn tại' });
         }
         
@@ -1139,7 +1139,7 @@ app.put('/api/brands/:id', async (req, res) => {
             [name.trim(), id]
         );
         
-        await connection.end();
+        connection.release();
         
         res.json({ 
             success: true, 
@@ -1165,7 +1165,7 @@ app.delete('/api/brands/:id', async (req, res) => {
         );
         
         if (brands.length === 0) {
-            await connection.end();
+            connection.release();
             return res.status(404).json({ error: 'Thương hiệu không tồn tại' });
         }
         
@@ -1175,7 +1175,7 @@ app.delete('/api/brands/:id', async (req, res) => {
         );
         
         if (products.length > 0) {
-            await connection.end();
+            connection.release();
             return res.status(400).json({ error: 'Không thể xóa thương hiệu đang được sử dụng bởi sản phẩm' });
         }
         
@@ -1185,7 +1185,7 @@ app.delete('/api/brands/:id', async (req, res) => {
             [id]
         );
         
-        await connection.end();
+        connection.release();
         
         res.json({ 
             success: true, 
@@ -1230,12 +1230,12 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
             );
             
             if (products.length === 0) {
-                await connection.end();
+                connection.release();
                 return res.status(400).json({ error: `Sản phẩm ID ${item.id} không tồn tại` });
             }
             
             if (products[0].stock < item.quantity) {
-                await connection.end();
+                connection.release();
                 return res.status(400).json({ error: `Sản phẩm ${item.name} chỉ còn ${products[0].stock} trong kho` });
             }
         }
@@ -1289,7 +1289,7 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
             );
         }
         
-        await connection.end();
+        connection.release();
         
         res.json({ 
             success: true, 
@@ -1322,7 +1322,7 @@ app.get('/api/orders', authenticateToken, async (req, res) => {
             [userId]
         );
         
-        await connection.end();
+        connection.release();
         
         res.json({ orders });
         
@@ -1360,7 +1360,7 @@ app.get('/api/admin/orders', authenticateToken, async (req, res) => {
              ORDER BY o.order_date DESC`
         );
         
-        await connection.end();
+        connection.release();
         
         res.json({ orders });
         
@@ -1385,7 +1385,7 @@ app.get('/api/admin/discount-codes', authenticateToken, async (req, res) => {
             'SELECT * FROM discount_codes ORDER BY created_at DESC'
         );
         
-        await connection.end();
+        connection.release();
         
         res.json({ discountCodes });
         
@@ -1417,7 +1417,7 @@ app.post('/api/admin/discount-codes', authenticateToken, async (req, res) => {
             [code, description, discount_type, discount_value, min_order_amount || 0, max_uses, valid_until]
         );
         
-        await connection.end();
+        connection.release();
         
         res.json({ 
             success: true, 
@@ -1456,7 +1456,7 @@ app.put('/api/admin/discount-codes/:id', authenticateToken, async (req, res) => 
             [code, description, discount_type, discount_value, min_order_amount || 0, max_uses, is_active, valid_until, id]
         );
         
-        await connection.end();
+        connection.release();
         
         res.json({ 
             success: true, 
@@ -1487,7 +1487,7 @@ app.delete('/api/admin/discount-codes/:id', authenticateToken, async (req, res) 
         
         await connection.execute('DELETE FROM discount_codes WHERE id = ?', [id]);
         
-        await connection.end();
+        connection.release();
         
         res.json({ 
             success: true, 
@@ -1517,7 +1517,7 @@ app.post('/api/validate-discount-code', async (req, res) => {
         );
         
         if (discountCodes.length === 0) {
-            await connection.end();
+            connection.release();
             return res.json({ 
                 valid: false, 
                 message: 'Mã giảm giá không hợp lệ' 
@@ -1528,7 +1528,7 @@ app.post('/api/validate-discount-code', async (req, res) => {
         
         // Kiểm tra thời hạn
         if (discountCode.valid_until && new Date() > new Date(discountCode.valid_until)) {
-            await connection.end();
+            connection.release();
             return res.json({ 
                 valid: false, 
                 message: 'Mã giảm giá đã hết hạn' 
@@ -1537,7 +1537,7 @@ app.post('/api/validate-discount-code', async (req, res) => {
         
         // Kiểm tra số lần sử dụng
         if (discountCode.max_uses && discountCode.used_count >= discountCode.max_uses) {
-            await connection.end();
+            connection.release();
             return res.json({ 
                 valid: false, 
                 message: 'Mã giảm giá đã hết lượt sử dụng' 
@@ -1546,7 +1546,7 @@ app.post('/api/validate-discount-code', async (req, res) => {
         
         // Kiểm tra giá trị đơn hàng tối thiểu
         if (orderAmount < discountCode.min_order_amount) {
-            await connection.end();
+            connection.release();
             return res.json({ 
                 valid: false, 
                 message: `Đơn hàng tối thiểu ${discountCode.min_order_amount.toLocaleString('vi-VN')}đ để sử dụng mã này` 
@@ -1561,7 +1561,7 @@ app.post('/api/validate-discount-code', async (req, res) => {
             discountAmount = discountCode.discount_value;
         }
         
-        await connection.end();
+        connection.release();
         
         res.json({ 
             valid: true, 
