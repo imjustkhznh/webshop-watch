@@ -412,35 +412,18 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header (đồng bộ với các trang khác) -->
     <header class="dhda-header">
-        <div class="dhda-header-top">
-            <div class="dhda-header-top-left">
-                <span><i class="fas fa-phone"></i> 1900-1234</span>
-                <span><i class="fas fa-envelope"></i> info@timeluxe.com</span>
-            </div>
-            <div class="dhda-header-top-right">
-                <span><i class="fas fa-shipping-fast"></i> Miễn phí vận chuyển</span>
-                <span><i class="fas fa-shield-alt"></i> Bảo hành chính hãng</span>
-            </div>
-        </div>
-        <div class="dhda-header-main">
-            <div class="dhda-header-main-content">
-                <div class="dhda-logo">
-                    <a href="index.html">
-                        <img src="static/logo TIME LUXE.png" alt="TimeLuxe">
-                    </a>
+        <!-- Top bar -->
+        <div class="dhda-topbar">
+            <div class="container dhda-topbar-flex">
+                <div class="dhda-topbar-left">
+                    <span class="dhda-hotline"><i class="fas fa-phone"></i> Hotline: <a href="tel:0834477085">0834477085</a></span>
+                    <span class="dhda-address"><i class="fas fa-map-marker-alt"></i> 68 Nguyễn Chí Thanh, Hà Nội</span>
                 </div>
-                <div class="dhda-search">
-                    <form id="searchForm">
-                        <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
-                        <button type="submit"><i class="fas fa-search"></i></button>
-                    </form>
-                </div>
-                <div class="dhda-header-actions">
-                    <div id="guest-section" style="display: flex; align-items: center; gap: 8px;">
-                        <a href="login.html" style="color: #7c6240;"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
-                        <a href="register.html" style="color: #7c6240;"><i class="fas fa-user-plus"></i> Đăng ký</a>
+                <div class="dhda-topbar-right">
+                    <div id="guest-section" style="display: flex;">
+                        <a href="login.html" class="dhda-login"><i class="fas fa-user"></i> Đăng nhập</a>
                     </div>
                     <div id="user-section" style="display: none; align-items: center; gap: 8px;">
                         <span>Xin chào, <span id="user-display-name"></span></span>
@@ -451,21 +434,26 @@
                 </div>
             </div>
         </div>
-        <nav class="dhda-nav">
-            <div class="dhda-nav-content">
-                <ul class="dhda-nav-menu">
-                    <li><a href="index.html">Trang chủ</a></li>
-                    <li><a href="casio.html">Casio</a></li>
-                    <li><a href="citizen.html">Citizen</a></li>
-                    <li><a href="seiko.html">Seiko</a></li>
-                    <li><a href="orient.html">Orient</a></li>
-                    <li><a href="tissot.html">Tissot</a></li>
-                    <li><a href="daydongho.html">Dây đồng hồ</a></li>
-                    <li><a href="donghotreotuong.html">Đồng hồ treo tường</a></li>
-                    <li><a href="sanphamkhac.html">Sản phẩm khác</a></li>
-                    <li><a href="repair.html">Sửa chữa</a></li>
-                    <li><a href="about.html">Giới thiệu</a></li>
-                    <li><a href="contact.html">Liên hệ</a></li>
+        <!-- Logo + Search -->
+        <div class="dhda-header-main" style="background: #7c6240;">
+            <div class="container dhda-header-main-flex" style="flex-direction: column; align-items: center;">
+                <a href="index.html" class="dhda-logo" style="margin-bottom: 12px;">
+                    <img src="static/logo TIME LUXE.png" alt="TimeLuxe Logo" style="height: 150px; width: 150px; object-fit: contain;" />
+                </a>
+                <form class="dhda-search-bar" style="width: 100%; max-width: 420px; display: flex; justify-content: center;" id="searchForm">
+                    <input type="text" placeholder="Tìm kiếm sản phẩm, thương hiệu..." style="flex: 1; max-width: 320px;" id="searchInput" />
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+        <!-- Menu ngang -->
+        <nav class="dhda-menu">
+            <div class="container">
+                <ul class="dhda-menu-list">
+                    <li><a href="index.html#brands">THƯƠNG HIỆU</a></li>
+                    <li><a href="donghotreotuong.html">ĐỒNG HỒ TREO TƯỜNG</a></li>
+                    <li><a href="daydongho.html">DÂY ĐỒNG HỒ</a></li>
+                    <li><a href="sanphamkhac.html">SẢN PHẨM KHÁC</a></li>
                 </ul>
             </div>
         </nav>
