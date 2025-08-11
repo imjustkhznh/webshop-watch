@@ -511,11 +511,11 @@
 
 /* Giá sản phẩm */
 .price-group {
-    margin: 10px 0 8px 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    width: 100%;
 }
 .old-price {
     color: #888;
@@ -1479,7 +1479,7 @@ nav ul li a::before {
     color: #7c6240;
 }
 .product-card .price-group {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 .product-card .sale-price {
     color: #e53935;
