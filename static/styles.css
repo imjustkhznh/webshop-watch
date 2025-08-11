@@ -521,12 +521,14 @@
     color: #888;
     text-decoration: line-through;
     font-size: 0.98rem;
+    text-align: center;
 }
 .sale-price {
     color: #e53935;
     font-size: 1.08rem;
     font-weight: bold;
     letter-spacing: 1px;
+    text-align: center;
 }
 body {
     font-family: 'Segoe UI', Arial, sans-serif;

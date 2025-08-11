@@ -1,0 +1,1364 @@
+\documentclass[a4paper,12pt]{report}
+
+\usepackage[vietnamese]{babel}
+
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\centering} % Font, đậm, và CĂN GIỮA
+  {}                               % Không có số chương (cho chapter*)
+  {0pt}                            % Khoảng cách
+  {\Huge}                          % Cỡ chữ của tiêu đề
+  {}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,    % Tắt màu của các liên kết
+    pdfborder={0 0 0}    % Tắt viền xung quanh các liên kết
+}
+\usepackage{chngcntr}
+% Đánh số hình liên tục từ 1 trong toàn bộ tài liệu
+\renewcommand{\thefigure}{\arabic{figure}}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{amsmath, amsfonts, amssymb} % Cho các công thức toán học và ký hiệu
+\usepackage{hyperref}
+\usepackage{array}   % Cải tiến cho môi trường bảng và mảng
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{geometry} % lề chuẩn khoa học
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\DeclareUnicodeCharacter{2009}{\thinspace}
+\geometry{a4paper, left=35mm, right=20mm, top=25mm, bottom=25mm}
+
+% Cài đặt để mục lục gọn hơn
+\usepackage{tocloft}
+\setlength{\cftbeforechapskip}{0pt}
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+\renewcommand{\cftchapfont}{\normalsize\bfseries}
+\renewcommand{\cftsecfont}{\normalsize}
+\renewcommand{\cftsubsecfont}{\normalsize}
+\renewcommand{\cftchapdotsep}{\cftdotsep}
+\renewcommand{\cftsecdotsep}{\cftdotsep}
+
+\usepackage{mdframed}
+\usepackage[svgnames]{xcolor} % Hỗ trợ màu sắc
+\usepackage{listings} % Để định dạng mã nguồn
+\usepackage{hyperref} % Tạo siêu liên kết, nên đặt cuối cùng
+\linespread{1.5} % Khoảng cách dòng 1.5 (dãn gấp 1.5 lần)
+\usepackage[justification=centering]{caption} % Đảm bảo caption căn giữa
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,    % Tắt màu của các liên kết
+    pdfborder={0 0 0}    % Tắt viền xung quanh các liên kết
+}
+
+\begin{document}
+
+% Trang tiêu đề
+\begin{titlepage}
+\begin{mdframed}[linewidth=4pt, linecolor=black]
+    \centering
+{\bfseries\LARGE HỌC VIỆN PHỤ NỮ VIỆT NAM\\[0.2cm]
+VIỆN CÔNG NGHỆ THÔNG TIN}\\[1cm]
+
+\includegraphics[width=0.3\textwidth]{logo.jpg}\\[1.2cm]
+
+{\bfseries\LARGE BÁO CÁO KẾT THÚC MÔN HỌC\\[0.2cm]
+CÁC VẤN ĐỀ HIỆN ĐẠI CỦA CÔNG NGHỆ PHẦN MỀM}\\[1cm]
+
+{\bfseries\Large Đề tài: \textit{Ứng dụng ngôn ngữ HTML, CSS, javascript, MySQL trong xây dựng website bán đồng hồ}}\\[1.5cm]
+
+\begin{flushleft}
+\textbf{Sinh viên thực hiện:} Phạm Gia Khánh\\[0.2cm]
+\textbf{Lớp:} K10 CNTTB\\[0.2cm]
+\textbf{Khoá:} 10\\[0.2cm]
+\textbf{Giảng viên hướng dẫn:} TS. Nguyễn Đức Toàn\\[0.2cm]
+\textbf{Thời gian thực hiện:} 02/12/2024 -- 15/06/2025\\
+\end{flushleft}
+\vspace{1.5cm}
+\textbf{Hà Nội, 2025}
+\end{mdframed}
+\end{titlepage}
+\newpage
+
+% Trang tiêu đề
+\begin{titlepage}
+\begin{mdframed}[linewidth=4pt, linecolor=black]
+    \centering
+{\bfseries\LARGE HỌC VIỆN PHỤ NỮ VIỆT NAM\\[0.2cm]
+VIỆN CÔNG NGHỆ THÔNG TIN}\\[1cm]
+
+\includegraphics[width=0.3\textwidth]{logo.jpg}\\[1.2cm]
+
+{\bfseries\LARGE BÁO CÁO KẾT THÚC MÔN HỌC\\[0.2cm]
+TRÍ TUỆ NHÂN TẠO}\\[1cm]
+
+{\bfseries\Large Đề tài: \textit{Ứng dụng ngôn ngữ HTML, CSS, javascript, MySQL trong xây dựng website bán đồng hồ}}\\[1.5cm]
+
+\begin{flushleft}
+\textbf{Sinh viên thực hiện:} Phạm Gia Khánh\\[0.2cm]
+\textbf{Lớp:} K10 CNTTB\\[0.2cm]
+\textbf{Khoá:} 10\\[0.2cm]
+\textbf{Giảng viên hướng dẫn:} TS. Nguyễn Đức Toàn\\[0.2cm]
+\textbf{Thời gian thực hiện:} 02/12/2024 -- 15/06/2025\\
+\end{flushleft}
+\vspace{1.5cm}
+\textbf{Hà Nội, 2025}
+\end{mdframed}
+\end{titlepage}
+\newpage
+
+\newpage
+\tableofcontents
+\newpage
+
+\pagestyle{plain}
+\renewcommand{\listfigurename}{DANH MỤC HÌNH ẢNH}
+\addcontentsline{toc}{chapter}{\bfseries\large DANH MỤC HÌNH ẢNH}
+\listoffigures
+\newpage
+\begin{center}
+{\bfseries\Large LỜI NÓI ĐẦU}
+\end{center}
+\vspace{0.5em}
+\addcontentsline{toc}{chapter}{\bfseries\large LỜI NÓI ĐẦU}
+
+Trong thời đại công nghệ số phát triển nhanh chóng như hiện nay, thương mại điện tử ngày càng đóng vai trò quan trọng trong hoạt động kinh doanh của các doanh nghiệp. Việc sở hữu một website bán hàng không chỉ giúp doanh nghiệp mở rộng thị trường, tiếp cận khách hàng hiệu quả mà còn nâng cao năng lực cạnh tranh và tối ưu hóa quy trình quản lý bán hàng. 
+
+Từ thực tiễn đó, em đã lựa chọn đề tài: “Ứng dụng ngôn ngữ HTML, CSS, JavaScript, MySQL trong xây dựng website bán đồng hồ”. Đây là một đề tài mang tính thực tiễn cao, giúp em vận dụng các kiến thức đã học về lập trình web, thiết kế giao diện người dùng, tổ chức cơ sở dữ liệu và xử lý logic trong việc xây dựng một hệ thống bán hàng trực tuyến chuyên nghiệp.
+
+Website bán đồng hồ được xây dựng nhằm mục tiêu cung cấp nền tảng mua sắm hiện đại, tiện lợi cho khách hàng, đồng thời hỗ trợ doanh nghiệp quản lý sản phẩm, đơn hàng, thông tin khách hàng một cách hiệu quả.
+
+Báo cáo gồm các nội dung chính:
+\begin{itemize}
+    \item \textbf{Chương 1:} Tổng quan về đề tài và công nghệ sử dụng
+    \item \textbf{Chương 2:} Phân tích và thiết kế hệ thống website bán đồng hồ
+    \item \textbf{Chương 3:} Triển khai chương trình và xây dựng giao diện người dùng
+    \item \textbf{Chương 4:} Kiểm thử hệ thống và đánh giá kết quả
+\end{itemize}
+
+Em hy vọng rằng qua đề tài này, sẽ không chỉ nâng cao được kiến thức và kỹ năng lập trình thực tế, mà còn hiểu rõ hơn về quy trình phát triển một ứng dụng web hoàn chỉnh phục vụ nhu cầu kinh doanh trong thời đại chuyển đổi số.
+
+
+% ===================== CHƯƠNG 1 =====================
+
+
+\setcounter{chapter}{1}
+\chapter*{CHƯƠNG 1: TỔNG QUAN VỀ CÔNG NGHỆ PHÁT TRIỂN WEBSITE}
+\addcontentsline{toc}{chapter}{CHƯƠNG 1: TỔNG QUAN CÔNG NGHỆ}
+
+\section*{\textbf{1.1 Website thương mại điện tử là gì?}}
+\addcontentsline{toc}{section}{1.1 Website thương mại điện tử}
+
+Website thương mại điện tử là nền tảng trực tuyến để thực hiện các hoạt động mua bán hàng hóa và dịch vụ. Đối với lĩnh vực kinh doanh đồng hồ, website đóng vai trò như cửa hàng ảo hoạt động 24/7.
+
+\textbf{Đặc điểm nổi bật:}
+\begin{itemize}
+  \item Hoạt động 24/7, truy cập mọi lúc mọi nơi
+  \item Giao diện thân thiện, dễ sử dụng
+  \item Tích hợp đa chức năng: giỏ hàng, tìm kiếm, đánh giá
+  \item Chi phí vận hành thấp, dễ mở rộng
+  \item Phân tích dữ liệu hiệu quả
+\end{itemize}
+
+\section*{\textbf{1.1.1 Công nghệ xây dựng website động}}
+
+Website động có nội dung được tạo ra dựa trên tương tác của người dùng hoặc dữ liệu từ cơ sở dữ liệu. Các công nghệ chính:
+
+\begin{itemize}
+  \item \textbf{HTML, CSS, JavaScript:} Xây dựng giao diện và hiệu ứng tương tác
+  \item \textbf{MySQL:} Lưu trữ thông tin người dùng, sản phẩm, đơn hàng
+  \item \textbf{Node.js/Express:} Xử lý logic phía máy chủ, giao tiếp với CSDL
+\end{itemize}
+
+\section*{\textbf{1.1.2 Vai trò của website thương mại điện tử trong lĩnh vực bán đồng hồ}}
+
+Trong ngành kinh doanh đồng hồ, website bán hàng hiện đại có vai trò quan trọng:
+
+\begin{itemize}
+  \item \textbf{Tăng độ nhận diện thương hiệu:} Tiếp cận khách hàng toàn quốc
+  \item \textbf{Tối ưu quy trình bán hàng:} Dễ dàng xem mẫu, chọn sản phẩm, đặt mua
+  \item \textbf{Nâng cao trải nghiệm người dùng:} Giao diện trực quan, phân loại rõ ràng
+  \item \textbf{Hỗ trợ quản lý hiệu quả:} Tự động hóa kiểm soát tồn kho, xử lý đơn hàng
+\end{itemize}
+
+\section*{\textbf{1.1.3 Xu hướng và lợi ích khi ứng dụng HTML, CSS, JavaScript, MySQL}}
+\begin{itemize}
+  \item \textbf{Tính phổ biến:} HTML, CSS, JavaScript được hỗ trợ tốt trên mọi trình duyệt
+  \item \textbf{Hiệu quả với MySQL:} Xử lý dữ liệu linh hoạt, dễ lưu trữ và truy vấn
+  \item \textbf{Khả năng tùy biến:} Dễ nâng cấp, thêm chức năng mới
+  \item \textbf{Chi phí thấp:} Phù hợp với doanh nghiệp vừa và nhỏ
+\end{itemize}
+
+\section*{\textbf{1.2 Lịch sử phát triển của công nghệ HTML, CSS, JavaScript và MySQL}}
+\addcontentsline{toc}{section}{1.2 Lịch sử phát triển công nghệ}
+
+\subsection*{HTML/CSS/JavaScript}
+HTML là ngôn ngữ đánh dấu siêu văn bản, nền tảng của mọi trang web. CSS định dạng và làm đẹp trang web. JavaScript xử lý tương tác, hiệu ứng động và logic người dùng. Sự kết hợp tạo ra website thân thiện và responsive.
+
+\subsection*{MySQL}
+MySQL là hệ quản trị cơ sở dữ liệu quan hệ mã nguồn mở phổ biến nhất, hỗ trợ tốt cho các ứng dụng web như bán hàng trực tuyến và hệ thống quản lý doanh nghiệp.
+
+\section*{\textbf{1.3 Các công nghệ và kỹ thuật chính trong phát triển hệ thống}}
+\addcontentsline{toc}{section}{1.3 Công nghệ và kỹ thuật chính}
+
+\textbf{1. HTML/CSS/JavaScript:}
+\begin{itemize}
+  \item HTML: Xây dựng cấu trúc trang web
+  \item CSS: Định dạng kiểu dáng và trình bày
+  \item JavaScript: Xử lý sự kiện, hiệu ứng tương tác
+\end{itemize}
+
+\textbf{2. MySQL:}
+\begin{itemize}
+  \item Lưu trữ dữ liệu: sản phẩm, người dùng, đơn hàng
+  \item Hỗ trợ truy vấn SQL nhanh chóng
+\end{itemize}
+
+\textbf{3. Node.js/Express:}
+\begin{itemize}
+  \item Xử lý logic phía máy chủ
+  \item Kết nối với MySQL để thực hiện CRUD
+\end{itemize}
+
+\section*{\textbf{1.4 Ứng dụng của website bán đồng hồ trong thực tiễn}}
+\addcontentsline{toc}{section}{1.4 Ứng dụng thực tiễn}
+
+Website bán đồng hồ trực tuyến không chỉ đơn giản là một cửa hàng ảo mà còn là công cụ quản lý và phát triển kinh doanh hiệu quả:
+
+\textbf{1. Trong bán lẻ đồng hồ:}
+\begin{itemize}
+  \item Trưng bày sản phẩm: Hình ảnh sắc nét, mô tả chi tiết, thông tin kỹ thuật và thương hiệu.
+  \item Quản lý tồn kho: Theo dõi số lượng còn lại, cảnh báo khi hết hàng.
+  \item Thanh toán tiện lợi: Đa dạng phương thức thanh toán, hỗ trợ người mua nhanh chóng.
+\end{itemize}
+
+\textbf{2. Trong quản lý và vận hành doanh nghiệp:}
+\begin{itemize}
+  \item Phân quyền rõ ràng: Người dùng, quản trị viên, nhân viên,...
+  \item Thống kê – báo cáo: Xem doanh số bán hàng, sản phẩm bán chạy, hiệu suất cửa hàng,...
+  \item Hỗ trợ khách hàng: Quản lý đơn hàng, lịch sử mua sắm, phản hồi đánh giá.
+\end{itemize}
+
+\textbf{3. Trong chiến lược kinh doanh:}
+\begin{itemize}
+  \item Kết nối mạng xã hội và SEO: Giúp tăng lượng truy cập và mở rộng tệp khách hàng.
+  \item Tích hợp chiến dịch quảng cáo: Giảm giá, ưu đãi, flash sale, email marketing,...
+\end{itemize}
+
+Tóm lại, hệ thống website bán đồng hồ giúp doanh nghiệp tiết kiệm chi phí, mở rộng thị trường, tăng khả năng cạnh tranh và chăm sóc khách hàng tốt hơn trong kỷ nguyên số.
+
+
+% ===================== HẾT CHƯƠNG 1 =====================
+
+% ===================== CHƯƠNG 2 =====================
+
+\chapter*{CHƯƠNG 2: PHÂN TÍCH THIẾT KẾ HỆ THỐNG}
+\addcontentsline{toc}{chapter}{CHƯƠNG 2: PHÂN TÍCH THIẾT KẾ}
+
+\section*{\textbf{2.1 Phân tích thực trạng và điểm mới}}
+\addcontentsline{toc}{section}{2.1 Phân tích thực trạng và điểm mới}
+
+\textbf{Thực trạng hiện tại:}
+Ngành kinh doanh đồng hồ tại Việt Nam đang phát triển mạnh mẽ nhờ sự bùng nổ của thương mại điện tử. Tuy nhiên, phần lớn các cửa hàng đồng hồ nhỏ lẻ vẫn quản lý theo phương pháp thủ công, sử dụng Excel, ghi chép sổ sách hoặc chỉ dựa vào mạng xã hội như Facebook, Zalo, Instagram.
+
+\textbf{Các vấn đề nổi bật:}
+\begin{itemize}
+  \item \textbf{Thiếu hệ thống chuyên nghiệp:} Không có website riêng, chỉ dựa vào mạng xã hội
+  \item \textbf{Quản lý rời rạc:} Tồn kho, đơn hàng, khách hàng không được liên kết tập trung
+  \item \textbf{Thiếu báo cáo thống kê:} Không có hệ thống phân tích doanh thu và hành vi khách hàng
+  \item \textbf{Trải nghiệm khách hàng kém:} Không thể tìm kiếm, theo dõi đơn hàng dễ dàng
+  \item \textbf{Chưa tận dụng thương mại điện tử:} Chưa mở rộng thị trường trực tuyến
+  \item \textbf{Thiếu phân quyền:} Chủ cửa hàng phải làm tất cả các khâu
+\end{itemize}
+
+
+
+
+
+Đề tài “Ứng dụng ngôn ngữ HTML, CSS, JavaScript, MySQL trong xây dựng website bán đồng hồ TIME LUXE” không chỉ đơn thuần là tạo ra một trang web bán hàng thông thường mà còn mang nhiều điểm mới về thiết kế, kỹ thuật và trải nghiệm người dùng. Các điểm nổi bật của hệ thống được thể hiện qua các khía cạnh sau:
+
+\textbf{Chuyên biệt cho ngành đồng hồ:}
+\begin{itemize}
+  \item Thiết kế riêng cho các thương hiệu: Casio, Citizen, Orient, Tissot, Seiko
+  \item Phân loại rõ ràng theo thương hiệu, loại đồng hồ, giới tính, khoảng giá
+  \item Giao diện hiện đại phù hợp với khách hàng mua đồng hồ cao cấp
+\end{itemize}
+
+\textbf{Tính năng thông minh:}
+\begin{itemize}
+  \item Tìm kiếm nâng cao theo tên, giá, hãng, loại, chất liệu
+  \item Giỏ hàng và thanh toán tiện lợi
+  \item Quản lý tài khoản và theo dõi đơn hàng
+\end{itemize}
+
+\textbf{Phân quyền rõ ràng:}
+\begin{itemize}
+  \item Khách hàng: Xem sản phẩm, đặt hàng, quản lý tài khoản
+  \item Nhân viên: Xử lý đơn hàng, hỗ trợ khách hàng
+  \item Quản trị viên: Quản lý toàn bộ hệ thống
+\end{itemize}
+
+\textbf{Quản lý chuyên nghiệp:}
+\begin{itemize}
+  \item Quản lý thương hiệu và khuyến mãi linh hoạt
+  \item Báo cáo thống kê tự động: doanh thu, đơn hàng, sản phẩm bán chạy
+  \item Giao diện responsive, hỗ trợ SEO cơ bản
+\end{itemize}
+
+
+\begin{itemize}
+
+\end{itemize}
+
+\textbf{Khả năng mở rộng:}
+\begin{itemize}
+  \item Kiến trúc MVC dễ bảo trì và phát triển
+  \item Sẵn sàng tích hợp: thanh toán trực tuyến, chatbot, gợi ý sản phẩm
+\end{itemize}
+
+
+\begin{itemize}
+
+\end{itemize}
+
+
+\section*{\textbf{2.3 Tác nhân tham gia}}
+\addcontentsline{toc}{section}{2.2 Tác nhân và use case}
+\addcontentsline{toc}{section}{2.3 Các biểu đồ UML}
+
+\textbf{Các tác nhân của hệ thống gồm:}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{tac nhan .png}
+    \caption{Các tác nhân của hệ thống}
+\end{figure}
+
+\textbf{Bảng 2.1 Bảng tác nhân quản lý}
+\renewcommand{\arraystretch}{1.2}
+
+\begin{longtable}{|p{2.5cm}|p{5.5cm}|p{5.5cm}|}
+\hline
+\textbf{Tác nhân} & \textbf{Các ca sử dụng nghiệp vụ} & \textbf{Kết quả đem lại} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Tác nhân} & \textbf{Các ca sử dụng nghiệp vụ} & \textbf{Kết quả đem lại} \\
+\hline
+\endhead
+
+Quản lý & Đăng nhập & Xác thực quyền truy cập hệ thống với vai trò quản lý. \\
+\cline{2-3}
+& Thêm sản phẩm đồng hồ & Tạo mới sản phẩm với thông tin như tên, hãng, giá, tồn kho và lưu vào hệ thống. \\
+\cline{2-3}
+& Sửa thông tin sản phẩm & Chỉnh sửa thông tin sản phẩm đã có như tên, hãng, giá, trạng thái, tồn kho... \\
+\cline{2-3}
+& Xóa sản phẩm & Xóa hoặc ẩn sản phẩm khỏi hệ thống, không hiển thị cho người dùng nữa. \\
+\cline{2-3}
+& Cập nhật tồn kho sản phẩm & Điều chỉnh số lượng sản phẩm tồn kho dựa trên hàng nhập, hàng bán, hủy đơn... \\
+\cline{2-3}
+& Cập nhật trạng thái sản phẩm & Thay đổi trạng thái hoạt động của sản phẩm (ví dụ: còn hàng, hết hàng, ẩn, đang khuyến mãi...) \\
+\cline{2-3}
+& Quản lý thương hiệu & Thêm, sửa, xóa thông tin thương hiệu đồng hồ (Casio, Citizen, Seiko, Orient, Tissot) \\
+\cline{2-3}
+& Quản lý khuyến mãi & Tạo và quản lý chương trình khuyến mãi, mã giảm giá \\
+\cline{2-3}
+& Xem báo cáo doanh thu & Xem báo cáo doanh thu theo ngày/tháng/năm, thống kê sản phẩm bán chạy \\
+\cline{2-3}
+& Quản lý đơn hàng & Xem, cập nhật trạng thái và xử lý tất cả đơn hàng trong hệ thống \\
+\cline{2-3}
+& Quản lý khách hàng & Xem danh sách khách hàng, thông tin chi tiết và lịch sử mua hàng \\
+\cline{2-3}
+& Quản lý danh mục & Thêm, sửa, xóa danh mục sản phẩm (đồng hồ đeo tay, đồng hồ treo tường, sản phẩm khác) \\
+\cline{2-3}
+& Cấu hình hệ thống & Thiết lập các thông số hệ thống, cấu hình thanh toán, vận chuyển \\
+\hline
+\end{longtable}
+
+
+
+\textbf{Bảng 2.2 Bảng tác nhân khách hàng}
+\renewcommand{\arraystretch}{1.2}
+
+\begin{longtable}{|p{3cm}|p{6cm}|p{6cm}|}
+\hline
+\textbf{Tác nhân} & \textbf{Các ca sử dụng nghiệp vụ} & \textbf{Kết quả đem lại} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Tác nhân} & \textbf{Các ca sử dụng nghiệp vụ} & \textbf{Kết quả đem lại} \\
+\hline
+\endhead
+
+Khách hàng & Đăng kí tài khoản & Tạo tài khoản người dùng mới và lưu thông tin vào cơ sở dữ liệu \\
+\cline{2-3}
+& Đăng nhập & Xác thực tài khoản người dùng, cho phép truy cập vào hệ thống theo phân quyền. \\
+\cline{2-3}
+& Thêm sản phẩm vào giỏ hàng & Thêm sản phẩm đồng hồ vào giỏ hàng để đặt hàng \\
+\cline{2-3}
+& Cập nhật lại sản phẩm trong giỏ hàng & Cập nhật lại sản phẩm trong giỏ như số lượng, loại đồng hồ. \\
+\cline{2-3}
+& Xóa sản phẩm trong giỏ hàng & Xóa sản phẩm đồng hồ khỏi giỏ hàng \\
+\cline{2-3}
+& Đặt hàng & Thanh toán sản phẩm đồng hồ. \\
+\cline{2-3}
+& Tìm kiếm & Hiển thị danh sách kết quả phù hợp từ hệ thống theo từ khóa tìm kiếm. \\
+\cline{2-3}
+& Xem sản phẩm & Hiển thị chi tiết thông tin sản phẩm (tên, hình ảnh, mô tả, giá, số lượng tồn kho). \\
+\cline{2-3}
+& Xem theo hãng & Duyệt sản phẩm theo thương hiệu (Casio, Citizen, Seiko, Orient, Tissot). \\
+\cline{2-3}
+& Xem theo loại & Duyệt sản phẩm theo loại (đồng hồ đeo tay, đồng hồ treo tường, sản phẩm khác). \\
+\cline{2-3}
+& Quản lý thông tin cá nhân & Xem và cập nhật thông tin cá nhân, địa chỉ, số điện thoại. \\
+\cline{2-3}
+& Xem lịch sử đơn hàng & Xem danh sách đơn hàng đã đặt, trạng thái giao hàng. \\
+\cline{2-3}
+& Xem thông tin cửa hàng & Xem thông tin về cửa hàng, chính sách bảo hành, sửa chữa. \\
+\hline
+\end{longtable}
+
+
+\FloatBarrier  % nếu dùng gói placeins, hoặc dùng \clearpage bên dưới
+
+\clearpage
+\section*{\textbf{2.4 Biểu đồ use case}}
+
+
+\textbf{Biểu đồ Use case tổng quát}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{usecase tong quat.png}
+    \caption{Biểu đồ Use case tổng quát}
+\end{figure}
+
+\textbf{a. Biểu đồ Use case phân rã Quản lý sản phẩm:}
+Quản trị viên có thể thực hiện việc quản lý hàng hóa với các thao tác:
+\begin{itemize}
+  \item Thêm mới thời trang.
+  \item Xóa sản phẩm thời trang.
+  \item Sửa thông tin sản phẩm thời trang.
+\end{itemize}
+
+\clearpage % đảm bảo figure nằm ngay sau đoạn trên
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{phan ra quan ly san pham.png}
+    \caption{Biểu đồ phân rã Use case quản lý sản phẩm thời trang}
+\end{figure}
+
+\textbf{b. Biểu đồ Use case phân rã Quản lý đơn hàng:}
+Nhân viên có thể thực hiện việc quản lý đơn hàng với các thao tác:
+\begin{itemize}
+  \item Xem tất cả các đơn hàng mà khách hàng đã đặt 
+  \item Chỉnh sửa trạng thái của đơn hàng: chưa thanh toán/đã thanh toán
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{use-case-quan-ly-don-hang.png}
+    \caption{Biểu đồ phân rã Use case quản lý đơn hàng}
+\end{figure}
+
+\textbf{c. Biểu đồ phân rã Use case đặt hàng:}
+Khách hàng có thể thực hiện việc đặt hàng thông qua hệ thống. Trong quá trình đặt hàng, khách hàng cần thực hiện các thao tác bao gồm:
+\begin{itemize}
+  \item Xem giỏ hàng để kiểm tra các sản phẩm đã chọn.
+  \item Tiến hành thanh toán để hoàn tất việc mua hàng.
+  \item Xác nhận đặt hàng để gửi yêu cầu đến hệ thống.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{use-case-dat-hang.png}
+    \caption{Biểu đồ phân rã Use case khách hàng đặt hàng}
+\end{figure}
+
+\textbf{d. Biểu đồ phân rã Use case đăng ký tài khoản:}
+Khách hàng có thể thực hiện việc đăng ký tài khoản với các thao tác:
+\begin{itemize}
+  \item Truy cập trang đăng ký tài khoản 
+  \item Nhập thông tin cá nhân.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{use-case-dang-k.png}
+    \caption{Biểu đồ phân rã Use case đăng ký tài khoản}
+\end{figure}
+
+
+\textbf{e. Biểu đồ phân rã Use case quản lý tài khoản:}
+Quản trị viên có thể thực hiện việc quản lý tài khoản với các thao tác:
+\begin{itemize}
+  \item Truy cập trang quản lý tài khoản
+  \item Thêm mới tài khoản.
+  \item Xóa tài khoản.
+  \item Sửa thông tin tài khoản.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{use-case-quan-ly-tai-khoan.png}
+    \caption{Biểu đồ phân rã Use case quản lý tài khoản}
+\end{figure}
+
+\textbf{f. Biểu đồ phân rã Use case quản lý thương hiệu:}
+Quản trị viên có thể thực hiện việc quản lý thương hiệu với các thao tác:
+\begin{itemize}
+  \item Thêm thương hiệu mới (Casio, Citizen, Seiko, Orient, Tissot)
+  \item Chỉnh sửa thông tin thương hiệu hiện có
+  \item Xóa thương hiệu không còn sử dụng
+  \item Tìm kiếm thương hiệu
+  \item Cập nhật logo thương hiệu
+  \item Xem danh sách thương hiệu
+\end{itemize}
+
+\FloatBarrier
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{use-case-quan-ly-thuong-hieu.png}
+    \caption{Biểu đồ phân rã Use case quản lý thương hiệu}
+\end{figure}
+
+\FloatBarrier
+
+\textbf{g. Biểu đồ phân rã Use case quản lý sản phẩm yêu thích:}
+Khách hàng có thể thực hiện việc quản lý sản phẩm yêu thích với các thao tác:
+\begin{itemize}
+  \item Truy cập trang quản lý sản phẩm yêu thích
+  \item Chọn "Thêm vào yêu thích"
+\end{itemize}
+
+\FloatBarrier
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{use-case-san-pham-yeu-thich.png}
+    \caption{Biểu đồ phân rã Use case quản lý sản phẩm yêu thích}
+\end{figure}
+
+\FloatBarrier
+
+\textbf{h. Biểu đồ phân rã Use case quản lý khuyến mãi:}
+Quản trị viên có thể thực hiện việc quản lý khuyến mãi với các thao tác:
+\begin{itemize}
+  \item Thêm chương trình khuyến mãi mới
+  \item Chỉnh sửa thông tin khuyến mãi hiện có
+  \item Xóa chương trình khuyến mãi
+  \item Tìm kiếm khuyến mãi
+  \item Cập nhật trạng thái khuyến mãi (đang diễn ra, đã kết thúc)
+  \item Xem danh sách khuyến mãi
+  \item Quản lý mã giảm giá
+\end{itemize}
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{use-case-quan-ly-khuyen-mai.png}
+    \caption{Biểu đồ phân rã Use case quản lý khuyến mãi}
+\end{figure}
+
+\textbf{i. Biểu đồ phân rã Use case quản lý giỏ hàng:}
+Khách hàng có thể thực hiện việc quản lý giỏ hàng với các thao tác:
+\begin{itemize}
+  \item Xem nội dung giỏ hàng để kiểm tra các sản phẩm đã chọn
+  \item Thêm sản phẩm vào giỏ hàng
+  \item Cập nhật số lượng sản phẩm trong giỏ hàng
+  \item Xóa sản phẩm khỏi giỏ hàng
+\end{itemize}
+
+\begin{figure}[H] % <- dùng H để hình nằm đúng vị trí này
+    \centering
+    \includegraphics[width=0.8\textwidth]{use-case-gio-hang.png}
+    \caption{Biểu đồ phân rã Use case quản lý giỏ hàng}
+\end{figure}
+
+\section*{\textbf{2.5 Kịch bản Use case}}
+
+
+
+\textbf{Mô tả kịch bản Use case xem sản phẩm:}
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{|p{6cm}|p{6cm}|}
+\hline
+\textbf{Phản ứng của người dùng} & \textbf{Phản ứng của hệ thống} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Phản ứng của người dùng} & \textbf{Phản ứng của hệ thống} \\
+\hline
+\endhead
+
+1. Người dùng đăng nhập vào hệ thống. & Hệ thống hiển thị form đăng nhập. \\
+\hline
+2. Người dùng nhập thông tin đăng nhập. & Hệ thống kiểm tra thông tin. \\
+\hline
+\multicolumn{2}{|c|}{\textbf{LUỒNG CHÍNH}} \\
+\hline
+3. Người dùng truy cập trang chủ hoặc trang danh mục sản phẩm & Hệ thống hiển thị danh sách sản phẩm hoặc danh mục \\
+\hline
+4. Người dùng chọn một sản phẩm để xem chi tiết. & Hệ thống hiển thị trang chi tiết sản phẩm: tên sản phẩm, mô tả, giá, mã sản phẩm, hình ảnh… \\
+\hline
+\multicolumn{2}{|c|}{\textbf{LUỒNG RẼ NHÁNH}} \\
+\hline
+5. Người dùng nhập sai thông tin & Hệ thống yêu cầu đăng nhập lại. \\
+\hline
+\caption{Mô tả kịch bản Use case xem sản phẩm}
+\end{longtable}
+
+
+\textbf{Mô tả kịch bản Use case Quản lý đơn hàng:}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|p{6cm}|p{6cm}|}
+\hline
+\textbf{Phản ứng của người dùng} & \textbf{Phản ứng của hệ thống} \\
+\hline
+1. Người dùng đăng nhập vào hệ thống. & 2. Hệ thống hiển thị form đăng nhập. \\
+\hline
+3. Người dùng nhập thông tin đăng nhập. & \\
+\hline
+\textbf{LUỒNG CHÍNH} & \\
+\hline
+4. Người dùng hoặc quản trị viên muốn kiểm tra trạng thái và chi tiết của một đơn hàng & \\
+\hline
+5. Người dùng hoặc quản trị viên truy cập trang quản lý đơn hàng. & 6. Hệ thống hiển thị danh sách đơn hàng với các thông tin chi tiết. \\
+\hline
+7. Người dùng hoặc quản trị viên chọn một đơn hàng để xem chi tiết. & \\
+\hline
+\textbf{LUỒNG RẼ NHÁNH} & \\
+\hline
+4. Người dùng nhập sai thông tin. & 5. Hệ thống yêu cầu đăng nhập lại. \\
+\hline
+\end{tabular}
+\caption{Mô tả kịch bản Use case Quản lý đơn hàng}
+\end{table}
+
+\textbf{Mô tả kịch bản Use case Quản lý sản phẩm:}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|p{6cm}|p{6cm}|}
+\hline
+\textbf{Phản ứng của người dùng} & \textbf{Phản ứng của hệ thống} \\
+\hline
+1. Người dùng đăng nhập vào hệ thống & 2. Hệ thống hiển thị form đăng nhập. \\
+\hline
+3. Người dùng nhập thông tin đăng nhập & \\
+\hline
+\textbf{LUỒNG CHÍNH} & \\
+\hline
+4. Quản trị viên truy cập vào trang quản lý sản phẩm. & 5. Hệ thống hiển thị danh sách sản phẩm hiện tại và tùy chọn để thêm sản phẩm mới. \\
+\hline
+6. Quản trị viên chọn thêm sản phẩm mới. & 7. Hệ thống hiển thị một biểu mẫu để thêm sản phẩm mới với các trường như tên, giá, mô tả, hình ảnh,… của sản phẩm. \\
+\hline
+8. Quản trị viên điền thông tin chi tiết và ấn lưu & 9. Hệ thống kiểm tra thông tin và thêm sản phẩm vào CSDL. \\
+\hline
+\textbf{LUỒNG RẼ NHÁNH} & \\
+\hline
+4. Người dùng nhập sai thông tin. & 5. Hệ thống yêu cầu đăng nhập lại. \\
+\hline
+\end{tabular}
+\caption{Mô tả kịch bản Use case Quản lý sản phẩm}
+\end{table}
+
+\FloatBarrier  % Chèn lệnh này để ngăn float trôi xuống dưới
+
+\textbf{Mô tả kịch bản Use case Tìm kiếm sản phẩm:}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|p{6cm}|p{6cm}|}
+\hline
+\textbf{Phản ứng của người dùng} & \textbf{Phản ứng của hệ thống} \\
+\hline
+1. Người dùng đăng nhập vào hệ thống & 2. Hệ thống hiển thị form đăng nhập \\
+\hline
+3. Người dùng nhập thông tin đăng nhập & \\
+\hline
+\textbf{LUỒNG CHÍNH} & \\
+\hline
+4. Người dùng muốn tìm sản phẩm cụ thể hoặc duyệt qua danh mục & \\
+\hline
+5. Người dùng sử dụng thanh tìm kiếm hoặc duyệt qua danh mục từ thanh điều hướng. & 6. Hệ thống hiển thị kết quả tìm kiếm hoặc danh sách sản phẩm thuộc danh mục đã chọn. \\
+\hline
+7. Người dùng xem thông tin chi tiết và chọn sản phẩm muốn mua. & \\
+\hline
+\textbf{LUỒNG RẼ NHÁNH} & \\
+\hline
+4. Người dùng nhập sai thông tin. & 5. Hệ thống yêu cầu đăng nhập lại. \\
+\hline
+\end{tabular}
+\caption{Mô tả kịch bản Use case Tìm kiếm sản phẩm}
+\end{table}
+
+
+\section*{\textbf{2.6 Biểu đồ hoạt động}}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{hd dang nhap.png}
+  \caption{Biểu đồ hoạt động đăng nhập hệ thống}
+  \label{fig:hd_dangnhap}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{hd dang ky.png}
+  \caption{Biểu đồ hoạt động đăng ký tài khoản khách hàng}
+  \label{fig:hd_dangky}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{hd muahang.png}
+  \caption{Biểu đồ hoạt động mua hàng đồng hồ}
+  \label{fig:hd_muahang}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{hd them gio hang.png}
+  \caption{Biểu đồ hoạt động thêm sản phẩm vào giỏ hàng}
+  \label{fig:hd_qlsp}
+\end{figure}
+
+\section*{2.6 Biểu đồ tuần tự}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{tt1.png}
+  \caption{Biểu đồ tuần tự đăng nhập}
+  \label{fig:ten_anh}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{tt2.png}
+  \caption{Biểu đồ tuần tự thêm sản phẩm vào giỏ hàng}
+  \label{fig:ten_anh}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{tt3.png}
+  \caption{Biểu đồ tuần tự thêm sản phẩm}
+  \label{fig:ten_anh}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{tt4.png}
+  \caption{Biểu đồ tuần tự sửa thông tin sản phẩm}
+  \label{fig:ten_anh}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{tt5.png}
+  \caption{Biểu đồ tuần tự xóa sản phẩm}
+  \label{fig:ten_anh}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{tt6.png}
+  \caption{Biểu đồ tuần tự đăng ký}
+  \label{fig:ten_anh}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{tt7.png}
+  \caption{Biểu đồ tuần tự đặt hàng}
+  \label{fig:ten_anh}
+\end{figure}
+
+
+
+
+\section*{\textbf{2.8 Biểu đồ lớp}}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{bieudolop.png}
+  \caption{Biểu đồ lớp hệ thống bán đồng hồ trực tuyến TimeLuxe}
+  \label{fig:classdiagram}
+\end{figure}
+
+
+\section*{2.9 Cơ sở dữ liệu}
+\addcontentsline{toc}{section}{2.9 Cơ sở dữ liệu}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Mô tả} & \textbf{Kiểu dữ liệu} \\
+\hline
+1  & id         & Khóa chính, tự tăng           & int, AUTO\_INCREMENT \\
+2  & username   & Tên đăng nhập, duy nhất       & varchar(50)          \\
+3  & password   & Mật khẩu (mã hóa)             & varchar(100)         \\
+4  & email      & Email, duy nhất               & varchar(100)         \\
+5  & full\_name & Họ tên người dùng             & varchar(100)         \\
+6  & role       & Vai trò (admin, staff, customer) & enum                \\
+7  & created\_at& Ngày tạo tài khoản            & timestamp            \\
+\hline
+\end{tabular}
+\caption{Mô tả thuộc tính của bảng \textbf{users}}
+\label{tab:users}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Mô tả} & \textbf{Kiểu dữ liệu} \\
+\hline
+1 & id   & Khóa chính, tự tăng   & int, AUTO\_INCREMENT \\
+2 & name & Tên thương hiệu       & varchar(100)         \\
+\hline
+\end{tabular}
+\caption{Mô tả thuộc tính của bảng \textbf{brands}}
+\label{tab:brands}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Mô tả} & \textbf{Kiểu dữ liệu} \\
+\hline
+1 & id   & Khóa chính, tự tăng   & int, AUTO\_INCREMENT \\
+2 & name & Tên danh mục          & varchar(100)         \\
+\hline
+\end{tabular}
+\caption{Mô tả thuộc tính của bảng \textbf{categories}}
+\label{tab:categories}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Mô tả} & \textbf{Kiểu dữ liệu} \\
+\hline
+1  & id          & Khóa chính, tự tăng           & int, AUTO\_INCREMENT \\
+2  & name        & Tên sản phẩm                  & varchar(255)         \\
+3  & brand\_id   & ID thương hiệu liên kết       & int                  \\
+4  & category\_id& ID danh mục liên kết          & int                  \\
+5  & price       & Giá sản phẩm                  & decimal(10,2)        \\
+6  & description & Mô tả sản phẩm                & text                 \\
+7  & image       & Đường dẫn ảnh sản phẩm        & varchar(255)         \\
+8  & stock       & Số lượng tồn kho              & int                  \\
+9  & created\_at & Ngày tạo sản phẩm             & timestamp            \\
+\hline
+\end{tabular}
+\caption{Mô tả thuộc tính của bảng \textbf{products}}
+\label{tab:products}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Mô tả} & \textbf{Kiểu dữ liệu} \\
+\hline
+1 & id        & Khóa chính, tự tăng   & int, AUTO\_INCREMENT \\
+2 & user\_id  & ID người dùng         & int                  \\
+3 & created\_at & Ngày tạo giỏ hàng   & timestamp            \\
+\hline
+\end{tabular}
+\caption{Mô tả thuộc tính của bảng \textbf{carts}}
+\label{tab:carts}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Mô tả} & \textbf{Kiểu dữ liệu} \\
+\hline
+1 & id         & Khóa chính, tự tăng   & int, AUTO\_INCREMENT \\
+2 & cart\_id   & ID giỏ hàng           & int                  \\
+3 & product\_id& ID sản phẩm           & int                  \\
+4 & quantity   & Số lượng              & int                  \\
+\hline
+\end{tabular}
+\caption{Mô tả thuộc tính của bảng \textbf{cart\_items}}
+\label{tab:cartitems}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Mô tả} & \textbf{Kiểu dữ liệu} \\
+\hline
+1 & id           & Khóa chính, tự tăng         & int, AUTO\_INCREMENT \\
+2 & user\_id     & ID người dùng đặt hàng      & int                  \\
+3 & order\_date  & Ngày đặt hàng               & timestamp            \\
+4 & total\_amount& Tổng tiền đơn hàng          & decimal(10,2)        \\
+5 & status       & Trạng thái đơn hàng         & enum                 \\
+\hline
+\end{tabular}
+\caption{Mô tả thuộc tính của bảng \textbf{orders}}
+\label{tab:orders}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Mô tả} & \textbf{Kiểu dữ liệu} \\
+\hline
+1 & id         & Khóa chính, tự tăng   & int, AUTO\_INCREMENT \\
+2 & order\_id  & ID đơn hàng           & int                  \\
+3 & product\_id& ID sản phẩm           & int                  \\
+4 & quantity   & Số lượng              & int                  \\
+5 & price      & Giá sản phẩm          & decimal(10,2)        \\
+\hline
+\end{tabular}
+\caption{Mô tả thuộc tính của bảng \textbf{order\_details}}
+\label{tab:orderdetails}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Mô tả} & \textbf{Kiểu dữ liệu} \\
+\hline
+1 & id             & Khóa chính, tự tăng   & int, AUTO\_INCREMENT \\
+2 & order\_id      & ID đơn hàng           & int                  \\
+3 & payment\_method& Phương thức thanh toán& enum                 \\
+4 & payment\_status& Trạng thái thanh toán & enum                 \\
+5 & payment\_date  & Ngày thanh toán       & timestamp            \\
+\hline
+\end{tabular}
+\caption{Mô tả thuộc tính của bảng \textbf{payments}}
+\label{tab:payments}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Mô tả} & \textbf{Kiểu dữ liệu} \\
+\hline
+1 & id         & Khóa chính, tự tăng   & int, AUTO\_INCREMENT \\
+2 & product\_id& ID sản phẩm           & int                  \\
+3 & user\_id   & ID người dùng         & int                  \\
+4 & rating     & Đánh giá (1-5 sao)    & int                  \\
+5 & comment    & Bình luận             & text                 \\
+6 & review\_date& Ngày đánh giá        & timestamp            \\
+\hline
+\end{tabular}
+\caption{Mô tả thuộc tính của bảng \textbf{reviews}}
+\label{tab:reviews}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Mô tả} & \textbf{Kiểu dữ liệu} \\
+\hline
+1 & id         & Khóa chính, tự tăng   & int, AUTO\_INCREMENT \\
+2 & name       & Tên khuyến mãi        & varchar(255)         \\
+3 & discount   & Giá trị giảm giá      & int                  \\
+4 & start\_date& Ngày bắt đầu          & date                 \\
+5 & end\_date  & Ngày kết thúc         & date                 \\
+6 & description& Mô tả                 & text                 \\
+\hline
+\end{tabular}
+\caption{Mô tả thuộc tính của bảng \textbf{promotions}}
+\label{tab:promotions}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{mo hinh co so du lieu.png}
+  \caption{Mô hình cơ sở dữ liệu}
+  \label{fig:classdiagram}
+\end{figure}
+
+
+% ===================== HẾT CHƯƠNG 2 =====================
+
+\chapter*{CHƯƠNG 3: XÂY DỰNG ỨNG DỤNG }
+\addcontentsline{toc}{chapter}{CHƯƠNG 3: XÂY DỰNG ỨNG DỤNG}
+
+\subsection*{\textbf{3.1 Công nghệ sử dụng}}
+\addcontentsline{toc}{section}{3.1 Công nghệ sử dụng}
+
+\subsection*{\textbf{3.1.1 Ngôn ngữ lập trình}}
+\begin{itemize}
+    \item Thiết kế giao diện với HTML, CSS, JavaScript, Bootstrap
+    \item Xử lý logic bằng ngôn ngữ lập trình Node.js
+    \item Quản trị cơ sở dữ liệu: MySQL
+\end{itemize}
+
+\subsection*{\textbf{3.1.2 Môi trường cài đặt}}    
+\begin{itemize}
+    \item Sử dụng phần mềm Visual Studio Code để phát triển và quản lý mã nguồn
+    \item Server Node.js với Express.js
+    \item Triển khai hệ thống backend và frontend lên nền tảng cloud \textbf{Render.com} tại \texttt{https://webshop-watch.onrender.com/}
+    \item Sử dụng cơ sở dữ liệu MySQL online (Clever Cloud)
+    \item Quản lý mã nguồn và tự động deploy qua GitHub
+\end{itemize}
+
+\subsection*{\textbf{3.2 Giao diện phần mềm}}
+\addcontentsline{toc}{section}{3.2 Giao diện phần mềm}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{gd1.png}
+  \caption{Trang đăng nhập TimeLuxe}
+  \label{fig:login}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.48\textwidth}
+  \centering
+    \includegraphics[width=\textwidth]{gd2.png}
+  \caption{Trang đăng ký TimeLuxe}
+  \label{fig:register}
+  \end{minipage}
+\end{figure}
+
+Trang đăng nhập và đăng ký TimeLuxe được thiết kế với giao diện hiện đại, sử dụng nền gradient và hiệu ứng animation tạo cảm giác chuyên nghiệp. Trang đăng nhập có form với các trường email và mật khẩu, hỗ trợ đăng nhập bằng Google và Facebook. Trang đăng ký cho phép tạo tài khoản với thông tin: tên đăng nhập, họ tên, email, mật khẩu và validation real-time.
+
+\begin{itemize}
+    \item Giao diện phía quản trị viên
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{gd3.png}
+  \caption{Trang chủ quản trị viên TimeLuxe}
+  \label{fig:admin-dashboard}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.48\textwidth}
+  \centering
+    \includegraphics[width=\textwidth]{gd4.png}
+  \caption{Trang báo cáo của quản trị viên TimeLuxe}
+  \label{fig:admin-report}
+  \end{minipage}
+\end{figure}
+
+Dashboard quản trị viên TimeLuxe được thiết kế với sidebar bên trái chứa menu điều hướng đầy đủ và bốn thẻ thống kê chính: Tổng đơn hàng, Doanh thu, Sản phẩm tồn kho và Khách hàng mới. Phần báo cáo hiển thị bảng "Đơn hàng gần đây" với thông tin chi tiết và các thao tác quản lý.
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{gd5.png}
+  \caption{Trang quản lý tài khoản TimeLuxe}
+  \label{fig:admin-accounts}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.48\textwidth}
+  \centering
+    \includegraphics[width=\textwidth]{gd6.png}
+  \caption{Trang quản lý sản phẩm đồng hồ}
+  \label{fig:admin-products}
+  \end{minipage}
+\end{figure}
+
+Trang quản lý tài khoản hiển thị danh sách người dùng với thông tin ID, tên, email, vai trò và các nút thao tác chỉnh sửa/xóa. Trang quản lý sản phẩm cho phép hiển thị danh sách đồng hồ với thông tin tên, giá, tồn kho, trạng thái và các chức năng CRUD.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{gd7.png}
+  \caption{Trang quản lý tồn kho}
+  \label{fig:admin-categories}
+\end{figure}
+
+Trang quản lý tồn kho trong hệ thống TimeLuxe cho phép quản trị viên theo dõi và quản lý số lượng sản phẩm đồng hồ trong kho, bao gồm thông tin về tên sản phẩm, mã sản phẩm, số lượng tồn kho, đơn giá, tổng giá trị và trạng thái hàng tồn. Giao diện được thiết kế với bảng dữ liệu rõ ràng, hiển thị các thông tin quan trọng như: tên sản phẩm, thương hiệu, danh mục, số lượng hiện có, giá trị tồn kho và các thao tác quản lý. Hệ thống cũng hỗ trợ tính năng cảnh báo khi sản phẩm sắp hết hàng hoặc tồn kho quá nhiều, giúp quản trị viên có kế hoạch nhập hàng và quản lý kho hiệu quả.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{gd9.png}
+  \caption{Trang quản lý đơn hàng}
+  \label{fig:admin-brands}
+\end{figure}
+
+Trang quản lý đơn hàng trong hệ thống TimeLuxe cho phép quản trị viên theo dõi và xử lý toàn bộ thông tin liên quan đến các đơn hàng đã phát sinh trong hệ thống. Mỗi dòng đơn hàng hiển thị rõ ràng mã đơn (#), thông tin khách hàng, danh sách sản phẩm, tổng giá trị đơn hàng, thời gian đặt hàng, cùng với trạng thái xử lý, trạng thái thanh toán và giao hàng. Các nhãn màu như "Đang xử lý", "Đã hoàn thành", "Chờ giao hàng", "Chờ thanh toán" giúp phân loại trực quan tình trạng hiện tại của mỗi đơn, hỗ trợ quản trị viên nhanh chóng đưa ra hành động phù hợp. Ngoài ra, mỗi đơn hàng còn có nút "Sửa" và "In" ở cột thao tác bên phải, cho phép chỉnh sửa thông tin đơn hàng hoặc in hóa đơn/biên nhận một cách nhanh chóng.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{gd12.png}
+  \caption{Trang quản lý voucher}
+  \label{fig:employee-voucher}
+\end{figure}
+
+Trang quản lý voucher trong hệ thống TimeLuxe, dành cho quản trị viên, bao gồm hai khu vực chính: thêm voucher mới và danh sách voucher hiện có.
+
+Phần trên là form tạo mới voucher, nơi quản trị viên có thể nhập đầy đủ thông tin như: mã voucher, mô tả, loại giảm giá như phần trăm hoặc số tiền, giá trị giảm, số lượng, điều kiện đơn tối thiểu, giới hạn giảm tối đa, cùng với ngày bắt đầu, ngày kết thúc và trạng thái hoạt động (kích hoạt hoặc chưa). Sau khi hoàn tất, người dùng có thể nhấn nút "Thêm mới" để lưu thông tin.
+
+Bên dưới là bảng danh sách các voucher đã tạo, hiển thị chi tiết các thuộc tính: mã, mô tả, loại giảm giá, giá trị, điều kiện sử dụng, số lượng còn lại, thời gian áp dụng, trạng thái và các nút hành động (chỉnh sửa hoặc xóa). Trạng thái voucher được hiển thị bằng nhãn màu active, giúp người dùng dễ dàng nhận diện voucher nào đang được áp dụng.
+
+\begin{itemize}
+    \item Giao diện phía khách hàng
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{gd13.png}
+  \caption{Trang chủ khách hàng TimeLuxe}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{gdtrangchu2.png}
+  \caption{Trang chủ khách hàng TimeLuxe}
+  \label{fig:customer-home}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{gdtrangchu3.png}
+\caption{Trang chủ khách hàng TimeLuxe}
+\label{fig:customer-home}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{sanphamthuonghieu.png}
+  \caption{Trang sản phẩm thương hiệu}
+  \label{fig:customer-home}
+\end{figure}
+
+Trang chủ của khách hàng trong hệ thống bán đồng hồ trực tuyến TimeLuxe được thiết kế hiện đại, thân thiện và dễ sử dụng, với bố cục chia thành nhiều khu vực rõ ràng, hỗ trợ khách hàng tìm kiếm sản phẩm đồng hồ và thông tin nhanh chóng.
+
+Phần đầu trang là header với logo TimeLuxe, thanh tìm kiếm sản phẩm, thông tin liên hệ (hotline: 0834477085, địa chỉ: 68 Nguyễn Chí Thanh, Hà Nội) và giỏ hàng. Menu điều hướng bao gồm các mục: Thương hiệu, Đồng hồ treo tường, Dây đồng hồ, Sản phẩm khác.
+
+Banner chính hiển thị hình ảnh sản phẩm đồng hồ nổi bật với thông điệp thương hiệu "TimeLuxe - Đồng Hồ Cao Cấp". Ngay bên dưới là khu vực dịch vụ với ba thẻ: "Giao hàng toàn quốc" (miễn phí vận chuyển cho đơn từ 500k), "Bảo hành chính hãng" (đổi trả trong 7 ngày, bảo hành 5 năm), "100% Chính hãng" (cam kết xuất xứ rõ ràng, đầy đủ giấy tờ).
+
+Khu vực thương hiệu hiển thị logo các hãng đồng hồ: Citizen, Tissot, Seiko, Casio, Orient với liên kết đến trang sản phẩm tương ứng. Phần sản phẩm nổi bật hiển thị danh sách các đồng hồ mới với hình ảnh, tên sản phẩm, giá bán và các nhãn "Mới", "Sale". Cuối trang là footer với thông tin liên hệ, chính sách và mạng xã hội.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{chitiet.png}
+  \caption{Trang chi tiết sản phẩm đồng hồ}
+  \label{fig:customer-product-detail}
+\end{figure}
+
+Trang chi tiết sản phẩm đồng hồ trong hệ thống bán hàng trực tuyến TimeLuxe cho phép người dùng xem thông tin cụ thể của một sản phẩm đồng hồ trước khi quyết định mua. Giao diện được thiết kế với bố cục rõ ràng, bao gồm nút "Quay lại" ở đầu trang để điều hướng về trang trước.
+
+Phần chính hiển thị hình ảnh sản phẩm đồng hồ với kích thước lớn, kèm theo thông tin chi tiết như: tên sản phẩm, giá bán, thương hiệu, danh mục, tình trạng còn hàng và nút "Thêm vào giỏ hàng". Phía dưới là phần mô tả sản phẩm với thông tin chi tiết về tính năng, thông số kỹ thuật và đánh giá từ khách hàng.
+
+Giao diện được thiết kế responsive với các tab chuyển đổi như Mô tả sản phẩm, Thông tin bổ sung, Đánh giá, cho phép người dùng tìm hiểu kỹ hơn về sản phẩm. Phần cuối trang có thể hiển thị các sản phẩm liên quan hoặc cùng thương hiệu để khuyến khích mua sắm thêm.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{canhan1.png}
+  \caption{Trang cá nhân người dùng}
+  \label{fig:customer-orders}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{thongtincanhan.png}
+  \caption{Trang cá nhân người dùng}
+  \label{fig:customer-orders}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{donhangcanhan.png}
+  \caption{Trang cá nhân người dùng}
+  \label{fig:customer-orders}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{thichcanhan.png}
+  \caption{Trang cá nhân người dùng}
+  \label{fig:customer-orders}
+\end{figure}
+
+Trang cá nhân người dùng trong hệ thống TimeLuxe cho phép khách hàng quản lý thông tin cá nhân, xem lịch sử đơn hàng và danh sách sản phẩm yêu thích. Trang được thiết kế với menu điều hướng bên trái bao gồm các mục: Thông tin cá nhân, Đơn hàng của tôi, Sản phẩm yêu thích, Địa chỉ giao hàng và Cài đặt tài khoản.
+
+Phần thông tin cá nhân hiển thị avatar, tên người dùng, email, số điện thoại và các nút chỉnh sửa thông tin. Tab đơn hàng hiển thị danh sách các đơn hàng đã đặt với thông tin: mã đơn, ngày đặt, tổng tiền, trạng thái và các thao tác xem chi tiết hoặc hủy đơn. Tab sản phẩm yêu thích hiển thị danh sách các đồng hồ đã thêm vào wishlist với hình ảnh, tên sản phẩm, giá và nút thêm vào giỏ hàng.
+
+Giao diện được thiết kế thân thiện với người dùng, hỗ trợ các thao tác quản lý thông tin cá nhân một cách dễ dàng và trực quan.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{gioithieu.png}
+  \caption{Giới thiệu cửa hàng TimeLuxe}
+  \label{fig:customer-about}
+\end{figure}
+
+Trang giới thiệu cửa hàng TimeLuxe cung cấp thông tin chi tiết về thương hiệu, lịch sử phát triển, tầm nhìn và sứ mệnh của TimeLuxe trong lĩnh vực kinh doanh đồng hồ cao cấp. Giao diện được thiết kế với bố cục chuyên nghiệp, bao gồm hình ảnh minh họa, nội dung giới thiệu về các giá trị cốt lõi như chất lượng sản phẩm, dịch vụ khách hàng và cam kết về nguồn gốc chính hãng. Trang cũng có thể hiển thị thông tin về đội ngũ nhân viên, chứng nhận chất lượng và các giải thưởng đạt được.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{suachua.png}
+  \caption{Trang sửa chữa}
+  \label{fig:customer-news}
+\end{figure}
+
+Trang dịch vụ sửa chữa đồng hồ của TimeLuxe cung cấp thông tin về các dịch vụ bảo hành, sửa chữa và bảo dưỡng đồng hồ. Giao diện hiển thị các gói dịch vụ khác nhau như: bảo hành chính hãng, sửa chữa đồng hồ cơ, thay pin, thay dây đeo, và các dịch vụ chuyên biệt khác. Mỗi dịch vụ được mô tả chi tiết về quy trình, thời gian thực hiện và chi phí. Trang cũng có thể bao gồm form đặt lịch sửa chữa, thông tin liên hệ kỹ thuật viên và các chính sách bảo hành.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{giohang.png}
+  \caption{Trang giỏ hàng}
+  \label{fig:customer-cart}
+\end{figure}
+
+Trang giỏ hàng của khách hàng trong hệ thống bán đồng hồ trực tuyến TimeLuxe cho phép người dùng quản lý các sản phẩm đồng hồ đã thêm vào giỏ hàng trước khi tiến hành thanh toán.
+
+Phía bên trái là danh sách sản phẩm đồng hồ trong giỏ, hiển thị rõ tên sản phẩm, hình ảnh, đơn giá, số lượng, và thành tiền tương ứng. Người dùng có thể điều chỉnh số lượng sản phẩm bằng các nút tăng/giảm hoặc xóa sản phẩm đã chọn. Bên trên có tùy chọn chọn tất cả và xóa sản phẩm đã chọn, giúp thao tác nhanh chóng với nhiều mặt hàng.
+
+Phía bên phải là bảng tổng hợp đơn hàng, hiển thị tạm tính, số lượng sản phẩm đã chọn, phí vận chuyển, thuế VAT, lựa chọn và áp dụng mã giảm giá (voucher). Tổng chi phí được tính toán lại sau khi áp dụng khuyến mãi. Nút "Tiến hành thanh toán" cho phép khách hàng chuyển sang bước tiếp theo trong quá trình đặt hàng, trong khi nút "Tiếp tục mua sắm" hỗ trợ quay lại trang sản phẩm.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{thanhtoan.png}
+  \caption{Trang thanh toán}
+  \label{fig:customer-orders}
+\end{figure}
+
+Trang thanh toán trong hệ thống TimeLuxe cho phép khách hàng hoàn tất quá trình đặt hàng với các bước: xác nhận thông tin đơn hàng, chọn phương thức thanh toán, nhập thông tin giao hàng và xác nhận thanh toán. Giao diện được thiết kế với bố cục rõ ràng, hiển thị tổng quan đơn hàng bên phải và form thông tin bên trái.
+
+Các phương thức thanh toán được hỗ trợ bao gồm: thanh toán khi nhận hàng (COD), chuyển khoản ngân hàng, ví điện tử và thẻ tín dụng. Phần thông tin giao hàng cho phép khách hàng nhập địa chỉ, số điện thoại và ghi chú đặc biệt. Hệ thống cũng hiển thị thông tin về phí vận chuyển, thời gian giao hàng dự kiến và các chính sách đổi trả. Nút "Đặt hàng" cuối trang cho phép hoàn tất quá trình mua sắm.
+
+\subsection*{\textbf{3.3 Kịch bản kiểm thử hệ thống}}
+
+
+Dựa trên các chức năng chính của hệ thống TimeLuxe, các kịch bản kiểm thử được thiết kế để đảm bảo tính ổn định và hiệu quả của website bán đồng hồ trực tuyến:
+
+\begin{longtable}{|p{0.8cm}|p{5cm}|p{8cm}|}
+\hline
+\textbf{STT} & \textbf{Chức năng} & \textbf{Kịch bản kiểm thử} \\
+\hline
+1 & Đăng nhập/Đăng ký & Kiểm tra chức năng đăng nhập với tài khoản hợp lệ và không hợp lệ, kiểm tra phân quyền sau khi đăng nhập. Kiểm tra đăng ký tài khoản mới với validation đầy đủ. \\
+\hline
+2 & Dashboard quản trị viên & Kiểm tra hiển thị các thông tin báo cáo: tổng đơn hàng, doanh thu, sản phẩm tồn kho, khách hàng mới và bảng đơn hàng gần đây. \\
+\hline
+3 & Quản lý sản phẩm đồng hồ & Kiểm tra khả năng thêm mới, sửa thông tin, xóa và xem danh sách sản phẩm đồng hồ. Kiểm tra trạng thái hiển thị/ẩn và quản lý tồn kho. \\
+\hline
+4 & Quản lý tài khoản người dùng & Kiểm tra thêm, sửa, xóa tài khoản người dùng; phân quyền admin, employee, customer và hiển thị đúng vai trò. \\
+\hline
+5 & Quản lý đơn hàng & Kiểm tra hiển thị danh sách đơn hàng, xem trạng thái, in đơn hàng, và thay đổi trạng thái đơn từ "Đang xử lý" sang "Đã hoàn thành". \\
+\hline
+6 & Quản lý voucher & Kiểm tra thêm mới, sửa, xóa voucher; áp dụng voucher trong đơn hàng với các điều kiện giảm giá khác nhau. \\
+\hline
+7 & Quản lý tồn kho & Kiểm tra theo dõi số lượng sản phẩm đồng hồ trong kho, cảnh báo khi sắp hết hàng và quản lý giá trị tồn kho. \\
+\hline
+8 & Trang chủ khách hàng & Kiểm tra hiển thị header với logo TimeLuxe, thanh tìm kiếm, thông tin liên hệ, menu điều hướng và banner chính. \\
+\hline
+9 & Chi tiết sản phẩm đồng hồ & Kiểm tra thông tin sản phẩm, hình ảnh, giá bán, thương hiệu, tình trạng còn hàng và nút "Thêm vào giỏ hàng". \\
+\hline
+10 & Giỏ hàng & Kiểm tra cập nhật số lượng sản phẩm đồng hồ, xóa sản phẩm, áp dụng mã giảm giá và tính tổng đơn hàng với phí vận chuyển, thuế VAT. \\
+\hline
+11 & Thanh toán & Kiểm tra tiến trình đặt hàng, xác nhận thông tin giao hàng, chọn phương thức thanh toán (COD, chuyển khoản, ví điện tử) và trạng thái đơn sau khi đặt. \\
+\hline
+12 & Trang cá nhân khách hàng & Kiểm tra quản lý thông tin cá nhân, xem lịch sử đơn hàng, danh sách sản phẩm yêu thích và cập nhật thông tin giao hàng. \\
+\hline
+13 & Tìm kiếm và lọc sản phẩm & Kiểm tra tìm kiếm sản phẩm theo tên, thương hiệu, lọc theo danh mục (đồng hồ đeo tay, treo tường, dây đồng hồ) và sắp xếp theo giá. \\
+\hline
+14 & Responsive design & Kiểm tra hiển thị tối ưu trên các thiết bị: điện thoại, máy tính bảng, máy tính để bàn với menu mobile và giao diện thích ứng. \\
+\hline
+\end{longtable}
+
+\subsection*{\textbf{3.4 Kiểm thử hệ thống}}
+\addcontentsline{toc}{section}{3.4 Kiểm thử hệ thống}
+
+Dựa trên các chức năng chính của hệ thống TimeLuxe, các test case được thiết kế để kiểm tra tính ổn định và hiệu quả của website bán đồng hồ trực tuyến. Tất cả các test case đều được thực hiện và đạt trạng thái "Pass".
+
+\section*{Test Case – Chức năng chính}
+
+\begin{longtable}{|p{1cm}|p{4cm}|p{6cm}|p{2cm}|}
+\hline
+\textbf{TC} & \textbf{Chức năng kiểm thử} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\
+\hline
+TC01 & Đăng nhập/Đăng ký & Hệ thống xác thực thành công, phân quyền đúng & Pass \\
+\hline
+TC02 & Dashboard quản trị & Hiển thị 4 thẻ thống kê và bảng đơn hàng gần đây & Pass \\
+\hline
+TC03 & Quản lý sản phẩm & CRUD sản phẩm đồng hồ, hiển thị trạng thái & Pass \\
+\hline
+TC04 & Quản lý đơn hàng & Xem danh sách, cập nhật trạng thái, in đơn hàng & Pass \\
+\hline
+TC05 & Trang chủ khách hàng & Header, menu, banner, thương hiệu hiển thị đúng & Pass \\
+\hline
+TC06 & Chi tiết sản phẩm & Thông tin sản phẩm, hình ảnh, nút thêm giỏ hàng & Pass \\
+\hline
+TC07 & Giỏ hàng và thanh toán & Cập nhật số lượng, áp dụng voucher, đặt hàng & Pass \\
+\hline
+TC08 & Responsive design & Hiển thị tốt trên điện thoại, tablet, desktop & Pass \\
+\hline
+\end{longtable}
+
+
+
+\chapter*{KẾT LUẬN}
+\addcontentsline{toc}{chapter}{KẾT LUẬN}
+
+Giao diện phần mềm là yếu tố quan trọng góp phần tạo nên thành công cho website bán đồng hồ trực tuyến TimeLuxe. Trong quá trình xây dựng và phát triển, em đã không ngừng nỗ lực để mang đến một giao diện thân thiện, hiện đại, đáp ứng tốt nhu cầu của cả người dùng lẫn quản trị viên. Dưới đây là một số đóng góp, khó khăn và hạn chế, cũng như định hướng phát triển trong tương lai đối với giao diện phần mềm của hệ thống.
+
+\textbf{Đóng góp}
+
+Giao diện phần mềm đã mang lại nhiều giá trị thiết thực cho cả khách hàng và quản trị viên. Đối với người dùng, giao diện được thiết kế trực quan, dễ sử dụng, giúp khách hàng dễ dàng tìm kiếm, lựa chọn sản phẩm đồng hồ, thực hiện các thao tác mua sắm, thanh toán và theo dõi đơn hàng một cách thuận tiện. Các chức năng như tìm kiếm, lọc sản phẩm theo thương hiệu (Citizen, Tissot, Seiko, Casio, Orient), xem chi tiết sản phẩm đồng hồ, quản lý tài khoản, giỏ hàng, đơn hàng đều được bố trí hợp lý, tạo cảm giác thân thiện và chuyên nghiệp. Đối với quản trị viên, giao diện quản lý với dashboard thống kê 4 thẻ chính (tổng đơn hàng, doanh thu, sản phẩm tồn kho, khách hàng mới) giúp đơn giản hóa các thao tác quản lý sản phẩm đồng hồ, đơn hàng, tài khoản, báo cáo và thống kê, hỗ trợ việc vận hành hệ thống hiệu quả hơn.
+
+\textbf{Khó khăn và hạn chế}
+
+Trong quá trình thiết kế và phát triển giao diện, em đã gặp phải một số khó khăn nhất định. Việc đảm bảo giao diện hiển thị tốt trên nhiều thiết bị với kích thước màn hình khác nhau (responsive) đòi hỏi nhiều thời gian kiểm thử và điều chỉnh, đặc biệt là với các trang chi tiết sản phẩm đồng hồ có nhiều hình ảnh và thông tin kỹ thuật. Một số tính năng nâng cao như gợi ý sản phẩm đồng hồ liên quan, đánh giá nhận xét của khách hàng về chất lượng đồng hồ, tối ưu tốc độ tải trang vẫn chưa được triển khai đầy đủ do hạn chế về thời gian và nguồn lực. Ngoài ra, việc đồng bộ giữa giao diện người dùng và giao diện quản trị viên để đảm bảo tính nhất quán trong việc hiển thị thông tin sản phẩm đồng hồ cũng là một thách thức lớn.
+
+\textbf{Hướng phát triển trong tương lai}
+
+Trong thời gian tới, em sẽ tiếp tục hoàn thiện và nâng cấp giao diện phần mềm theo các hướng sau:
+\begin{itemize}
+    \item Nâng cao trải nghiệm người dùng bằng cách bổ sung các tính năng như đánh giá, nhận xét sản phẩm đồng hồ, gợi ý sản phẩm đồng hồ liên quan theo thương hiệu và giá cả, hỗ trợ chatbot tư vấn trực tuyến về các loại đồng hồ.
+    \item Tối ưu hóa giao diện cho thiết bị di động, đảm bảo tốc độ tải trang nhanh, thao tác mượt mà trên mọi nền tảng, đặc biệt là với các trang hiển thị nhiều hình ảnh sản phẩm đồng hồ.
+    \item Bổ sung các biểu đồ, báo cáo trực quan hơn cho quản trị viên về doanh thu bán đồng hồ theo thương hiệu, thống kê sản phẩm bán chạy, hỗ trợ phân tích dữ liệu và ra quyết định kinh doanh.
+    \item Tăng cường bảo mật giao diện, bảo vệ thông tin cá nhân và giao dịch của người dùng, đặc biệt là thông tin thanh toán khi mua đồng hồ.
+    \item Đa dạng hóa giao diện, cho phép người dùng lựa chọn chủ đề (theme) phù hợp với sở thích cá nhân, tùy chỉnh hiển thị sản phẩm đồng hồ theo phong cách riêng.
+\end{itemize}
+
+Nhìn chung, giao diện phần mềm TimeLuxe đã đáp ứng tốt các yêu cầu cơ bản, tạo nền tảng vững chắc cho sự phát triển lâu dài của website bán đồng hồ trực tuyến. Tuy nhiên, em sẽ không ngừng lắng nghe ý kiến phản hồi từ người dùng để tiếp tục cải tiến, hoàn thiện giao diện, mang lại trải nghiệm tốt nhất cho khách hàng và nâng cao hiệu quả quản lý cho hệ thống bán lẻ đồng hồ.
+
+\newpage
+
+% ===================== TÀI LIỆU THAM KHẢO =====================
+
+\chapter*{TÀI LIỆU THAM KHẢO}
+\addcontentsline{toc}{chapter}{TÀI LIỆU THAM KHẢO}
+
+\begin{enumerate}
+\item \textbf{Node.js Documentation} (2024). "Node.js Official Documentation". Truy cập từ: \url{https://nodejs.org/en/docs/}
+
+\item \textbf{Express.js Documentation} (2024). "Express.js - Fast, unopinionated, minimalist web framework for Node.js". Truy cập từ: \url{https://expressjs.com/}
+
+\item \textbf{MySQL Documentation} (2024). "MySQL 8.0 Reference Manual". Oracle Corporation. Truy cập từ: \url{https://dev.mysql.com/doc/}
+
+\item \textbf{MDN Web Docs} (2024). "HTML, CSS, JavaScript Documentation". Mozilla Developer Network. Truy cập từ: \url{https://developer.mozilla.org/}
+
+\item \textbf{Bootstrap Documentation} (2024). "Bootstrap - The most popular HTML, CSS, and JS library". Truy cập từ: \url{https://getbootstrap.com/docs/}
+
+\item \textbf{Render Documentation} (2024). "Render - Cloud application hosting platform". Truy cập từ: \url{https://render.com/docs}
+
+\item \textbf{Thương mại điện tử Việt Nam} (2024). "Báo cáo thương mại điện tử Việt Nam 2024". Bộ Công Thương. Truy cập từ: \url{https://www.moit.gov.vn/}
+
+\item \textbf{Phát triển website thương mại điện tử} (2023). "Hướng dẫn xây dựng website bán hàng trực tuyến". Tạp chí Công nghệ thông tin và Truyền thông.
+
+\end{enumerate}
+
+\end{document}
