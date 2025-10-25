@@ -65,6 +65,34 @@ Chi tiết: Xem `docs/STRUCTURE.md`
 - MySQL (v5.7+)
 - npm hoặc yarn
 
+## 🌐 Deployment (Render)
+
+### Tự động deploy với `render.yaml`
+
+Project đã được config sẵn với `render.yaml`. Khi push lên GitHub, Render sẽ tự động:
+- Nhận diện root directory là `backend/`
+- Chạy `npm install` và `npm start`
+
+### Hoặc config thủ công trên Render Dashboard:
+
+1. **Root Directory**: `backend`
+2. **Build Command**: `npm install`
+3. **Start Command**: `npm start`
+4. **Environment Variables** (thêm trong Settings):
+   - `DB_HOST` - MySQL host
+   - `DB_PORT` - 3306
+   - `DB_USER` - Database username
+   - `DB_PASSWORD` - Database password
+   - `DB_NAME` - Database name
+   - `JWT_SECRET` - Secret key cho JWT
+   - `CORS_ORIGIN` - Frontend URL
+   - `PORT` - (Render tự động set)
+
+### Database Setup trên Render:
+1. Tạo MySQL database trên Render hoặc sử dụng external MySQL
+2. Copy connection string vào Environment Variables
+3. Server sẽ tự động tạo tables khi khởi động
+
 ## 📝 License
 
 ISC
@@ -74,11 +102,14 @@ ISC
 **⚠️ LƯU Ý**: Tất cả lệnh npm phải chạy từ thư mục `backend/`
 
 ```bash
-# ✅ ĐÚNG
+# ✅ ĐÚNG (Local Development)
 cd backend
 npm run dev
 
 # ❌ SAI
 npm run dev  # (ở root directory)
+
+# ✅ ĐÚNG (Production/Render)
+npm start  # (ở root, tự động chạy backend)
 ```
 
