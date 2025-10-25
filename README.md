@@ -67,31 +67,36 @@ Chi tiết: Xem `docs/STRUCTURE.md`
 
 ## 🌐 Deployment (Render)
 
-### Tự động deploy với `render.yaml`
+### Cấu hình Render Dashboard:
 
-Project đã được config sẵn với `render.yaml`. Khi push lên GitHub, Render sẽ tự động:
-- Nhận diện root directory là `backend/`
-- Chạy `npm install` và `npm start`
-
-### Hoặc config thủ công trên Render Dashboard:
-
-1. **Root Directory**: `backend`
-2. **Build Command**: `npm install`
-3. **Start Command**: `npm start`
-4. **Environment Variables** (thêm trong Settings):
+1. **Build Command**: `npm install`
+2. **Start Command**: `npm start`
+3. **Environment Variables** (Settings → Environment):
    - `DB_HOST` - MySQL host
-   - `DB_PORT` - 3306
+   - `DB_PORT` - `3306`
    - `DB_USER` - Database username
    - `DB_PASSWORD` - Database password
-   - `DB_NAME` - Database name
-   - `JWT_SECRET` - Secret key cho JWT
-   - `CORS_ORIGIN` - Frontend URL
-   - `PORT` - (Render tự động set)
+   - `DB_NAME` - `webshop_watch`
+   - `JWT_SECRET` - Secret key cho JWT (random string)
+   - `CORS_ORIGIN` - `*` (hoặc frontend URL)
+   - `PORT` - (Render tự động set, không cần thêm)
 
-### Database Setup trên Render:
-1. Tạo MySQL database trên Render hoặc sử dụng external MySQL
-2. Copy connection string vào Environment Variables
-3. Server sẽ tự động tạo tables khi khởi động
+### Database Setup:
+1. Tạo MySQL database trên Render hoặc external provider (e.g., PlanetScale, Railway)
+2. Copy connection credentials vào Environment Variables
+3. Server sẽ tự động tạo tables khi khởi động lần đầu
+
+### Deployment Flow:
+```
+npm install (root)
+  → postinstall hook
+    → cd backend && npm install
+      → installs express, mysql2, etc.
+        
+npm start
+  → node start.js
+    → starts backend/server.js
+```
 
 ## 📝 License
 

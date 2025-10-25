@@ -2,15 +2,19 @@
   "name": "webshop-watch",
   "version": "1.0.0",
   "description": "WebShop Watch - Full Stack Application",
-  "main": "backend/server.js",
+  "main": "start.js",
   "scripts": {
-    "start": "cd backend && npm install && node server.js",
+    "postinstall": "cd backend && npm install --production",
+    "start": "node start.js",
     "dev": "cd backend && npm run dev",
-    "install-backend": "cd backend && npm install",
-    "seed": "cd backend && npm run seed"
+    "seed": "cd backend && npm run seed",
+    "build": "echo 'No build step required'"
   },
   "keywords": ["webshop", "watch", "ecommerce"],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": ">=14.x"
+  }
 }
 
