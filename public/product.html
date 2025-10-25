@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết sản phẩm - TimeLuxe</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Product Detail Page Styles */
+        .product-detail-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 20px 0 0 20px;
+            color: #7c6240;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            background: #e9ecef;
+            transform: translateX(-2px);
+        }
+
+        /* Product Gallery */
+        .product-gallery {
+            display: flex;
+            gap: 20px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        }
+
+        .gallery-thumbnails {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 80px;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            object-fit: cover;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .thumbnail:hover, .thumbnail.active {
+            border-color: #7c6240;
+            transform: scale(1.05);
+        }
+
+        .main-image-container {
+            position: relative;
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+
+        .main-image:hover {
+            transform: scale(1.02);
+        }
+
+        .image-zoom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .zoomed-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .close-zoom {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Product Info */
+        .product-info {
+            flex: 1;
+            padding: 30px;
+            background: #fff;
+        }
+
+        .product-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .product-brand {
+            display: inline-block;
+            background: linear-gradient(135deg, #7c6240, #a67c52);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .price-section {
+            margin-bottom: 25px;
+        }
+
+        .current-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-right: 15px;
+        }
+
+        .original-price {
+            font-size: 1.4rem;
+            color: #95a5a6;
+            text-decoration: line-through;
+            margin-right: 15px;
+        }
+
+        .discount-percentage {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .stock-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .stock-icon {
+            color: #27ae60;
+            font-size: 1.2rem;
+        }
+
+        .stock-text {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .quantity-section {
+            margin-bottom: 25px;
+        }
+
+        .quantity-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #7c6240;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            border-color: #7c6240;
+            background: #f8f9fa;
+        }
+
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #7c6240;
+            border: 2px solid #7c6240;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #7c6240;
+            color: white;
+        }
+
+        .wishlist-btn {
+            background: white;
+            border: 2px solid #e9ecef;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .wishlist-btn:hover, .wishlist-btn.active {
+            border-color: #e74c3c;
+            color: #e74c3c;
+            background: #fdf2f2;
+        }
+
+        /* Product Details Tabs */
+        .product-details {
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .detail-tabs {
+            display: flex;
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 25px;
+        }
+
+        .tab-btn {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6c757d;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: #7c6240;
+            border-bottom-color: #7c6240;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .specifications {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .spec-value {
+            color: #6c757d;
+        }
+
+        /* Related Products */
+        .related-products {
+            padding: 30px;
+            background: white;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-card-info {
+            padding: 20px;
+        }
+
+        .product-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .product-card-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #e74c3c;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .product-gallery {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .gallery-thumbnails {
+                flex-direction: row;
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            .thumbnail {
+                min-width: 60px;
+                height: 60px;
+            }
+
+            .main-image {
+                height: 300px;
+            }
+
+            .product-title {
+                font-size: 1.8rem;
+            }
+
+            .current-price {
+                font-size: 2rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .specifications {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Notification Styles */
+        .custom-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: transform 0.4s ease;
+            max-width: 350px;
+        }
+
+        .custom-notification.show {
+            transform: translateX(0);
+        }
+
+        .custom-notification.success {
+            border-left: 4px solid #27ae60;
+        }
+
+        .custom-notification.error {
+            border-left: 4px solid #e74c3c;
+        }
+
+        .custom-notification.warning {
+            border-left: 4px solid #f39c12;
+        }
+
+        .notification-content {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-text {
+            flex: 1;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <header class="dhda-header">
+        <div class="dhda-topbar">
+            <div class="container dhda-topbar-flex">
+                <div class="dhda-topbar-left">
+                    <span class="dhda-hotline"><i class="fas fa-phone"></i> Hotline: <a href="tel:0834477085">0834477085</a></span>
+                    <span class="dhda-address"><i class="fas fa-map-marker-alt"></i> 68 Nguyễn Chí Thanh, Hà Nội</span>
+                </div>
+                <div class="dhda-topbar-right">
+                    <div id="guest-section" style="display: flex;">
+                        <a href="login.html" class="dhda-login"><i class="fas fa-user"></i> Đăng nhập</a>
+                    </div>
+                    <div id="user-section" style="display: none; align-items: center; gap: 8px;">
+                        <span>Xin chào, <span id="user-display-name"></span></span>
+                        <a href="profile.html" style="color: #7c6240; margin-left: 8px;"><i class="fas fa-user"></i> Cá nhân</a>
+                        <a href="#" id="logout-btn" style="color: #e53935; margin-left: 8px;">Đăng xuất</a>
+                    </div>
+                    <a href="#" class="dhda-cart"><i class="fas fa-shopping-cart"></i> Giỏ hàng <span class="cart-count">0</span></a>
+                </div>
+            </div>
+        </div>
+        <div class="dhda-header-main" style="background: #7c6240;">
+            <div class="container dhda-header-main-flex" style="flex-direction: column; align-items: center;">
+                <a href="index.html" class="dhda-logo" style="margin-bottom: 12px;">
+                    <img src="images/logos/logo TIME LUXE.png" alt="TimeLuxe Logo" style="height: 150px; width: 150px; object-fit: contain;" />
+                </a>
+                <form class="dhda-search-bar" style="width: 100%; max-width: 420px; display: flex; justify-content: center;">
+                    <input type="text" placeholder="Tìm kiếm sản phẩm, thương hiệu..." style="flex: 1; max-width: 320px;" />
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+        <nav class="dhda-menu">
+            <div class="container">
+                <ul class="dhda-menu-list">
+                    <li><a href="index.html#brands">THƯƠNG HIỆU</a></li>
+                    <li><a href="donghotreotuong.html">ĐỒNG HỒ TREO TƯỜNG</a></li>
+                    <li><a href="daydongho.html">DÂY ĐỒNG HỒ</a></li>
+                    <li><a href="sanphamkhac.html">SẢN PHẨM KHÁC</a></li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Về trang chủ</a>
+    
+    <div class="product-detail-container" id="product-detail">
+        <!-- Product Gallery and Info -->
+        <div class="product-gallery" id="product-gallery">
+            <!-- Gallery thumbnails -->
+            <div class="gallery-thumbnails" id="gallery-thumbnails">
+                <!-- Thumbnails will be generated by JS -->
+            </div>
+            
+            <!-- Main image container -->
+            <div class="main-image-container">
+                <img class="main-image" id="main-image" src="" alt="Product Image">
+            </div>
+            
+            <!-- Product info -->
+            <div class="product-info" id="product-info">
+                <!-- Product info will be generated by JS -->
+            </div>
+        </div>
+        
+        <!-- Product Details Tabs -->
+        <div class="product-details">
+            <div class="detail-tabs">
+                <button class="tab-btn active" data-tab="description">Mô tả</button>
+                <button class="tab-btn" data-tab="specifications">Thông số kỹ thuật</button>
+                <button class="tab-btn" data-tab="reviews">Đánh giá</button>
+                <button class="tab-btn" data-tab="shipping">Vận chuyển & Bảo hành</button>
+            </div>
+            
+            <div class="tab-content active" id="description-tab">
+                <div id="product-description">
+                    <!-- Description will be loaded by JS -->
+                </div>
+            </div>
+            
+            <div class="tab-content" id="specifications-tab">
+                <div class="specifications" id="product-specifications">
+                    <!-- Specifications will be loaded by JS -->
+                </div>
+            </div>
+            
+            <div class="tab-content" id="reviews-tab">
+                <div id="product-reviews">
+                    <h3>Đánh giá sản phẩm</h3>
+                    <p>Chức năng đánh giá sẽ được phát triển trong phiên bản tiếp theo.</p>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="shipping-tab">
+                <div class="shipping-info">
+                    <h3>Thông tin vận chuyển & bảo hành</h3>
+                    <div class="specifications">
+                        <div class="spec-item">
+                            <span class="spec-label">Phí vận chuyển</span>
+                            <span class="spec-value">Miễn phí cho đơn hàng từ 500.000đ</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Thời gian giao hàng</span>
+                            <span class="spec-value">1-3 ngày làm việc</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Bảo hành</span>
+                            <span class="spec-value">24 tháng chính hãng</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Đổi trả</span>
+                            <span class="spec-value">7 ngày không lý do</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Related Products -->
+        <div class="related-products">
+            <h2 class="section-title">Sản phẩm liên quan</h2>
+            <div class="products-grid" id="related-products">
+                <!-- Related products will be loaded by JS -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Image Zoom Overlay -->
+    <div class="image-zoom-overlay" id="image-zoom-overlay">
+        <span class="close-zoom" onclick="closeImageZoom()">&times;</span>
+        <img class="zoomed-image" id="zoomed-image" src="" alt="Zoomed Product Image">
+    </div>
+    <script src="js/footer.js"></script>
+    <!-- Login Options Modal -->
+    <div id="loginOptionsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginOptions()">&times;</span>
+            <h2>Đăng nhập</h2>
+            <div class="login-options">
+                <button class="login-option-btn" onclick="window.location.href='login.html'">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Đăng nhập
+                </button>
+                <button class="register-option-btn" onclick="window.location.href='register.html'">
+                    <i class="fas fa-user-plus"></i>
+                    Đăng ký
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/product-pages.js"></script>
+    <script src="js/smooth-scroll.js"></script>
+    <script>
+    // Custom Notification Function
+    function showNotification(message, type = 'success', duration = 3000) {
+        // Remove existing notifications
+        const existingNotifications = document.querySelectorAll('.custom-notification');
+        existingNotifications.forEach(notification => {
+            notification.remove();
+        });
+
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `custom-notification ${type}`;
+        
+        // Set icon based on type
+        let icon = '✅';
+        if (type === 'error') icon = '❌';
+        else if (type === 'warning') icon = '⚠️';
+        else if (type === 'info') icon = 'ℹ️';
+        
+        notification.innerHTML = `
+            <div class="notification-content">
+                <span class="notification-icon">${icon}</span>
+                <span class="notification-text">${message}</span>
+                <button class="notification-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
+            </div>
+        `;
+        
+        // Add to page
+        document.body.appendChild(notification);
+        
+        // Show notification
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+        
+        // Auto remove after duration
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 400);
+        }, duration);
+    }
+
+    // Thêm logic hiển thị popup giỏ hàng
+    function showCartPopup() {
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const cartBtn = document.querySelector('.dhda-cart');
+        let rect = cartBtn ? cartBtn.getBoundingClientRect() : {top:70,right:30};
+        let top = rect.bottom + window.scrollY + 8;
+        let left = rect.right + window.scrollX - 360;
+        if (left < 8) left = 8;
+        
+        let html = `<div class="cart-popup" style="position:absolute;top:${top}px;left:${left}px;z-index:9999;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.18);padding:24px 18px;min-width:320px;max-width:95vw;max-height:70vh;overflow:auto;">`;
+        html += '<h3 style="margin-bottom:14px;font-size:1.18rem;color:#7c6240;letter-spacing:1px;">🛒 Giỏ hàng</h3>';
+        
+        if (cart.length === 0) {
+            html += '<div style="padding:18px 0;text-align:center;color:#888;">Chưa có sản phẩm nào.</div>';
+        } else {
+            html += '<table style="width:100%;border-collapse:collapse;font-size:0.98rem;">';
+            html += '<thead><tr style="background:#f8f9fa;"><th style="text-align:left;padding:6px 2px;">Tên</th><th>SL</th><th>Đơn giá</th><th></th></tr></thead><tbody>';
+            let total = 0;
+            cart.forEach((item, idx) => {
+                const price = item.price || 0;
+                const lineTotal = price * item.quantity;
+                total += lineTotal;
+                html += `<tr style='border-bottom:1px solid #eee;'>
+                    <td style='padding:6px 2px;'>${item.name}</td>
+                    <td style='min-width:60px;'>
+                        <button class='cart-qty-btn' data-idx='${idx}' data-action='decrease' style='padding:2px 8px;border-radius:6px;border:1px solid #ccc;background:#f5f5f5;font-weight:700;'>-</button>
+                        <span style='margin:0 6px;font-weight:600;'>${item.quantity}</span>
+                        <button class='cart-qty-btn' data-idx='${idx}' data-action='increase' style='padding:2px 8px;border-radius:6px;border:1px solid #ccc;background:#f5f5f5;font-weight:700;'>+</button>
+                    </td>
+                    <td style='color:#7c6240;font-weight:600;'>${new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(price)}</td>
+                    <td><button class='cart-remove-btn' data-idx='${idx}' style='color:#e53935;background:none;border:none;font-size:1.1rem;cursor:pointer;' title='Xóa'>&times;</button></td>
+                </tr>`;
+            });
+            html += `</tbody></table><div style='margin-top:10px;font-weight:700;font-size:1.05rem;text-align:right;'>Tổng: <span id='cart-total' style='color:#e53935;'>${new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(total)}</span></div>`;
+            html += `<button onclick='checkoutCart()' style='margin-top:14px;padding:8px 22px;border:none;background:#7c6240;color:#fff;border-radius:7px;cursor:pointer;font-size:1rem;font-weight:600;'>Thanh toán</button>`;
+        }
+        html += '<button onclick="closeCartPopup()" style="margin-top:14px;margin-left:10px;padding:7px 18px;border:none;background:#888;color:#fff;border-radius:7px;cursor:pointer;font-size:0.98rem;float:right;">Đóng</button>';
+        html += '</div>';
+        
+        const old = document.getElementById('cart-popup');
+        if (old) old.remove();
+        const div = document.createElement('div');
+        div.id = 'cart-popup';
+        div.innerHTML = html;
+        document.body.appendChild(div);
+        
+        // Gắn sự kiện cho nút tăng/giảm/xóa
+        div.querySelectorAll('.cart-qty-btn').forEach(btn => {
+            btn.addEventListener('click', async function(e) {
+                e.stopPropagation();
+                const idx = Number(this.getAttribute('data-idx'));
+                const action = this.getAttribute('data-action');
+                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                
+                if (action === 'increase') {
+                    // Kiểm tra tồn kho trước khi tăng
+                    try {
+                        const response = await fetch(`/api/products/${cart[idx].id}`);
+                        const data = await response.json();
+                        const stockQuantity = Number(data.product.stock) || 0;
+                        
+                        if (cart[idx].quantity >= stockQuantity) {
+                            showNotification(`🚨 CHỈ CÒN ${stockQuantity} SẢN PHẨM! 🚨\n⚡ Nhanh tay đặt hàng trước khi hết!`, 'warning');
+                            return;
+                        }
+                        cart[idx].quantity++;
+                    } catch (error) {
+                        console.error('Error checking stock:', error);
+                        showNotification('Không thể kiểm tra tồn kho!', 'error');
+                        return;
+                    }
+                }
+                
+                if (action === 'decrease' && cart[idx].quantity > 1) {
+                    cart[idx].quantity--;
+                }
+                
+                localStorage.setItem('cart', JSON.stringify(cart));
+                showCartPopup();
+                // Cập nhật số lượng hiển thị
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                document.querySelectorAll('.cart-count').forEach(el => el.textContent = count);
+            });
+        });
+        
+        div.querySelectorAll('.cart-remove-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const idx = Number(this.getAttribute('data-idx'));
+                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                cart.splice(idx, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                showCartPopup();
+                // Cập nhật số lượng hiển thị
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                document.querySelectorAll('.cart-count').forEach(el => el.textContent = count);
+            });
+        });
+    }
+    
+    function closeCartPopup() {
+        const popup = document.getElementById('cart-popup');
+        if (popup) popup.remove();
+    }
+    
+    function checkoutCart() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        if (cart.length === 0) {
+            showNotification('Giỏ hàng trống!', 'warning');
+            return;
+        }
+        window.location.href = 'checkout.html';
+    }
+    
+    // Gắn sự kiện cho nút giỏ hàng
+    document.addEventListener('DOMContentLoaded', function() {
+        const cartBtn = document.querySelector('.dhda-cart');
+        if (cartBtn) {
+            cartBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showCartPopup();
+            });
+        }
+    });
+    </script>
+    <script src="js/product-detail.js"></script>
+</body>
+</html> 
+
+
+
+
+

@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seiko - TimeLuxe</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/testimonials.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .brand-banner {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 60px 0 40px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .brand-banner h1 {
+            font-size: 2.6rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .brand-banner p {
+            font-size: 1.15rem;
+            opacity: 0.93;
+        }
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 8px 15px;
+            flex: 1;
+            max-width: 300px;
+        }
+        .search-box input {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 5px;
+        }
+        .search-box button {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+        }
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-btn.active {
+            background: #2c3e50;
+            color: white;
+            border-color: #2c3e50;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .product-info {
+            padding: 20px;
+        }
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .product-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .add-to-cart {
+            width: 100%;
+            padding: 12px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .add-to-cart:hover {
+            background: #34495e;
+        }
+        
+        /* Brand Partners Section - Same as index.html */
+        .brands {
+            background: #ffffff;
+            padding: 32px 0;
+            margin: 32px 0;
+        }
+        
+        .brand-list {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        
+        .brand-list::before {
+            content: 'ĐỐI TÁC THƯƠNG HIỆU';
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.95);
+            color: #667eea !important;
+            padding: 10px 28px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            margin: 0;
+            z-index: 10;
+            text-align: center;
+            white-space: nowrap;
+            line-height: 1.2;
+        }
+        
+        .brand-list a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .brand-list a:hover {
+            transform: translateY(-6px) scale(1.08);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+            background: #f0f6ff;
+        }
+        
+        .brand-list img {
+            max-height: 48px;
+            max-width: 120px;
+            object-fit: contain;
+            filter: grayscale(30%);
+            transition: filter 0.2s;
+        }
+        
+        .brand-list a:hover img {
+            filter: grayscale(0%);
+        }
+        
+        /* Cart Popup Responsive CSS */
+        @media (max-width: 768px) {
+            .cart-popup {
+                position: fixed !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                width: 90vw !important;
+                max-width: 400px !important;
+                min-width: auto !important;
+                max-height: 80vh !important;
+                padding: 20px 16px !important;
+                border-radius: 16px !important;
+                box-shadow: 0 12px 40px rgba(0,0,0,0.25) !important;
+            }
+            
+            .cart-popup h3 {
+                font-size: 1.1rem !important;
+                margin-bottom: 12px !important;
+                text-align: center !important;
+            }
+            
+            .cart-popup table {
+                font-size: 0.9rem !important;
+            }
+            
+            .cart-popup th {
+                padding: 8px 4px !important;
+                font-size: 0.85rem !important;
+            }
+            
+            .cart-popup td {
+                padding: 8px 4px !important;
+                font-size: 0.85rem !important;
+            }
+            
+            .cart-popup .cart-qty-btn {
+                padding: 4px 6px !important;
+                font-size: 0.8rem !important;
+                min-width: 28px !important;
+            }
+            
+            .cart-popup button[onclick*="checkoutCart"] {
+                width: 100% !important;
+                margin-top: 16px !important;
+                padding: 12px !important;
+                font-size: 1rem !important;
+                border-radius: 8px !important;
+            }
+            
+            .cart-popup button[onclick*="closeCartPopup"] {
+                width: 100% !important;
+                margin-top: 8px !important;
+                margin-left: 0 !important;
+                padding: 10px !important;
+                font-size: 0.95rem !important;
+                border-radius: 8px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .cart-popup {
+                width: 95vw !important;
+                padding: 18px 14px !important;
+                border-radius: 12px !important;
+            }
+            
+            .cart-popup h3 {
+                font-size: 1rem !important;
+                margin-bottom: 10px !important;
+            }
+            
+            .cart-popup table {
+                font-size: 0.8rem !important;
+            }
+            
+            .cart-popup th {
+                padding: 6px 2px !important;
+                font-size: 0.8rem !important;
+            }
+            
+            .cart-popup td {
+                padding: 6px 2px !important;
+                font-size: 0.8rem !important;
+            }
+            
+            .cart-popup .cart-qty-btn {
+                padding: 3px 5px !important;
+                font-size: 0.75rem !important;
+                min-width: 24px !important;
+            }
+            
+            .cart-popup button[onclick*="checkoutCart"] {
+                padding: 10px !important;
+                font-size: 0.95rem !important;
+            }
+            
+            .cart-popup button[onclick*="closeCartPopup"] {
+                padding: 8px !important;
+                font-size: 0.9rem !important;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="dhda-header">
+        <!-- Top bar -->
+        <div class="dhda-topbar">
+            <div class="container dhda-topbar-flex">
+                <div class="dhda-topbar-left">
+                    <span class="dhda-hotline"><i class="fas fa-phone"></i> Hotline: <a href="tel:0834477085">0834477085</a></span>
+                    <span class="dhda-address"><i class="fas fa-map-marker-alt"></i> 68 Nguyễn Chí Thanh, Hà Nội</span>
+                </div>
+                <div class="dhda-topbar-right">
+                    <div id="guest-section" style="display: flex;">
+                        <a href="login.html" class="dhda-login"><i class="fas fa-user"></i> Đăng nhập</a>
+                    </div>
+                    <div id="user-section" style="display: none; align-items: center; gap: 8px;">
+                        <span>Xin chào, <span id="user-display-name"></span></span>
+                        <a href="profile.html" style="color: #7c6240; margin-left: 8px;"><i class="fas fa-user"></i> Cá nhân</a>
+                        <a href="#" id="logout-btn" style="color: #e53935; margin-left: 8px;">Đăng xuất</a>
+                    </div>
+                    <a href="#" class="dhda-cart" onclick="showCartPopup()"><i class="fas fa-shopping-cart"></i> Giỏ hàng <span class="cart-count">0</span></a>
+                </div>
+            </div>
+        </div>
+        <!-- Logo + Search + Hotline + Cart -->
+        <div class="dhda-header-main" style="background: #7c6240;">
+            <div class="container dhda-header-main-flex" style="flex-direction: column; align-items: center;">
+                <a href="index.html" class="dhda-logo" style="margin-bottom: 12px;">
+                    <img src="images/logos/logo TIME LUXE.png" alt="TimeLuxe Logo" style="height: 150px; width: 150px; object-fit: contain;" />
+                </a>
+                <form class="dhda-search-bar" style="width: 100%; max-width: 420px; display: flex; justify-content: center;" id="searchForm">
+                    <input type="text" placeholder="Tìm kiếm sản phẩm, thương hiệu..." style="flex: 1; max-width: 320px;" id="searchInput" />
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+        <!-- Menu ngang -->
+        <nav class="dhda-menu">
+            <div class="container">
+                <ul class="dhda-menu-list">
+                    <li><a href="index.html#brands">THƯƠNG HIỆU</a></li>
+                    <li><a href="donghotreotuong.html">ĐỒNG HỒ TREO TƯỜNG</a></li>
+                    <li><a href="daydongho.html">DÂY ĐỒNG HỒ</a></li>
+                    <li><a href="sanphamkhac.html">SẢN PHẨM KHÁC</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="brand-banner">
+        <h1>SEIKO</h1>
+        <p>Đồng hồ Nhật Bản - Chất lượng và sự tinh tế</p>
+    </div>
+    
+    <!-- Brand Partners Section -->
+    <section class="brands" id="brands">
+        <div class="brand-list">
+            <a href="citizen.html"><img src="images/logos/logo-citizen.png" alt="Citizen" /></a>
+            <a href="tissot.html"><img src="images/logos/logo-tissot.png" alt="Tissot" /></a>
+            <a href="seiko.html"><img src="images/logos/logo-seiko.png" alt="Seiko" /></a>
+            <a href="casio.html"><img src="images/logos/logo-casio.png" alt="Casio" /></a>
+            <a href="orient.html"><img src="images/logos/logo-orient.png" alt="Orient" /></a>
+        </div>
+    </section>
+        
+    <div class="products-container">
+        <div class="products-grid">
+            <!-- Sản phẩm sẽ được render động bằng JavaScript -->
+        </div>
+    </div>
+    <script src="js/footer.js"></script>
+    
+    <!-- Login Options Modal -->
+    <div id="loginOptionsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginOptions()">&times;</span>
+            <h2>Đăng nhập</h2>
+            <div class="login-options">
+                <button class="login-option-btn" onclick="window.location.href='login.html'">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Đăng nhập
+                </button>
+                <button class="register-option-btn" onclick="window.location.href='register.html'">
+                    <i class="fas fa-user-plus"></i>
+                    Đăng ký
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/product-pages.js"></script>
+    <script src="js/smooth-scroll.js"></script>
+    <script>
+    // Custom Notification Function
+    function showNotification(message, type = 'success', duration = 3000) {
+        // Remove existing notifications
+        const existingNotifications = document.querySelectorAll('.custom-notification');
+        existingNotifications.forEach(notification => {
+            notification.remove();
+        });
+
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `custom-notification ${type}`;
+        
+        // Set icon based on type
+        let icon = '✅';
+        if (type === 'error') icon = '❌';
+        else if (type === 'warning') icon = '⚠️';
+        else if (type === 'info') icon = 'ℹ️';
+        
+        notification.innerHTML = `
+            <div class="notification-content">
+                <span class="notification-icon">${icon}</span>
+                <span class="notification-text">${message}</span>
+                <button class="notification-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
+            </div>
+        `;
+        
+        // Add to page
+        document.body.appendChild(notification);
+        
+        // Show notification
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+        
+        // Auto remove after duration
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 400);
+        }, duration);
+    }
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        // Search functionality
+        document.querySelector('.search-box input').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            document.querySelectorAll('.product-card').forEach(card => {
+                const productName = card.querySelector('.product-name').textContent.toLowerCase();
+                if (productName.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+        // Sửa event listener cho nút Thêm vào giỏ
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productCard = this.closest('.product-card');
+                const productId = productCard.getAttribute('data-product-id');
+                const productName = productCard.querySelector('.product-name').textContent;
+                const productPrice = parseInt(productCard.querySelector('.product-price').textContent.replace(/[^\d]/g, ''));
+                addToCart(productId, productName, productPrice);
+            });
+        });
+    
+    // Sửa addToCart nhận đúng 3 tham số
+    async function addToCart(productId, productName, productPrice) {
+        let stock = 1e9;
+        try {
+            const res = await fetch('/api/products');
+            const data = await res.json();
+            const found = (data.products || []).find(p => p.id == productId);
+            if (found) stock = found.stock_quantity;
+        } catch (e) {}
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const existingItem = cart.find(item => item.id == productId);
+        const currentQty = existingItem ? existingItem.quantity : 0;
+        if (currentQty + 1 > stock) {
+            showNotification(`🚨 CHỈ CÒN ${stock} SẢN PHẨM! 🚨\n⚡ Nhanh tay đặt hàng trước khi hết!`, 'warning');
+            return;
+        }
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                id: productId,
+                name: productName,
+                price: productPrice,
+                quantity: 1,
+                stock: stock
+            });
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        if (typeof updateCartCount === 'function') updateCartCount();
+        showNotification(`Đã thêm "${productName}" vào giỏ hàng!`, 'success');
+    }
+    
+    // Cart popup function
+    async function showCartPopup() {
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        let apiProducts = [];
+        try {
+            const res = await fetch('/api/products');
+            const data = await res.json();
+            apiProducts = data.products || [];
+        } catch (e) {}
+        cart.forEach(item => {
+            const found = apiProducts.find(p => p.id == item.id);
+            if (found) item.stock = found.stock_quantity;
+        });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        if (window._originalShowCartPopup) return window._originalShowCartPopup();
+        
+        const cartBtn = document.querySelector('.dhda-cart');
+        let rect = cartBtn ? cartBtn.getBoundingClientRect() : {top:70,right:30};
+        let top = rect.bottom + window.scrollY + 8;
+        let left = rect.right + window.scrollX - 360;
+        if (left < 8) left = 8;
+        
+        let html = `<div class="cart-popup" style="position:absolute;top:${top}px;left:${left}px;z-index:9999;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.18);padding:24px 18px;min-width:320px;max-width:95vw;max-height:70vh;overflow:auto;">`;
+        html += '<h3 style="margin-bottom:14px;font-size:1.18rem;color:#7c6240;letter-spacing:1px;">🛒 Giỏ hàng</h3>';
+        
+        if (cart.length === 0) {
+            html += '<div style="padding:18px 0;text-align:center;color:#888;">Chưa có sản phẩm nào.</div>';
+        } else {
+            html += '<table style="width:100%;border-collapse:collapse;font-size:0.98rem;">';
+            html += '<thead><tr style="background:#f8f9fa;"><th style="text-align:left;padding:6px 2px;">Tên</th><th>SL</th><th>Đơn giá</th><th></th></tr></thead><tbody>';
+            let total = 0;
+            cart.forEach((item, idx) => {
+                const price = item.price || 0;
+                const lineTotal = price * item.quantity;
+                total += lineTotal;
+                html += `<tr style='border-bottom:1px solid #eee;'>
+                    <td style='padding:6px 2px;'>${item.name}</td>
+                    <td style='min-width:60px;'>
+                        <button class='cart-qty-btn' data-idx='${idx}' data-action='decrease' style='padding:2px 8px;border-radius:6px;border:1px solid #ccc;background:#f5f5f5;font-weight:700;'>-</button>
+                        <span style='margin:0 6px;font-weight:600;'>${item.quantity}</span>
+                        <button class='cart-qty-btn' data-idx='${idx}' data-action='increase' style='padding:2px 8px;border-radius:6px;border:1px solid #ccc;background:#f5f5f5;font-weight:700;'>+</button>
+                    </td>
+                    <td style='color:#7c6240;font-weight:600;'>${new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(price)}</td>
+                    <td><button class='cart-remove-btn' data-idx='${idx}' style='color:#e53935;background:none;border:none;font-size:1.1rem;cursor:pointer;' title='Xóa'>&times;</button></td>
+                </tr>`;
+            });
+            html += `</tbody></table><div style='margin-top:10px;font-weight:700;font-size:1.05rem;text-align:right;'>Tổng: <span id='cart-total' style='color:#e53935;'>${new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(total)}</span></div>`;
+            html += `<button onclick='checkoutCart()' style='margin-top:14px;padding:8px 22px;border:none;background:#7c6240;color:#fff;border-radius:7px;cursor:pointer;font-size:1rem;font-weight:600;'>Thanh toán</button>`;
+        }
+        html += '<button onclick="closeCartPopup()" style="margin-top:14px;margin-left:10px;padding:7px 18px;border:none;background:#888;color:#fff;border-radius:7px;cursor:pointer;font-size:0.98rem;float:right;">Đóng</button>';
+        html += '</div>';
+        
+        const old = document.getElementById('cart-popup');
+        if (old) old.remove();
+        const div = document.createElement('div');
+        div.id = 'cart-popup';
+        div.innerHTML = html;
+        document.body.appendChild(div);
+        
+        // Gắn sự kiện cho nút tăng/giảm/xóa
+        div.querySelectorAll('.cart-qty-btn').forEach(btn => {
+            btn.addEventListener('click', async function(e) {
+                e.stopPropagation();
+                const idx = Number(this.getAttribute('data-idx'));
+                const action = this.getAttribute('data-action');
+                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                
+                if (action === 'increase') {
+                    cart[idx].quantity++;
+                }
+                
+                if (action === 'decrease' && cart[idx].quantity > 1) {
+                    cart[idx].quantity--;
+                }
+                
+                localStorage.setItem('cart', JSON.stringify(cart));
+                showCartPopup();
+                // Cập nhật số lượng hiển thị
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                document.querySelectorAll('.cart-count').forEach(el => el.textContent = count);
+            });
+        });
+        
+        div.querySelectorAll('.cart-remove-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const idx = Number(this.getAttribute('data-idx'));
+                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                cart.splice(idx, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                showCartPopup();
+                // Cập nhật số lượng hiển thị
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                document.querySelectorAll('.cart-count').forEach(el => el.textContent = count);
+            });
+        });
+    }
+    
+    function closeCartPopup() {
+        const popup = document.getElementById('cart-popup');
+        if (popup) popup.remove();
+    }
+    
+    function checkoutCart() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        if (cart.length === 0) {
+            showNotification('Giỏ hàng trống!', 'warning');
+            return;
+        }
+        window.location.href = 'checkout.html';
+    }
+    
+    // Make functions globally accessible
+    window.showCartPopup = showCartPopup;
+    window.closeCartPopup = closeCartPopup;
+    window.checkoutCart = checkoutCart;
+    
+    // Initialize cart count on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.querySelectorAll('.cart-count').forEach(el => el.textContent = count);
+    });
+    </script>
+    <script>
+async function loadSeikoProducts() {
+    const res = await fetch('/api/products');
+    const data = await res.json();
+    // Lọc chỉ lấy sản phẩm Seiko và loại "Đeo tay"
+    const products = (data.products || []).filter(p => 
+        p.brand_name === 'Seiko' && p.category_name === 'Đeo tay'
+    );
+    const grid = document.querySelector('.products-grid');
+    grid.innerHTML = '';
+    
+    if (products.length === 0) {
+        grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+            <h3>Không có sản phẩm Seiko loại đeo tay</h3>
+            <p>Vui lòng thử lại sau hoặc liên hệ chúng tôi để được hỗ trợ.</p>
+        </div>
+        `;
+        return;
+    }
+    
+    products.forEach(product => {
+        // Check if product is in wishlist
+        const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        const isInWishlist = wishlist.some(item => item.id === product.id);
+        
+        grid.innerHTML += `
+        <div class="product-card" data-product-id="${product.id}">
+            <div class="product-image">
+                <img src="${product.image}" alt="${product.name}">
+                <button class="wishlist-btn ${isInWishlist ? 'active' : ''}" onclick="toggleWishlist(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${product.image}')">
+                    <i class="fas fa-heart"></i>
+                </button>
+            </div>
+            <div class="product-info">
+                <div class="product-name">${product.name}</div>
+                <div class="product-price">${Number(product.price).toLocaleString('vi-VN')}đ</div>
+                <div class="product-description">${product.description || ''}</div>
+                <button class="add-to-cart">Thêm vào giỏ</button>
+                <a href="product.html?id=${product.id}" class="btn-detail" style="display:block;margin-top:8px;">Xem chi tiết</a>
+            </div>
+        </div>
+        `;
+    });
+    // Gắn lại event listener cho nút Thêm vào giỏ sau khi render sản phẩm
+    document.querySelectorAll('.add-to-cart').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const productCard = this.closest('.product-card');
+            const productId = productCard.getAttribute('data-product-id');
+            const productName = productCard.querySelector('.product-name').textContent;
+            const productPrice = parseInt(productCard.querySelector('.product-price').textContent.replace(/[^\d]/g, ''));
+            addToCart(productId, productName, productPrice);
+        });
+    });
+    window.addToCart = addToCart;
+}
+document.addEventListener('DOMContentLoaded', loadSeikoProducts);
+</script>
+
+<style>
+    /* Responsive CSS for Mobile */
+    @media (max-width: 768px) {
+        .brand-banner {
+            padding: 30px 15px 25px 15px;
+            margin-bottom: 20px;
+        }
+        
+        .brand-banner h1 {
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .brand-banner p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .products-container {
+            padding: 0 10px;
+        }
+        
+        .products-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 32px 24px;
+        }
+        
+        .product-card {
+            margin: 0;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            width: 260px;
+            max-width: 100%;
+        }
+        
+        .product-image {
+            height: 160px;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .product-info {
+            padding: 12px;
+        }
+        
+        .product-name {
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        
+        .product-price {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .product-description {
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        
+        .add-to-cart {
+            padding: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            width: 100%;
+        }
+        
+        .btn-detail {
+            width: auto;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin: 0 auto;
+        }
+        
+        .wishlist-btn {
+            width: 32px;
+            height: 32px;
+            font-size: 0.8rem;
+        }
+        
+        .price-group {
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .old-price {
+            font-size: 0.8rem;
+        }
+        
+        .sale-price {
+            font-size: 1rem;
+        }
+        
+        /* Brand Partners Responsive */
+        .brands {
+            padding: 24px 0;
+        }
+        
+        .brand-list {
+            gap: 16px;
+        }
+        
+        .brand-list img {
+            max-height: 36px;
+            max-width: 80px;
+        }
+        
+        .brand-list::before {
+            font-size: 0.75rem;
+            padding: 8px 20px;
+            top: -25px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            margin-top: 15px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .brand-banner {
+            padding: 25px 10px 20px 10px;
+        }
+        
+        .brand-banner h1 {
+            font-size: 1.6rem;
+        }
+        
+        .brand-banner p {
+            font-size: 0.85rem;
+        }
+        
+        .products-container {
+            padding: 0 8px;
+        }
+        
+        .products-grid {
+            gap: 20px 16px;
+        }
+        
+        .product-card {
+            width: 100%;
+            max-width: 240px;
+        }
+        
+        .product-image {
+            height: 140px;
+        }
+        
+        .product-info {
+            padding: 10px;
+        }
+        
+        .product-name {
+            font-size: 0.9rem;
+        }
+        
+        .product-price {
+            font-size: 1rem;
+        }
+        
+        .product-description {
+            font-size: 0.75rem;
+        }
+        
+        .add-to-cart {
+            padding: 7px;
+            font-size: 0.8rem;
+        }
+        
+        .btn-detail {
+            padding: 5px 10px;
+            font-size: 0.75rem;
+        }
+        
+        .wishlist-btn {
+            width: 28px;
+            height: 28px;
+            font-size: 0.7rem;
+        }
+        
+        .price-group {
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+        
+        .old-price {
+            font-size: 0.75rem;
+        }
+        
+        .sale-price {
+            font-size: 0.9rem;
+        }
+        
+        /* Brand Partners Responsive for 480px */
+        .brands {
+            padding: 20px 0;
+        }
+        
+        .brand-list {
+            gap: 12px;
+        }
+        
+        .brand-list img {
+            max-height: 32px;
+            max-width: 70px;
+        }
+        
+        .brand-list::before {
+            font-size: 0.7rem;
+            padding: 6px 16px;
+            top: -20px;
+        }
+    }
+</style>
+
+<script>
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        
+        if (searchForm && searchInput) {
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const query = searchInput.value.trim();
+                if (query) {
+                    // Redirect to homepage with search query
+                    window.location.href = `index.html?search=${encodeURIComponent(query)}`;
+                }
+            });
+        }
+    });
+</script>
+
+<script src="js/index.js"></script>
+
+    <!-- Khối dịch vụ -->
+    <section class="services-section" style="background: #ffffff; padding: 50px 0; margin: 0; border-top: 1px solid #e5e5e5;">
+        <div class="container">
+            <div class="service-list" style="display: flex; justify-content: space-around; gap: 40px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto;">
+                <div class="service-item" style="text-align: center; flex: 1; min-width: 250px; max-width: 320px;">
+                    <img src="images/icons/icon-shipping.png" alt="Giao hàng" style="width: 60px; height: 60px; margin-bottom: 15px; opacity: 0.85;" />
+                    <h4 style="color: #333; font-size: 16px; margin-bottom: 8px; font-weight: 600;">Giao hàng toàn quốc</h4>
+                    <p style="color: #777; font-size: 14px; margin: 0; line-height: 1.5;">Miễn phí vận chuyển cho đơn từ 500k</p>
+                </div>
+                <div class="service-item" style="text-align: center; flex: 1; min-width: 250px; max-width: 320px;">
+                    <img src="images/icons/icon-warranty.png" alt="Bảo hành" style="width: 60px; height: 60px; margin-bottom: 15px; opacity: 0.85;" />
+                    <h4 style="color: #333; font-size: 16px; margin-bottom: 8px; font-weight: 600;">Bảo hành chính hãng</h4>
+                    <p style="color: #777; font-size: 14px; margin: 0; line-height: 1.5;">Đổi trả trong 7 ngày, bảo hành 5 năm</p>
+                </div>
+                <div class="service-item" style="text-align: center; flex: 1; min-width: 250px; max-width: 320px;">
+                    <img src="images/icons/icon-auth.png" alt="Chính hãng" style="width: 60px; height: 60px; margin-bottom: 15px; opacity: 0.85;" />
+                    <h4 style="color: #333; font-size: 16px; margin-bottom: 8px; font-weight: 600;">100% Chính hãng</h4>
+                    <p style="color: #777; font-size: 14px; margin: 0; line-height: 1.5;">Cam kết xuất xứ rõ ràng, đầy đủ giấy tờ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section" style="background: #f8f9fa; padding: 50px 0; text-align: center;">
+        <div class="container" style="max-width: 600px;">
+            <h3 style="font-size: 1.8rem; color: #333; margin-bottom: 10px; font-weight: 600;">Đăng ký nhận tin</h3>
+            <p style="color: #666; margin-bottom: 25px; font-size: 0.95rem;">Nhận thông tin khuyến mãi và sản phẩm mới nhất</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Đã đăng ký nhận tin thành công!'); this.reset();" style="display: flex; gap: 10px; max-width: 500px; margin: 0 auto;">
+                <input type="email" id="newsletterEmail" placeholder="Nhập email của bạn" required style="flex: 1; padding: 12px 20px; border: 1.5px solid #ddd; border-radius: 6px; font-size: 0.95rem; outline: none; transition: border 0.3s;" onfocus="this.style.borderColor='#7c6240'" onblur="this.style.borderColor='#ddd'" />
+                <button type="submit" style="padding: 12px 30px; background: #7c6240; color: white; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='#5a4930'" onmouseout="this.style.background='#7c6240'">Đăng ký</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="site-footer clean-footer">
+        <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>TimeLuxe</h4>
+                <ul>
+                    <li><a href="about.html">Giới thiệu</a></li>
+                    <li><a href="customers.html">Đánh giá khách hàng</a></li>
+                    <li><a href="guide.html">Hướng dẫn sử dụng</a></li>
+                    <li><a href="repair.html">Dịch vụ sửa chữa</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Liên hệ</h4>
+                <ul class="footer-contact-list">
+                    <li><i class="fas fa-phone"></i> 0834477085</li>
+                    <li><i class="fas fa-envelope"></i> timeluxe@gmail.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 68 Nguyễn Chí Thanh, Hà Nội</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Kết nối</h4>
+                <div class="footer-social">
+                    <a href="https://facebook.com" target="_blank" rel="noopener" class="fb" aria-label="Facebook">
+                        <img src="images/icons/icon-facebook.png" alt="Facebook" loading="lazy" />
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener" class="ig" aria-label="Instagram">
+                        <img src="images/icons/icon-instagram.png" alt="Instagram" loading="lazy" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom" style="text-align: center; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+            <span>&copy; 2023 TimeLuxe. All rights reserved.</span>
+        </div>
+        </div>
+    </footer>
+</body>
+</html> 
+
+
+
+
+

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeLuxe - Trang Chủ Bán Đồng Hồ Cao Cấp</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="dhda-header">
+        <!-- Top bar -->
+        <div class="dhda-topbar">
+            <div class="container dhda-topbar-flex">
+                <div class="dhda-topbar-left">
+                    <span class="dhda-hotline"><i class="fas fa-phone"></i> Hotline: <a href="tel:0834477085">0834477085</a></span>
+                    <span class="dhda-address"><i class="fas fa-map-marker-alt"></i> 68 Nguyễn Chí Thanh, Hà Nội</span>
+                </div>
+                <div class="dhda-topbar-right">
+                    <div id="guest-section" style="display: flex;">
+                        <a href="login.html" class="dhda-login"><i class="fas fa-user"></i> Đăng nhập</a>
+                    </div>
+                    <div id="user-section" style="display: none; align-items: center; gap: 8px;">
+                        <span>Xin chào, <span id="user-display-name"></span></span>
+                        <a href="profile.html" style="color: #7c6240; margin-left: 8px;"><i class="fas fa-user"></i> Cá nhân</a>
+                        <a href="#" id="logout-btn" style="color: #e53935; margin-left: 8px;">Đăng xuất</a>
+                    </div>
+                    <a href="#" class="dhda-cart"><i class="fas fa-shopping-cart"></i> Giỏ hàng <span class="cart-count">0</span></a>
+                </div>
+            </div>
+        </div>
+        <!-- Logo + Menu + Search -->
+        <div class="dhda-header-main" style="background: #7c6240;">
+            <div class="container dhda-header-main-flex" style="display: flex; flex-direction: row; align-items: center; justify-content: space-around; gap: 30px; padding: 15px 0;">
+                <a href="index.html" class="dhda-logo">
+                    <img src="images/logos/logo TIME LUXE.png" alt="TimeLuxe Logo" style="height: 120px; width: 120px; object-fit: contain;" />
+                </a>
+                <!-- Menu ngang -->
+                <nav class="dhda-menu" style="flex: 1; display: flex; justify-content: center; max-width: 700px;">
+                    <ul class="dhda-menu-list" style="display: flex; gap: 25px; list-style: none; margin: 0; padding: 0; width: 100%; justify-content: space-evenly;">
+                        <li><a href="index.html#brands" class="menu-link" style="color: #000000; text-decoration: none; font-weight: 600; font-size: 15px; padding: 10px 15px; display: block; transition: all 0.3s; border-radius: 5px;">THƯƠNG HIỆU</a></li>
+                        <li><a href="donghotreotuong.html" class="menu-link" style="color: #000000; text-decoration: none; font-weight: 600; font-size: 15px; padding: 10px 15px; display: block; transition: all 0.3s; border-radius: 5px;">ĐỒNG HỒ TREO TƯỜNG</a></li>
+                        <li><a href="daydongho.html" class="menu-link" style="color: #000000; text-decoration: none; font-weight: 600; font-size: 15px; padding: 10px 15px; display: block; transition: all 0.3s; border-radius: 5px;">DÂY ĐỒNG HỒ</a></li>
+                        <li><a href="sanphamkhac.html" class="menu-link" style="color: #000000; text-decoration: none; font-weight: 600; font-size: 15px; padding: 10px 15px; display: block; transition: all 0.3s; border-radius: 5px;">SẢN PHẨM KHÁC</a></li>
+                    </ul>
+                </nav>
+                <form class="dhda-search-bar" style="display: flex; min-width: 300px;" id="searchForm">
+                    <input type="text" placeholder="Tìm kiếm sản phẩm, thương hiệu..." style="flex: 1;" id="searchInput" />
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="main-banner">
+            <img src="images/banners/banner2.webp" alt="Banner" class="main-banner-img">
+        </section>
+        <!-- Slider thương hiệu (tĩnh) -->
+        <section class="brands" id="brands">
+            <div class="container">
+            <div class="brand-list">
+                <a href="citizen.html"><img src="images/logos/logo-citizen.png" alt="Citizen" /></a>
+                <a href="tissot.html"><img src="images/logos/logo-tissot.png" alt="Tissot" /></a>
+                <a href="seiko.html"><img src="images/logos/logo-seiko.png" alt="Seiko" /></a>
+                <a href="casio.html"><img src="images/logos/logo-casio.png" alt="Casio" /></a>
+                <a href="orient.html"><img src="images/logos/logo-orient.png" alt="Orient" /></a>
+            </div>
+            </div>
+        </section>
+        <!-- Sản phẩm nổi bật -->
+        <section class="products">
+            <div class="container">
+            <h3 class="section-title">Sản phẩm nổi bật</h3>
+            <div class="product-list">
+                <!-- Sản phẩm sẽ được render bằng JS -->
+            </div>
+            <div class="pagination"></div>
+            </div>
+        </section>
+    </main>
+    </main>
+
+    <!-- Khối dịch vụ -->
+    <section class="services-section" style="background: #ffffff; padding: 50px 0; margin: 0; border-top: 1px solid #e5e5e5;">
+        <div class="container">
+            <div class="service-list" style="display: flex; justify-content: space-around; gap: 40px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto;">
+                <div class="service-item" style="text-align: center; flex: 1; min-width: 250px; max-width: 320px;">
+                    <img src="images/icons/icon-shipping.png" alt="Giao hàng" style="width: 60px; height: 60px; margin-bottom: 15px; opacity: 0.85;" />
+                    <h4 style="color: #333; font-size: 16px; margin-bottom: 8px; font-weight: 600;">Giao hàng toàn quốc</h4>
+                    <p style="color: #777; font-size: 14px; margin: 0; line-height: 1.5;">Miễn phí vận chuyển cho đơn từ 500k</p>
+                </div>
+                <div class="service-item" style="text-align: center; flex: 1; min-width: 250px; max-width: 320px;">
+                    <img src="images/icons/icon-warranty.png" alt="Bảo hành" style="width: 60px; height: 60px; margin-bottom: 15px; opacity: 0.85;" />
+                    <h4 style="color: #333; font-size: 16px; margin-bottom: 8px; font-weight: 600;">Bảo hành chính hãng</h4>
+                    <p style="color: #777; font-size: 14px; margin: 0; line-height: 1.5;">Đổi trả trong 7 ngày, bảo hành 5 năm</p>
+                </div>
+                <div class="service-item" style="text-align: center; flex: 1; min-width: 250px; max-width: 320px;">
+                    <img src="images/icons/icon-auth.png" alt="Chính hãng" style="width: 60px; height: 60px; margin-bottom: 15px; opacity: 0.85;" />
+                    <h4 style="color: #333; font-size: 16px; margin-bottom: 8px; font-weight: 600;">100% Chính hãng</h4>
+                    <p style="color: #777; font-size: 14px; margin: 0; line-height: 1.5;">Cam kết xuất xứ rõ ràng, đầy đủ giấy tờ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section" style="background: #f8f9fa; padding: 50px 0; text-align: center;">
+        <div class="container" style="max-width: 600px;">
+            <h3 style="font-size: 1.8rem; color: #333; margin-bottom: 10px; font-weight: 600;">Đăng ký nhận tin</h3>
+            <p style="color: #666; margin-bottom: 25px; font-size: 0.95rem;">Nhận thông tin khuyến mãi và sản phẩm mới nhất</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); showNotification('Đã đăng ký nhận tin thành công!', 'success'); this.reset();" style="display: flex; gap: 10px; max-width: 500px; margin: 0 auto;">
+                <input type="email" id="newsletterEmail" placeholder="Nhập email của bạn" required style="flex: 1; padding: 12px 20px; border: 1.5px solid #ddd; border-radius: 6px; font-size: 0.95rem; outline: none; transition: border 0.3s;" onfocus="this.style.borderColor='#7c6240'" onblur="this.style.borderColor='#ddd'" />
+                <button type="submit" style="padding: 12px 30px; background: #7c6240; color: white; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='#5a4930'" onmouseout="this.style.background='#7c6240'">Đăng ký</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="site-footer clean-footer">
+        <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>TimeLuxe</h4>
+                <ul>
+                    <li><a href="about.html">Giới thiệu</a></li>
+                    <li><a href="customers.html">Đánh giá khách hàng</a></li>
+                    <li><a href="guide.html">Hướng dẫn sử dụng</a></li>
+                    <li><a href="repair.html">Dịch vụ sửa chữa</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Liên hệ</h4>
+                <ul class="footer-contact-list">
+                    <li><i class="fas fa-phone"></i> 0834477085</li>
+                    <li><i class="fas fa-envelope"></i> timeluxe@gmail.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 68 Nguyễn Chí Thanh, Hà Nội</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Kết nối</h4>
+                <div class="footer-social">
+                    <a href="https://facebook.com" target="_blank" rel="noopener" class="fb" aria-label="Facebook">
+                        <img src="images/icons/icon-facebook.png" alt="Facebook" loading="lazy" />
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener" class="ig" aria-label="Instagram">
+                        <img src="images/icons/icon-instagram.png" alt="Instagram" loading="lazy" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom" style="text-align: center; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+            <span>&copy; 2023 TimeLuxe. All rights reserved.</span>
+        </div>
+        </div>
+    </footer>
+    <!-- Login Options Modal -->
+    <div id="loginOptionsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginOptions()">&times;</span>
+            <h2>Đăng nhập</h2>
+            <div class="login-options">
+                <button class="login-option-btn" onclick="window.location.href='login.html'">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Đăng nhập
+                </button>
+                <button class="register-option-btn" onclick="window.location.href='register.html'">
+                    <i class="fas fa-user-plus"></i>
+                    Đăng ký
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/carousel.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/smooth-scroll.js"></script>
+</body>
+</html>
+
+
+
+
+
+

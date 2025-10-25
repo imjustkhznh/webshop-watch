@@ -1,0 +1,370 @@
+/* Responsive Design for All Pages */
+
+/* Mobile First Approach */
+@media (max-width: 480px) {
+    /* General Layout */
+    .container {
+        padding: 0 10px;
+    }
+    
+    /* Header */
+    .dhda-header-main {
+        padding: 15px 0;
+    }
+    
+    .dhda-logo img {
+        height: 100px !important;
+        width: 100px !important;
+    }
+    
+    .dhda-search-bar {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .dhda-search-bar input {
+        max-width: 100% !important;
+    }
+    
+    /* Navigation */
+    .dhda-menu-list {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .dhda-menu-list li a {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+    
+    /* Products */
+    .product-list {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+    }
+    
+    .product-card {
+        padding: 15px;
+    }
+    
+    .product-card img {
+        height: 150px;
+    }
+    
+    .product-card h4 {
+        font-size: 16px;
+        margin: 10px 0;
+    }
+    
+    .product-card .price-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .product-card .btn-detail {
+        margin-top: 10px;
+    }
+    
+    /* Services */
+    .service-list {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .service-item {
+        padding: 20px;
+        text-align: center;
+    }
+    
+    /* Brands */
+    .brand-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .brand-list img {
+        height: 60px;
+    }
+    
+    /* Forms */
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-control {
+        padding: 12px;
+        font-size: 16px;
+    }
+    
+    /* Buttons */
+    .btn {
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+    
+    /* Modals */
+    .modal-content {
+        margin: 10px;
+        padding: 20px;
+        width: calc(100% - 20px);
+    }
+}
+
+/* Tablet */
+@media (min-width: 481px) and (max-width: 768px) {
+    .product-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .service-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+    
+    .brand-list {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+    
+    .dhda-logo img {
+        height: 120px !important;
+        width: 120px !important;
+    }
+}
+
+/* Large Tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .product-list {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+    
+    .service-list {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+    
+    .brand-list {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1025px) {
+    .product-list {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 24px 20px;
+    }
+    
+    .service-list {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+    }
+    
+    .brand-list {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 30px;
+    }
+}
+
+/* Specific Page Responsive */
+
+/* Payment Page */
+@media (max-width: 768px) {
+    .payment-content {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+    }
+    
+    .qr-code {
+        width: 150px !important;
+        height: 150px !important;
+    }
+    
+    .bank-detail {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+/* Admin Page */
+@media (max-width: 768px) {
+    .admin-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        position: static;
+        transform: none;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .table {
+        font-size: 12px;
+    }
+    
+    .table th,
+    .table td {
+        padding: 8px 4px;
+    }
+}
+
+/* Login/Register Pages */
+@media (max-width: 480px) {
+    .login-container,
+    .register-container {
+        margin: 20px 15px;
+        padding: 20px;
+    }
+    
+    .form-group input {
+        padding: 12px;
+        font-size: 16px;
+    }
+}
+
+/* Product Detail Pages */
+@media (max-width: 768px) {
+    .product-detail-container {
+        flex-direction: column;
+    }
+    
+    .product-images {
+        width: 100%;
+    }
+    
+    .product-info {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+/* Cart Page */
+@media (max-width: 768px) {
+    .cart-container {
+        flex-direction: column;
+    }
+    
+    .cart-items {
+        width: 100%;
+    }
+    
+    .cart-summary {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+/* Profile Page */
+@media (max-width: 768px) {
+    .profile-container {
+        flex-direction: column;
+    }
+    
+    .profile-sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .profile-content {
+        width: 100%;
+    }
+}
+
+/* Utility Classes */
+.hide-mobile {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .hide-mobile {
+        display: block;
+    }
+    
+    .hide-desktop {
+        display: none;
+    }
+}
+
+/* Touch-friendly elements */
+@media (max-width: 768px) {
+    .btn,
+    .nav-link,
+    .menu-item {
+        min-width: 44px;
+    }
+    
+    input,
+    select,
+    textarea {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Wishlist button responsive */
+.wishlist-btn {
+    width: 40px;
+    height: 40px;
+    top: 8px;
+    right: 8px;
+}
+
+.wishlist-btn i {
+    font-size: 16px;
+}
+
+/* Custom notification responsive */
+@media (max-width: 768px) {
+    .custom-notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        transform: translateY(-100px);
+    }
+    
+    .custom-notification.show {
+        transform: translateY(0);
+    }
+    
+    .notification-content {
+        gap: 8px;
+    }
+    
+    .notification-text {
+        font-size: 13px;
+    }
+    
+    .notification-icon {
+        font-size: 18px;
+    }
+}
+}
+
+/* Print styles */
+@media print {
+    .header,
+    .footer,
+    .nav,
+    .btn,
+    .wishlist-btn {
+        display: none !important;
+    }
+    
+    .product-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+} 

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản Phẩm Khác - TimeLuxe</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/testimonials.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .brand-banner {
+            background: linear-gradient(135deg, #e94560 0%, #f9d423 100%);
+            color: white;
+            padding: 60px 0 40px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .brand-banner h1 {
+            font-size: 2.6rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .brand-banner p {
+            font-size: 1.15rem;
+            opacity: 0.93;
+        }
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 8px 15px;
+            flex: 1;
+            max-width: 300px;
+        }
+        .search-box input {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 5px;
+        }
+        .search-box button {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+        }
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-btn.active {
+            background: #e94560;
+            color: white;
+            border-color: #e94560;
+        }
+        .products-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 32px 24px;
+            margin-bottom: 40px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 260px;
+            max-width: 100%;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .product-info {
+            padding: 20px;
+        }
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #e94560;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .product-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .add-to-cart {
+            width: 100%;
+            padding: 12px;
+            background: #e94560;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .add-to-cart:hover {
+            background: #b92d4b;
+        }
+        .back-to-home {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        /* Responsive Design for Mobile */
+        @media (max-width: 768px) {
+            .brand-banner {
+                padding: 30px 15px 25px 15px;
+                margin-bottom: 20px;
+            }
+            
+            .brand-banner h1 {
+                font-size: 1.8rem;
+                letter-spacing: 0.5px;
+                margin-bottom: 8px;
+            }
+            
+            .brand-banner p {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+            
+            .products-container {
+                padding: 0 10px;
+            }
+            
+            .products-grid {
+                flex-direction: column;
+                gap: 22px;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            
+            .product-card {
+                margin: 0;
+                border-radius: 12px;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+                width: 100%;
+                max-width: 280px;
+            }
+            
+            .product-image {
+                height: 160px;
+                border-radius: 12px 12px 0 0;
+            }
+            
+            .product-info {
+                padding: 12px;
+            }
+            
+            .product-name {
+                font-size: 0.95rem;
+                margin-bottom: 6px;
+                line-height: 1.3;
+            }
+            
+            .product-price {
+                font-size: 1.1rem;
+                margin-bottom: 10px;
+            }
+            
+            .product-description {
+                font-size: 0.8rem;
+                margin-bottom: 10px;
+                line-height: 1.3;
+            }
+            
+            .add-to-cart {
+                padding: 8px;
+                font-size: 0.85rem;
+                margin-bottom: 6px;
+                border-radius: 6px;
+                width: 100%;
+            }
+            
+            .btn-detail {
+                width: auto;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+                border-radius: 6px;
+                background: linear-gradient(135deg, #e94560 0%, #f9d423 100%);
+                color: white;
+                border: none;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+                text-decoration: none;
+                display: block;
+                text-align: center;
+                box-shadow: 0 2px 6px rgba(233, 69, 96, 0.2);
+                margin: 0 auto;
+                min-width: 100px;
+                max-width: 150px;
+            }
+            
+            .btn-detail:hover {
+                background: linear-gradient(135deg, #f9d423 0%, #e94560 100%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 10px rgba(233, 69, 96, 0.3);
+            }
+            
+            .wishlist-btn {
+                width: 32px;
+                height: 32px;
+                top: 6px;
+                right: 6px;
+                border-radius: 50%;
+            }
+            
+            .wishlist-btn i {
+                font-size: 13px;
+            }
+            
+            .price-group {
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+            
+            .old-price {
+                font-size: 0.8rem;
+            }
+            
+            .sale-price {
+                font-size: 1.1rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brand-banner {
+                padding: 25px 10px 20px 10px;
+            }
+            
+            .brand-banner h1 {
+                font-size: 1.6rem;
+                letter-spacing: 0.3px;
+            }
+            
+            .brand-banner p {
+                font-size: 0.85rem;
+            }
+            
+            .products-container {
+                padding: 0 8px;
+            }
+            
+            .products-grid {
+                gap: 15px;
+            }
+            
+            .product-card {
+                border-radius: 10px;
+                width: 100%;
+                max-width: 260px;
+            }
+            
+            .product-image {
+                height: 140px;
+                border-radius: 10px 10px 0 0;
+            }
+            
+            .product-info {
+                padding: 10px;
+            }
+            
+            .product-name {
+                font-size: 0.9rem;
+                margin-bottom: 5px;
+            }
+            
+            .product-price {
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+            
+            .product-description {
+                font-size: 0.75rem;
+                margin-bottom: 8px;
+            }
+            
+            .add-to-cart {
+                padding: 6px;
+                font-size: 0.8rem;
+                margin-bottom: 5px;
+            }
+            
+            .btn-detail {
+                padding: 5px 10px;
+                font-size: 0.75rem;
+                min-width: 80px;
+            }
+            
+            .wishlist-btn {
+                width: 28px;
+                height: 28px;
+                top: 5px;
+                right: 5px;
+            }
+            
+            .wishlist-btn i {
+                font-size: 11px;
+            }
+            
+            .price-group {
+                gap: 6px;
+                margin-bottom: 8px;
+            }
+            
+            .old-price {
+                font-size: 0.75rem;
+            }
+            
+            .sale-price {
+                font-size: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="dhda-header">
+        <!-- Top bar -->
+        <div class="dhda-topbar">
+            <div class="container dhda-topbar-flex">
+                <div class="dhda-topbar-left">
+                    <span class="dhda-hotline"><i class="fas fa-phone"></i> Hotline: <a href="tel:0834477085">0834477085</a></span>
+                    <span class="dhda-address"><i class="fas fa-map-marker-alt"></i> 68 Nguyễn Chí Thanh, Hà Nội</span>
+                </div>
+                <div class="dhda-topbar-right">
+                    <div id="guest-section" style="display: flex;">
+                        <a href="login.html" class="dhda-login"><i class="fas fa-user"></i> Đăng nhập</a>
+                    </div>
+                    <div id="user-section" style="display: none; align-items: center; gap: 8px;">
+                        <span>Xin chào, <span id="user-display-name"></span></span>
+                        <a href="profile.html" style="color: #7c6240; margin-left: 8px;"><i class="fas fa-user"></i> Cá nhân</a>
+                        <a href="#" id="logout-btn" style="color: #e53935; margin-left: 8px;">Đăng xuất</a>
+                    </div>
+                    <a href="#" class="dhda-cart"><i class="fas fa-shopping-cart"></i> Giỏ hàng <span class="cart-count">0</span></a>
+                </div>
+            </div>
+        </div>
+        <!-- Logo + Search + Hotline + Cart -->
+        <div class="dhda-header-main" style="background: #7c6240;">
+            <div class="container dhda-header-main-flex" style="flex-direction: column; align-items: center;">
+                <a href="index.html" class="dhda-logo" style="margin-bottom: 12px;">
+                    <img src="images/logos/logo TIME LUXE.png" alt="TimeLuxe Logo" style="height: 150px; width: 150px; object-fit: contain;" />
+                </a>
+                <form class="dhda-search-bar" style="width: 100%; max-width: 420px; display: flex; justify-content: center;" id="searchForm">
+                    <input type="text" placeholder="Tìm kiếm sản phẩm, thương hiệu..." style="flex: 1; max-width: 320px;" id="searchInput" />
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+        <!-- Menu ngang -->
+        <nav class="dhda-menu">
+            <div class="container">
+                <ul class="dhda-menu-list">
+                    <li><a href="index.html#brands">THƯƠNG HIỆU</a></li>
+                    <li><a href="donghotreotuong.html">ĐỒNG HỒ TREO TƯỜNG</a></li>
+                    <li><a href="daydongho.html">DÂY ĐỒNG HỒ</a></li>
+                    <li><a href="sanphamkhac.html">SẢN PHẨM KHÁC</a></li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="brand-banner">
+        <h1>SẢN PHẨM KHÁC</h1>
+        <p>Phụ kiện, hộp đựng, dụng cụ bảo dưỡng đồng hồ và nhiều sản phẩm tiện ích khác.</p>
+    </div>
+    <div class="products-container">
+
+        <div class="products-grid">
+            <!-- Sản phẩm sẽ được render bằng JS từ database -->
+        </div>
+        <div class="pagination"></div>
+    </div>
+    <script src="js/footer.js"></script>
+    <!-- Login Options Modal -->
+    <div id="loginOptionsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginOptions()">&times;</span>
+            <h2>Đăng nhập</h2>
+            <div class="login-options">
+                <button class="login-option-btn" onclick="window.location.href='login.html'">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Đăng nhập
+                </button>
+                <button class="register-option-btn" onclick="window.location.href='register.html'">
+                    <i class="fas fa-user-plus"></i>
+                    Đăng ký
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/product-pages.js"></script>
+    <script src="js/smooth-scroll.js"></script>
+    <script src="js/sanphamkhac.js"></script>
+    <script>
+        // Test script để kiểm tra
+        console.log('Sanphamkhac.html loaded');
+        
+        // Đảm bảo load sản phẩm sau khi tất cả script đã load
+        setTimeout(() => {
+            console.log('Checking if loadAccessoryProducts function exists:', typeof loadAccessoryProducts);
+            if (typeof loadAccessoryProducts === 'function') {
+                console.log('Calling loadAccessoryProducts...');
+                loadAccessoryProducts();
+            } else {
+                console.error('loadAccessoryProducts function not found!');
+            }
+        }, 500);
+
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('searchForm');
+            const searchInput = document.getElementById('searchInput');
+            
+            if (searchForm && searchInput) {
+                searchForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        // Redirect to homepage with search query
+                        window.location.href = `index.html?search=${encodeURIComponent(query)}`;
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Khối dịch vụ -->
+    <section class="services-section" style="background: #ffffff; padding: 50px 0; margin: 0; border-top: 1px solid #e5e5e5;">
+        <div class="container">
+            <div class="service-list" style="display: flex; justify-content: space-around; gap: 40px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto;">
+                <div class="service-item" style="text-align: center; flex: 1; min-width: 250px; max-width: 320px;">
+                    <img src="images/icons/icon-shipping.png" alt="Giao hàng" style="width: 60px; height: 60px; margin-bottom: 15px; opacity: 0.85;" />
+                    <h4 style="color: #333; font-size: 16px; margin-bottom: 8px; font-weight: 600;">Giao hàng toàn quốc</h4>
+                    <p style="color: #777; font-size: 14px; margin: 0; line-height: 1.5;">Miễn phí vận chuyển cho đơn từ 500k</p>
+                </div>
+                <div class="service-item" style="text-align: center; flex: 1; min-width: 250px; max-width: 320px;">
+                    <img src="images/icons/icon-warranty.png" alt="Bảo hành" style="width: 60px; height: 60px; margin-bottom: 15px; opacity: 0.85;" />
+                    <h4 style="color: #333; font-size: 16px; margin-bottom: 8px; font-weight: 600;">Bảo hành chính hãng</h4>
+                    <p style="color: #777; font-size: 14px; margin: 0; line-height: 1.5;">Đổi trả trong 7 ngày, bảo hành 5 năm</p>
+                </div>
+                <div class="service-item" style="text-align: center; flex: 1; min-width: 250px; max-width: 320px;">
+                    <img src="images/icons/icon-auth.png" alt="Chính hãng" style="width: 60px; height: 60px; margin-bottom: 15px; opacity: 0.85;" />
+                    <h4 style="color: #333; font-size: 16px; margin-bottom: 8px; font-weight: 600;">100% Chính hãng</h4>
+                    <p style="color: #777; font-size: 14px; margin: 0; line-height: 1.5;">Cam kết xuất xứ rõ ràng, đầy đủ giấy tờ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section" style="background: #f8f9fa; padding: 50px 0; text-align: center;">
+        <div class="container" style="max-width: 600px;">
+            <h3 style="font-size: 1.8rem; color: #333; margin-bottom: 10px; font-weight: 600;">Đăng ký nhận tin</h3>
+            <p style="color: #666; margin-bottom: 25px; font-size: 0.95rem;">Nhận thông tin khuyến mãi và sản phẩm mới nhất</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Đã đăng ký nhận tin thành công!'); this.reset();" style="display: flex; gap: 10px; max-width: 500px; margin: 0 auto;">
+                <input type="email" id="newsletterEmail" placeholder="Nhập email của bạn" required style="flex: 1; padding: 12px 20px; border: 1.5px solid #ddd; border-radius: 6px; font-size: 0.95rem; outline: none; transition: border 0.3s;" onfocus="this.style.borderColor='#7c6240'" onblur="this.style.borderColor='#ddd'" />
+                <button type="submit" style="padding: 12px 30px; background: #7c6240; color: white; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='#5a4930'" onmouseout="this.style.background='#7c6240'">Đăng ký</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="site-footer clean-footer">
+        <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>TimeLuxe</h4>
+                <ul>
+                    <li><a href="about.html">Giới thiệu</a></li>
+                    <li><a href="customers.html">Đánh giá khách hàng</a></li>
+                    <li><a href="guide.html">Hướng dẫn sử dụng</a></li>
+                    <li><a href="repair.html">Dịch vụ sửa chữa</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Liên hệ</h4>
+                <ul class="footer-contact-list">
+                    <li><i class="fas fa-phone"></i> 0834477085</li>
+                    <li><i class="fas fa-envelope"></i> timeluxe@gmail.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 68 Nguyễn Chí Thanh, Hà Nội</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Kết nối</h4>
+                <div class="footer-social">
+                    <a href="https://facebook.com" target="_blank" rel="noopener" class="fb" aria-label="Facebook">
+                        <img src="images/icons/icon-facebook.png" alt="Facebook" loading="lazy" />
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener" class="ig" aria-label="Instagram">
+                        <img src="images/icons/icon-instagram.png" alt="Instagram" loading="lazy" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom" style="text-align: center; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+            <span>&copy; 2023 TimeLuxe. All rights reserved.</span>
+        </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+
+
+
+
