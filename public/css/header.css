@@ -114,18 +114,7 @@
     color: #222;
 }
 .dhda-search-bar button {
-    background: #222;
-    border: none;
-    color: #fff;
-    padding: 0 18px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    height: 100%;
-    border-radius: 18px;
-    transition: background 0.2s;
-}
-.dhda-search-bar button:hover {
-    background: #555;
+    display: none;
 }
 .dhda-menu {
     background: #fff;

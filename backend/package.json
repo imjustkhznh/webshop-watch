@@ -10,17 +10,23 @@
     "create-user": "node scripts/create-user.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "mysql2": "^3.6.5",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2"
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "mysql2": "^3.6.5"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
   },
-  "keywords": ["webshop", "watch", "backend", "api"],
+  "keywords": [
+    "webshop",
+    "watch",
+    "backend",
+    "api"
+  ],
   "author": "",
   "license": "ISC"
-} 
+}

@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const fs = require('fs');
+const path = require('path');
 
 // Lấy thông tin user
 exports.getProfile = async (req, res) => {
@@ -21,13 +23,16 @@ exports.getProfile = async (req, res) => {
 // Cập nhật thông tin user
 exports.updateProfile = async (req, res) => {
     try {
-        const { full_name, phone, address } = req.body;
+        const { full_name, phone, address, date_of_birth, gender } = req.body;
         
-        const updated = await User.update(req.user.id, {
-            full_name,
-            phone,
-            address
-        });
+        const updateData = {};
+        if (full_name !== undefined) updateData.full_name = full_name;
+        if (phone !== undefined) updateData.phone = phone || null;
+        if (address !== undefined) updateData.address = address || null;
+        if (date_of_birth !== undefined) updateData.date_of_birth = date_of_birth || null;
+        if (gender !== undefined) updateData.gender = gender || null;
+        
+        const updated = await User.update(req.user.id, updateData);
 
         if (!updated) {
             return res.status(404).json({ error: 'User not found' });
@@ -36,6 +41,43 @@ exports.updateProfile = async (req, res) => {
         res.json({ message: 'Profile updated successfully' });
     } catch (error) {
         console.error('Update profile error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+// Upload avatar
+exports.uploadAvatar = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        // Get user and delete old avatar if exists
+        const user = await User.findById(req.user.id);
+        if (user && user.avatar) {
+            const oldAvatarPath = path.join(__dirname, '../../public', user.avatar);
+            if (fs.existsSync(oldAvatarPath)) {
+                fs.unlinkSync(oldAvatarPath);
+            }
+        }
+
+        // Save new avatar path to database
+        const avatarPath = `/images/avatars/${req.file.filename}`;
+        await User.update(req.user.id, { avatar: avatarPath });
+
+        res.json({ 
+            message: 'Avatar uploaded successfully',
+            avatar: avatarPath
+        });
+    } catch (error) {
+        console.error('Upload avatar error:', error);
+        // Delete uploaded file if database update fails
+        if (req.file) {
+            const filePath = path.join(__dirname, '../../public/images/avatars', req.file.filename);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+        }
         res.status(500).json({ error: 'Internal server error' });
     }
 };

@@ -42,10 +42,10 @@
             <h4>Kết nối</h4>
             <div class="footer-social">
               <a href="https://www.facebook.com/profile.php?id=61581613632579" target="_blank" rel="noopener" class="fb" aria-label="Facebook">
-                <img src="static/icon-facebook.png" alt="Facebook" loading="lazy" />
+                <img src="images/icons/icon-facebook.png" alt="Facebook" loading="lazy" />
               </a>
               <a href="https://instagram.com" target="_blank" rel="noopener" class="ig" aria-label="Instagram">
-                <img src="static/icon-instagram.png" alt="Instagram" loading="lazy" />
+                <img src="images/icons/icon-instagram.png" alt="Instagram" loading="lazy" />
               </a>
             </div>
           </div>
@@ -60,9 +60,9 @@
               </div>
             </form>
             <div class="payment-logos" aria-label="Phương thức thanh toán">
-              <img src="static/icon-shipping.png" alt="COD" title="Thanh toán khi nhận hàng" />
-              <img src="static/icon-online.png" alt="Bank" title="Chuyển khoản ngân hàng" />
-              <img src="static/icon-warranty.png" alt="Secure" title="Thanh toán an toàn" />
+              <img src="images/icons/icon-shipping.png" alt="COD" title="Thanh toán khi nhận hàng" />
+              <img src="images/icons/icon-online.png" alt="Bank" title="Chuyển khoản ngân hàng" />
+              <img src="images/icons/icon-warranty.png" alt="Secure" title="Thanh toán an toàn" />
             </div>
           </div>
           <span>&copy; 2023 TimeLuxe. All rights reserved.</span>

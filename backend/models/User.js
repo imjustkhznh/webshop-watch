@@ -71,9 +71,25 @@ class User {
                 updates.push('address = ?');
                 values.push(userData.address);
             }
+            if (userData.date_of_birth !== undefined) {
+                updates.push('date_of_birth = ?');
+                values.push(userData.date_of_birth);
+            }
+            if (userData.gender !== undefined) {
+                updates.push('gender = ?');
+                values.push(userData.gender);
+            }
+            if (userData.avatar !== undefined) {
+                updates.push('avatar = ?');
+                values.push(userData.avatar);
+            }
             if (userData.password !== undefined) {
                 updates.push('password = ?');
                 values.push(userData.password);
+            }
+
+            if (updates.length === 0) {
+                return false;
             }
 
             values.push(id);

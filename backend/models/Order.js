@@ -6,12 +6,8 @@ class Order {
         const connection = await getConnection();
         try {
             let query = `
-                SELECT o.*, 
-                       u.full_name as customer_name,
-                       u.email as customer_email,
-                       u.phone as customer_phone
+                SELECT o.*
                 FROM orders o
-                LEFT JOIN users u ON o.user_id = u.id
                 WHERE 1=1
             `;
             const params = [];
@@ -40,13 +36,8 @@ class Order {
         const connection = await getConnection();
         try {
             const [orders] = await connection.execute(`
-                SELECT o.*, 
-                       u.full_name as customer_name,
-                       u.email as customer_email,
-                       u.phone as customer_phone,
-                       u.address as customer_address
+                SELECT o.*
                 FROM orders o
-                LEFT JOIN users u ON o.user_id = u.id
                 WHERE o.id = ?
             `, [id]);
             return orders[0];
@@ -62,7 +53,7 @@ class Order {
             const [details] = await connection.execute(`
                 SELECT od.*, 
                        p.name as product_name,
-                       p.image_url as product_image,
+                       p.image as product_image,
                        b.name as brand_name
                 FROM order_details od
                 LEFT JOIN products p ON od.product_id = p.id
@@ -83,14 +74,26 @@ class Order {
 
             // Tạo order
             const [orderResult] = await connection.execute(
-                `INSERT INTO orders (user_id, total_amount, status, shipping_address, payment_method) 
-                 VALUES (?, ?, ?, ?, ?)`,
+                `INSERT INTO orders (
+                    user_id, total_amount, status, 
+                    customer_name, customer_phone, customer_email, 
+                    customer_address, customer_city, customer_district, customer_note,
+                    payment_method, discount_code, discount_amount
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     orderData.user_id,
                     orderData.total_amount,
                     orderData.status || 'pending',
-                    orderData.shipping_address,
-                    orderData.payment_method
+                    orderData.customer_name || null,
+                    orderData.customer_phone || null,
+                    orderData.customer_email || null,
+                    orderData.customer_address || null,
+                    orderData.customer_city || null,
+                    orderData.customer_district || null,
+                    orderData.customer_note || null,
+                    orderData.payment_method || null,
+                    orderData.discount_code || null,
+                    orderData.discount_amount || 0
                 ]
             );
 

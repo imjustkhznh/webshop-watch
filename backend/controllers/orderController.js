@@ -18,6 +18,13 @@ exports.getAllOrders = async (req, res) => {
         }
 
         const orders = await Order.getAll(filters);
+        
+        // Load items for each order
+        for (let order of orders) {
+            const items = await Order.getOrderDetails(order.id);
+            order.items = items;
+        }
+        
         res.json({ orders });
     } catch (error) {
         console.error('Get orders error:', error);
@@ -60,23 +67,37 @@ exports.createOrder = async (req, res) => {
             payment_method,
             customer_name,
             customer_phone,
-            customer_email
+            customer_email,
+            customer_address,
+            customer_city,
+            customer_district,
+            customer_note,
+            discount_code,
+            discount_amount
         } = req.body;
 
         if (!items || items.length === 0) {
             return res.status(400).json({ error: 'Order items are required' });
         }
 
-        if (!total_amount || !shipping_address) {
-            return res.status(400).json({ error: 'Total amount and shipping address are required' });
+        if (!total_amount) {
+            return res.status(400).json({ error: 'Total amount is required' });
         }
 
         const orderId = await Order.create({
             user_id: req.user.id,
             items,
             total_amount,
-            shipping_address,
+            customer_name,
+            customer_phone,
+            customer_email,
+            customer_address,
+            customer_city,
+            customer_district,
+            customer_note,
             payment_method,
+            discount_code,
+            discount_amount,
             status: 'pending'
         });
 

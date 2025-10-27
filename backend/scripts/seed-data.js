@@ -1,5 +1,6 @@
 const mysql = require('mysql2/promise');
-require('dotenv').config({ path: '../config/config.env' });
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../config/config.env') });
 
 const createConnection = async () => {
     try {
@@ -72,7 +73,7 @@ const seedData = async () => {
                 category_id: 1, // Thể thao
                 price: 2500000,
                 description: 'Đồng hồ thể thao chống sốc với thiết kế hiện đại, chống nước 200m',
-                image: 'static/dongho1.webp',
+                image: 'images/products/dongho1.webp',
                 stock: 15
             },
             {
@@ -81,7 +82,7 @@ const seedData = async () => {
                 category_id: 2, // Cơ khí
                 price: 8500000,
                 description: 'Đồng hồ cơ tự động với mặt số xanh dương sang trọng, máy 4R35',
-                image: 'static/dongho2.webp',
+                image: 'images/products/dongho2.webp',
                 stock: 8
             },
             {
@@ -90,7 +91,7 @@ const seedData = async () => {
                 category_id: 3, // Quân đội
                 price: 3200000,
                 description: 'Đồng hồ năng lượng ánh sáng với thiết kế quân đội, chống nước 100m',
-                image: 'static/dongho3.webp',
+                image: 'images/products/dongho3.webp',
                 stock: 12
             },
             {
@@ -99,7 +100,7 @@ const seedData = async () => {
                 category_id: 4, // Cổ điển
                 price: 4200000,
                 description: 'Đồng hồ cơ khí cổ điển với thiết kế dress watch, máy F6724',
-                image: 'static/dongho4.webp',
+                image: 'images/products/dongho4.webp',
                 stock: 10
             },
             {
@@ -108,7 +109,7 @@ const seedData = async () => {
                 category_id: 5, // Luxury
                 price: 12000000,
                 description: 'Đồng hồ Thụy Sĩ với độ chính xác cao, máy ETA 2824-2',
-                image: 'static/dongho5.webp',
+                image: 'images/products/dongho5.webp',
                 stock: 5
             },
             {
@@ -117,7 +118,7 @@ const seedData = async () => {
                 category_id: 8, // Diving
                 price: 6800000,
                 description: 'Đồng hồ lặn chuyên nghiệp, chống nước 200m, bezel xoay một chiều',
-                image: 'static/dongho1.webp',
+                image: 'images/products/dongho1.webp',
                 stock: 7
             },
             {
@@ -126,7 +127,7 @@ const seedData = async () => {
                 category_id: 7, // Dress Watch
                 price: 1800000,
                 description: 'Đồng hồ điện tử thể thao với thiết kế thanh lịch, chống nước 100m',
-                image: 'static/dongho2.webp',
+                image: 'images/products/dongho2.webp',
                 stock: 20
             },
             {
@@ -135,7 +136,7 @@ const seedData = async () => {
                 category_id: 8, // Diving
                 price: 4500000,
                 description: 'Đồng hồ lặn chuyên nghiệp với máy cơ tự động, chống nước 200m',
-                image: 'static/dongho3.webp',
+                image: 'images/products/dongho3.webp',
                 stock: 6
             },
             // Sản phẩm phụ kiện (category_id = 4)
@@ -145,7 +146,7 @@ const seedData = async () => {
                 category_id: 4, // Khác
                 price: 800000,
                 description: 'Chất liệu gỗ cao cấp, lót nhung, bảo vệ đồng hồ khỏi bụi và va đập',
-                image: 'static/dongho1.webp',
+                image: 'images/products/dongho1.webp',
                 stock: 15
             },
             {
@@ -154,7 +155,7 @@ const seedData = async () => {
                 category_id: 4, // Khác
                 price: 150000,
                 description: 'Bao gồm dụng cụ tháo chốt, thay dây, phù hợp mọi loại đồng hồ',
-                image: 'static/dongho2.webp',
+                image: 'images/products/dongho2.webp',
                 stock: 25
             },
             {
@@ -163,7 +164,7 @@ const seedData = async () => {
                 category_id: 4, // Khác
                 price: 50000,
                 description: 'Sợi microfiber mềm mại, không xước mặt kính, làm sạch hiệu quả',
-                image: 'static/dongho3.webp',
+                image: 'images/products/dongho3.webp',
                 stock: 30
             },
             {
@@ -172,7 +173,7 @@ const seedData = async () => {
                 category_id: 4, // Khác
                 price: 120000,
                 description: 'Chất liệu acrylic trong suốt, trưng bày đồng hồ đẹp mắt, chắc chắn',
-                image: 'static/dongho4.webp',
+                image: 'images/products/dongho4.webp',
                 stock: 20
             },
             {
@@ -181,7 +182,7 @@ const seedData = async () => {
                 category_id: 4, // Khác
                 price: 35000,
                 description: 'Pin chính hãng Maxell, dùng cho nhiều loại đồng hồ quartz, bền bỉ',
-                image: 'static/dongho5.webp',
+                image: 'images/products/dongho5.webp',
                 stock: 50
             }
         ];
