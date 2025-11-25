@@ -154,6 +154,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    // Nếu đang ở dashboard, tự động load đơn hàng cho bảng dashboard
+    if (document.getElementById('dashboardOrdersTableBody')) {
+        loadOrders();
+    }
 });
 // Load stock data for admin-stock.html
 async function loadStock() {

@@ -182,7 +182,7 @@ loginForm.addEventListener('submit', async function(e) {
                   email.toLowerCase() === 'admin@shop.com' &&
                   password === 'admin123'
                 ) {
-                  window.location.href = 'admin.html';
+                  window.location.href = 'admin-dashboard.html';
                 } else {
                   window.location.href = 'index.html';
                 }
