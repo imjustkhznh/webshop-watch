@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - TimeLuxe</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/testimonials.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation bar for admin pages -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>TimeLuxe</h2>
+            <p>Quản lý hệ thống</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="admin-dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Tổng quan</a></li>
+            <li class="nav-item"><a href="admin-products.html" class="nav-link"><i class="fas fa-box"></i> Quản lý sản phẩm</a></li>
+            <li class="nav-item"><a href="admin-orders.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Quản lý đơn hàng</a></li>
+            <li class="nav-item"><a href="admin-customers.html" class="nav-link"><i class="fas fa-users"></i> Quản lý khách hàng</a></li>
+            <li class="nav-item"><a href="admin-promotions.html" class="nav-link"><i class="fas fa-percentage"></i> Giảm giá</a></li>
+            <li class="nav-item"><a href="admin-brands.html" class="nav-link"><i class="fas fa-tag"></i> Quản lý thương hiệu</a></li>
+            <li class="nav-item"><a href="admin-stock.html" class="nav-link"><i class="fas fa-warehouse"></i> Quản lý tồn kho</a></li>
+        </ul>
+    </div>
+    <div class="main-content" id="dashboard">
+        <div class="content-header">
+          <h1>Bảng điều khiển</h1>
+          <p>Chào mừng bạn đến với hệ thống quản lý TimeLuxe</p>
+        </div>
+        <div style="display: flex; gap: 40px; margin: 40px 0 0 0; flex-wrap: wrap; justify-content: flex-start; align-items: flex-start;">
+          <div style="flex: 1 1 350px; min-width: 350px; max-width: 480px; background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(52,152,219,0.07); padding: 24px;">
+            <h3 style="margin-bottom: 18px; font-size: 1.1rem; color: #3498db; font-weight: 700;">Tỉ lệ doanh thu theo thương hiệu</h3>
+            <canvas id="dashboardPieChart" width="400" height="400"></canvas>
+          </div>
+          <div style="flex: 2 1 600px; min-width: 400px; max-width: 900px; background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(52,152,219,0.07); padding: 24px;">
+            <h3 style="margin-bottom: 18px; font-size: 1.1rem; color: #e67e22; font-weight: 700;">Doanh thu theo ngày</h3>
+            <canvas id="dashboardLineChart" width="900" height="320"></canvas>
+          </div>
+        </div>
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Đơn hàng gần đây</h2>
+                <a href="admin-orders.html" class="btn btn-primary">Xem tất cả</a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Khách hàng</th>
+                        <th>Sản phẩm</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="dashboardOrdersTableBody">
+                    <!-- Dữ liệu đơn hàng sẽ được render bằng JavaScript -->
+                </tbody>
+            </table>
+            <!-- Mobile Cards for Dashboard Orders -->
+            <div class="mobile-cards dashboard-orders-cards">
+                <!-- Mobile cards will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </div>
+    <script src="js/admin.js"></script>
+</body>
+</html>

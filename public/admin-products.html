@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Sản phẩm - TimeLuxe</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/testimonials.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>TimeLuxe</h2>
+            <p>Quản lý hệ thống</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="admin-dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Tổng quan</a></li>
+            <li class="nav-item"><a href="admin-products.html" class="nav-link"><i class="fas fa-box"></i> Quản lý sản phẩm</a></li>
+            <li class="nav-item"><a href="admin-orders.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Quản lý đơn hàng</a></li>
+            <li class="nav-item"><a href="admin-customers.html" class="nav-link"><i class="fas fa-users"></i> Quản lý khách hàng</a></li>
+            <li class="nav-item"><a href="admin-promotions.html" class="nav-link"><i class="fas fa-percentage"></i> Giảm giá</a></li>
+            <li class="nav-item"><a href="admin-brands.html" class="nav-link"><i class="fas fa-tag"></i> Quản lý thương hiệu</a></li>
+            <li class="nav-item"><a href="admin-stock.html" class="nav-link"><i class="fas fa-warehouse"></i> Quản lý tồn kho</a></li>
+        </ul>
+    </div>
+    <div class="main-content" id="products">
+        <div class="content-header">
+            <h1>Quản lý sản phẩm</h1>
+            <p>Thêm, sửa, xóa và quản lý thông tin sản phẩm</p>
+        </div>
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Danh sách sản phẩm</h2>
+                <button class="btn btn-primary" onclick="openModal('addProductModal')">
+                    <i class="fas fa-plus"></i> Thêm sản phẩm
+                </button>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Tìm kiếm sản phẩm...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="table-wrapper">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã SP</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Loại sản phẩm</th>
+                            <th>Thương hiệu</th>
+                            <th>Giá</th>
+                            <th>Tồn kho</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Products will be loaded here by JavaScript -->
+                    </tbody>
+                </table>
+                <!-- Mobile Cards Container -->
+                <div class="mobile-cards">
+                    <!-- Mobile cards will be loaded here by JavaScript -->
+                </div>
+            </div>
+            <!-- Pagination Controls -->
+            <div class="pagination" style="margin-top: 20px; display: flex; justify-content: center; align-items: center; gap: 10px;">
+                <button class="btn btn-prev" onclick="changePage(1)" style="padding: 8px 12px; border: 1px solid #ddd; background: #f8f9fa; border-radius: 4px; cursor: pointer;">
+                    <i class="fas fa-chevron-left"></i> Đầu
+                </button>
+                <button class="btn btn-prev" onclick="changePage(currentPage - 1)" style="padding: 8px 12px; border: 1px solid #ddd; background: #f8f9fa; border-radius: 4px; cursor: pointer;">
+                    <i class="fas fa-chevron-left"></i> Trước
+                </button>
+                <span id="pageInfo" style="padding: 8px 12px; color: #666;">
+                    Trang <span id="currentPageNum">1</span> / <span id="totalPages">1</span>
+                </span>
+                <button class="btn btn-next" onclick="changePage(currentPage + 1)" style="padding: 8px 12px; border: 1px solid #ddd; background: #f8f9fa; border-radius: 4px; cursor: pointer;">
+                    Sau <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="btn btn-next" onclick="changePage(totalPages)" style="padding: 8px 12px; border: 1px solid #ddd; background: #f8f9fa; border-radius: 4px; cursor: pointer;">
+                    Cuối <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <!-- Products Count -->
+            <div style="margin-top: 10px; text-align: center; color: #666; font-size: 14px;">
+                Hiển thị <span id="showingProducts">10</span> / <span id="totalProducts">26</span> sản phẩm
+            </div>
+        </div>
+        <!-- Modal thêm sản phẩm -->
+        <div id="addProductModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Thêm sản phẩm mới</h2>
+                    <span class="close" onclick="closeModal('addProductModal')">&times;</span>
+                </div>
+                <form id="addProductForm">
+                    <div class="form-group">
+                        <label for="productName">Tên sản phẩm</label>
+                        <input type="text" id="productName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productBrand">Thương hiệu</label>
+                        <select id="productBrand" class="form-control" required>
+                            <option value="">Chọn thương hiệu</option>
+                            <!-- JS sẽ tự động thêm các option -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Loại sản phẩm</label>
+                        <select id="productCategory" class="form-control" required>
+                            <option value="">Chọn loại</option>
+                            <!-- JS sẽ tự động thêm các option từ API -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Giá</label>
+                        <input type="number" id="productPrice" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productStock">Số lượng tồn kho</label>
+                        <input type="number" id="productStock" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Mô tả</label>
+                        <textarea id="productDescription" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage">Hình ảnh (nhập link ảnh từ mạng)</label>
+                        <input type="text" id="productImage" class="form-control" placeholder="Nhập link ảnh (URL)">
+                        <div id="currentImagePreview" style="margin-top:8px;"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="submitProductBtn">Thêm sản phẩm</button>
+                </form>
+            </div>
+        </div>
+        <!-- Modal xác nhận xóa sản phẩm -->
+        <div id="deleteConfirmModal" class="modal">
+          <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+              <h2>Xác nhận xóa</h2>
+              <span class="close" onclick="closeModal('deleteConfirmModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+              <div class="delete-confirm-content">
+                <div class="delete-icon">
+                  <i class="fas fa-exclamation-triangle" style="color: #e74c3c; font-size: 48px;"></i>
+                </div>
+                <h3 id="deleteProductName" style="margin: 20px 0; color: #2c3e50; text-align: center;"></h3>
+                <p style="text-align: center; color: #7f8c8d; margin-bottom: 30px;">
+                  Bạn có chắc chắn muốn xóa sản phẩm này? Hành động này không thể hoàn tác.
+                </p>
+                <div class="delete-actions">
+                  <button type="button" class="btn btn-secondary" onclick="closeModal('deleteConfirmModal')">
+                    <i class="fas fa-times"></i> Hủy
+                  </button>
+                  <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="confirmDeleteProduct()">
+                    <i class="fas fa-trash"></i> Xác nhận xóa
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <script src="js/admin.js"></script>
+</body>
+</html>

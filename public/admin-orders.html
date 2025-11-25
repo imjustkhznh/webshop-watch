@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Đơn hàng - TimeLuxe</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/testimonials.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>TimeLuxe</h2>
+            <p>Quản lý hệ thống</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="admin-dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Tổng quan</a></li>
+            <li class="nav-item"><a href="admin-products.html" class="nav-link"><i class="fas fa-box"></i> Quản lý sản phẩm</a></li>
+            <li class="nav-item"><a href="admin-orders.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Quản lý đơn hàng</a></li>
+            <li class="nav-item"><a href="admin-customers.html" class="nav-link"><i class="fas fa-users"></i> Quản lý khách hàng</a></li>
+            <li class="nav-item"><a href="admin-promotions.html" class="nav-link"><i class="fas fa-percentage"></i> Giảm giá</a></li>
+            <li class="nav-item"><a href="admin-brands.html" class="nav-link"><i class="fas fa-tag"></i> Quản lý thương hiệu</a></li>
+            <li class="nav-item"><a href="admin-stock.html" class="nav-link"><i class="fas fa-warehouse"></i> Quản lý tồn kho</a></li>
+        </ul>
+    </div>
+    <div class="main-content" id="orders">
+        <div class="content-header">
+            <h1>Quản lý đơn hàng</h1>
+            <p>Theo dõi và xử lý đơn hàng của khách hàng</p>
+        </div>
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Danh sách đơn hàng</h2>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Tìm kiếm đơn hàng...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="table-wrapper">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Ngày đặt</th>
+                            <th>Khách hàng</th>
+                            <th>Địa chỉ giao hàng</th>
+                            <th>Sản phẩm</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <!-- Orders will be loaded here by JavaScript -->
+                    </tbody>
+                </table>
+                <!-- Mobile Cards Container for Orders -->
+                <div class="mobile-cards orders-mobile-cards">
+                    <!-- Mobile cards will be loaded here by JavaScript -->
+                </div>
+            </div>
+        </div>
+        <!-- Modal chi tiết đơn hàng -->
+        <div id="orderDetailModal" class="modal">
+          <div class="modal-content" style="max-width:600px">
+            <div class="modal-header">
+              <h2>Chi tiết đơn hàng</h2>
+              <span class="close" onclick="closeModal('orderDetailModal')">&times;</span>
+            </div>
+            <div id="orderDetailContent">
+              <!-- Nội dung chi tiết đơn hàng sẽ được render bằng JS -->
+            </div>
+          </div>
+        </div>
+    </div>
+    <script src="js/admin.js"></script>
+</body>
+</html>

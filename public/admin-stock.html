@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Tồn kho - TimeLuxe</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/testimonials.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>TimeLuxe</h2>
+            <p>Quản lý hệ thống</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="admin-dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Tổng quan</a></li>
+            <li class="nav-item"><a href="admin-products.html" class="nav-link"><i class="fas fa-box"></i> Quản lý sản phẩm</a></li>
+            <li class="nav-item"><a href="admin-orders.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Quản lý đơn hàng</a></li>
+            <li class="nav-item"><a href="admin-customers.html" class="nav-link"><i class="fas fa-users"></i> Quản lý khách hàng</a></li>
+            <li class="nav-item"><a href="admin-promotions.html" class="nav-link"><i class="fas fa-percentage"></i> Giảm giá</a></li>
+            <li class="nav-item"><a href="admin-brands.html" class="nav-link"><i class="fas fa-tag"></i> Quản lý thương hiệu</a></li>
+            <li class="nav-item"><a href="admin-stock.html" class="nav-link active"><i class="fas fa-warehouse"></i> Quản lý tồn kho</a></li>
+        </ul>
+    </div>
+    <div class="main-content" id="stock">
+        <div class="content-header">
+            <h1>Quản lý tồn kho</h1>
+            <p>Theo dõi, cập nhật số lượng tồn kho các sản phẩm</p>
+        </div>
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Danh sách tồn kho</h2>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Tìm kiếm sản phẩm...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="table-wrapper">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã SP</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Thương hiệu</th>
+                            <th>Tồn kho</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stockTableBody">
+                        <!-- Dữ liệu tồn kho sẽ được render bằng JavaScript -->
+                    </tbody>
+                </table>
+                <!-- Mobile Cards Container for Stock -->
+                <div class="mobile-cards stock-mobile-cards">
+                    <!-- Mobile cards will be loaded here by JavaScript -->
+                </div>
+            </div>
+        </div>
+        <!-- Modal cập nhật tồn kho -->
+        <div id="updateStockModal" class="modal">
+            <div class="modal-content" style="max-width:400px">
+                <div class="modal-header">
+                    <h2>Cập nhật tồn kho</h2>
+                    <span class="close" onclick="closeModal('updateStockModal')">&times;</span>
+                </div>
+                <form id="updateStockForm">
+                    <input type="hidden" id="updateStockProductId">
+                    <div class="form-group">
+                        <label for="updateStockProductName">Tên sản phẩm</label>
+                        <input type="text" id="updateStockProductName" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateStockQuantity">Số lượng tồn kho mới</label>
+                        <input type="number" id="updateStockQuantity" class="form-control" min="0" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="js/admin-stock.js"></script>
+</body>
+</html>

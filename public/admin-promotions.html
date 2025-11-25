@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Mã giảm giá - TimeLuxe</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/testimonials.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>TimeLuxe</h2>
+            <p>Quản lý hệ thống</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="admin-dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Tổng quan</a></li>
+            <li class="nav-item"><a href="admin-products.html" class="nav-link"><i class="fas fa-box"></i> Quản lý sản phẩm</a></li>
+            <li class="nav-item"><a href="admin-orders.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Quản lý đơn hàng</a></li>
+            <li class="nav-item"><a href="admin-customers.html" class="nav-link"><i class="fas fa-users"></i> Quản lý khách hàng</a></li>
+            <li class="nav-item"><a href="admin-promotions.html" class="nav-link"><i class="fas fa-percentage"></i> Giảm giá</a></li>
+            <li class="nav-item"><a href="admin-brands.html" class="nav-link"><i class="fas fa-tag"></i> Quản lý thương hiệu</a></li>
+            <li class="nav-item"><a href="admin-stock.html" class="nav-link"><i class="fas fa-warehouse"></i> Quản lý tồn kho</a></li>
+        </ul>
+    </div>
+        <div class="main-content" id="promotions">
+                <div class="content-header">
+                        <h1>Quản lý mã giảm giá</h1>
+                        <p>Tạo và quản lý các mã giảm giá cho khách hàng</p>
+                </div>
+                <div class="content-section">
+                        <div class="section-header">
+                                <h2>Danh sách mã giảm giá</h2>
+                                <button class="btn btn-primary" onclick="openAddPromotionModal()">
+                                        <i class="fas fa-plus"></i> Thêm mã giảm giá
+                                </button>
+                        </div>
+                        <div class="search-box">
+                                <input type="text" id="discountCodeSearch" placeholder="Tìm kiếm mã giảm giá...">
+                        </div>
+                        <table class="table">
+                                <thead>
+                                        <tr>
+                                                <th>Mã</th>
+                                                <th>Mô tả</th>
+                                                <th>Loại</th>
+                                                <th>Giá trị</th>
+                                                <th>Tối thiểu</th>
+                                                <th>Lượt dùng</th>
+                                                <th>Trạng thái</th>
+                                                <th>HSD</th>
+                                                <th>Thao tác</th>
+                                        </tr>
+                                </thead>
+                                <tbody id="discountCodesTableBody">
+                                        <!-- Dữ liệu sẽ được render bằng JavaScript -->
+                                </tbody>
+                        </table>
+                        <!-- Thêm khối card cho mobile -->
+                        <div class="promotion-cards" id="promotionCardsContainer"></div>
+                </div>
+                <!-- Modal thêm mã giảm giá -->
+                <div id="addPromotionModal" class="modal">
+                        <div class="modal-content" style="max-width: 800px; width: 90%; margin: 20px auto; padding: 0;">
+                                <div class="modal-header" style="background: #f8f9fa; padding: 20px 30px; border-bottom: 1px solid #dee2e6; border-radius: 8px 8px 0 0;">
+                                        <h2 style="margin: 0; color: #333; font-size: 24px;">Thêm mã giảm giá mới</h2>
+                                        <span class="close" onclick="closeModal('addPromotionModal')" style="font-size: 28px; font-weight: bold; color: #666;">&times;</span>
+                                </div>
+                                <form id="addPromotionForm" style="padding: 30px;">
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                                <div class="form-group">
+                                                        <label for="promotionName" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Mã giảm giá</label>
+                                                        <input type="text" id="promotionName" class="form-control" placeholder="VD: SALE10, WELCOME50" required style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                                </div>
+                                                <div class="form-group">
+                                                        <label for="discountType" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Loại giảm giá</label>
+                                                        <select id="discountType" class="form-control" required style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                                                <option value="">Chọn loại</option>
+                                                                <option value="percentage">Phần trăm (%)</option>
+                                                                <option value="fixed">Số tiền cố định (VNĐ)</option>
+                                                        </select>
+                                                </div>
+                                        </div>
+                                        <div class="form-group" style="margin-top: 20px;">
+                                                <label for="promotionDescription" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Mô tả</label>
+                                                <input type="text" id="promotionDescription" class="form-control" placeholder="Mô tả mã giảm giá" style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                        </div>
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                                                <div class="form-group">
+                                                        <label for="promotionDiscount" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Giá trị giảm</label>
+                                                        <input type="number" id="promotionDiscount" class="form-control" min="0" step="0.01" required style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                                </div>
+                                                <div class="form-group">
+                                                        <label for="minOrderAmount" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Đơn hàng tối thiểu (VNĐ)</label>
+                                                        <input type="number" id="minOrderAmount" class="form-control" min="0" value="0" style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                                </div>
+                                        </div>
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                                                <div class="form-group">
+                                                        <label for="maxUses" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Số lần sử dụng tối đa</label>
+                                                        <input type="number" id="maxUses" class="form-control" min="1" placeholder="Để trống = không giới hạn" style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                                        <small style="color: #6c757d; font-size: 12px; margin-top: 4px; display: block;">Để trống = không giới hạn</small>
+                                                </div>
+                                                <div class="form-group">
+                                                        <label for="promotionEnd" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Hạn sử dụng</label>
+                                                        <input type="datetime-local" id="promotionEnd" class="form-control" style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                                </div>
+                                        </div>
+                                        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6;">
+                                                <button type="submit" class="btn btn-primary" id="submitPromotionBtn" style="padding: 12px 30px; font-size: 16px; margin-right: 15px; background: #007bff; border: none; border-radius: 6px; color: white; cursor: pointer;">Tạo mã giảm giá</button>
+                                                <button type="button" class="btn btn-secondary" onclick="closeModal('addPromotionModal')" style="padding: 12px 30px; font-size: 16px; background: #6c757d; border: none; border-radius: 6px; color: white; cursor: pointer;">Hủy</button>
+                                        </div>
+                                </form>
+                        </div>
+                </div>
+                <!-- Modal sửa mã giảm giá -->
+                <div id="editPromotionModal" class="modal">
+                    <div class="modal-content" style="max-width: 800px; width: 90%; margin: 20px auto; padding: 0;">
+                        <div class="modal-header" style="background: #f8f9fa; padding: 20px 30px; border-bottom: 1px solid #dee2e6; border-radius: 8px 8px 0 0;">
+                            <h2 style="margin: 0; color: #333; font-size: 24px;">Sửa mã giảm giá</h2>
+                            <span class="close" onclick="closeModal('editPromotionModal')" style="font-size: 28px; font-weight: bold; color: #666;">&times;</span>
+                        </div>
+                        <form id="editPromotionForm" style="padding: 30px;">
+                            <input type="hidden" id="editPromotionId">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label for="editPromotionName" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Mã giảm giá</label>
+                                    <input type="text" id="editPromotionName" class="form-control" required style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editDiscountType" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Loại giảm giá</label>
+                                    <select id="editDiscountType" class="form-control" required style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                            <option value="percentage">Phần trăm (%)</option>
+                                            <option value="fixed">Số tiền cố định (VNĐ)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 20px;">
+                                <label for="editPromotionDescription" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Mô tả</label>
+                                <input type="text" id="editPromotionDescription" class="form-control" style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                                <div class="form-group">
+                                    <label for="editPromotionDiscount" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Giá trị giảm</label>
+                                    <input type="number" id="editPromotionDiscount" class="form-control" min="0" step="0.01" required style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editMinOrderAmount" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Đơn hàng tối thiểu (VNĐ)</label>
+                                    <input type="number" id="editMinOrderAmount" class="form-control" min="0" value="0" style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                                <div class="form-group">
+                                    <label for="editMaxUses" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Số lần sử dụng tối đa</label>
+                                    <input type="number" id="editMaxUses" class="form-control" min="1" placeholder="Để trống = không giới hạn" style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                    <small style="color: #6c757d; font-size: 12px; margin-top: 4px; display: block;">Để trống = không giới hạn</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPromotionEnd" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Hạn sử dụng</label>
+                                    <input type="datetime-local" id="editPromotionEnd" class="form-control" style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 14px;">
+                                </div>
+                            </div>
+                            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6;">
+                                <button type="submit" class="btn btn-primary" style="padding: 12px 30px; font-size: 16px; margin-right: 15px; background: #007bff; border: none; border-radius: 6px; color: white; cursor: pointer;">Cập nhật mã giảm giá</button>
+                                <button type="button" class="btn btn-secondary" onclick="closeModal('editPromotionModal')" style="padding: 12px 30px; font-size: 16px; background: #6c757d; border: none; border-radius: 6px; color: white; cursor: pointer;">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        </div>
+        <script src="js/admin.js"></script>
+</body>
+</html>

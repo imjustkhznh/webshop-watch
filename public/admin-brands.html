@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Thương hiệu - TimeLuxe</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/testimonials.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>TimeLuxe</h2>
+            <p>Quản lý hệ thống</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="admin-dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Tổng quan</a></li>
+            <li class="nav-item"><a href="admin-products.html" class="nav-link"><i class="fas fa-box"></i> Quản lý sản phẩm</a></li>
+            <li class="nav-item"><a href="admin-orders.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Quản lý đơn hàng</a></li>
+            <li class="nav-item"><a href="admin-customers.html" class="nav-link"><i class="fas fa-users"></i> Quản lý khách hàng</a></li>
+            <li class="nav-item"><a href="admin-promotions.html" class="nav-link"><i class="fas fa-percentage"></i> Giảm giá</a></li>
+            <li class="nav-item"><a href="admin-brands.html" class="nav-link"><i class="fas fa-tag"></i> Quản lý thương hiệu</a></li>
+            <li class="nav-item"><a href="admin-stock.html" class="nav-link"><i class="fas fa-warehouse"></i> Quản lý tồn kho</a></li>
+        </ul>
+    </div>
+    <div class="main-content" id="brands">
+        <div class="brand-card">
+            <div class="brand-header">
+                <div>
+                    <h1 class="brand-title">Quản lý thương hiệu</h1>
+                    <p class="brand-subtitle">Thêm, sửa, xóa các thương hiệu sản phẩm</p>
+                </div>
+                <button class="add-brand-btn" onclick="openAddBrandModal()">
+                    <i class="fas fa-plus"></i> Thêm thương hiệu
+                </button>
+            </div>
+            <div class="brand-table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên thương hiệu</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="brandsTableBody">
+                        <!-- JS sẽ render dữ liệu ở đây -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Modal thêm thương hiệu -->
+        <div id="addBrandModal" class="modal brand-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Thêm thương hiệu mới</h2>
+                    <span class="close" onclick="closeModal('addBrandModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="addBrandForm">
+                        <div class="form-group">
+                            <label for="brandName">Tên thương hiệu</label>
+                            <input type="text" id="brandName" class="form-control" placeholder="Nhập tên thương hiệu..." required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Thêm thương hiệu
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Modal sửa thương hiệu -->
+        <div id="editBrandModal" class="modal brand-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Sửa thương hiệu</h2>
+                    <span class="close" onclick="closeModal('editBrandModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="editBrandForm">
+                        <input type="hidden" id="editBrandId">
+                        <div class="form-group">
+                            <label for="editBrandName">Tên thương hiệu</label>
+                            <input type="text" id="editBrandName" class="form-control" placeholder="Nhập tên thương hiệu..." required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Cập nhật thương hiệu
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/admin.js"></script>
+</body>
+</html>

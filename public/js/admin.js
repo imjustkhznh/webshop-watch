@@ -1,3 +1,291 @@
+// ===== PROMOTION (DISCOUNT CODE) LOGIC =====
+
+// Hiện modal thêm mã giảm giá
+function openAddPromotionModal() {
+    document.getElementById('addPromotionModal').style.display = 'block';
+}
+
+// Đóng modal
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.style.display = 'none';
+}
+
+// Thêm mới mã giảm giá
+const addPromotionForm = document.getElementById('addPromotionForm');
+if (addPromotionForm) {
+    addPromotionForm.onsubmit = async function(e) {
+        e.preventDefault();
+        const code = document.getElementById('promotionName').value.trim();
+        const description = document.getElementById('promotionDescription').value.trim();
+        const discount_type = document.getElementById('discountType').value;
+        const discount_value = document.getElementById('promotionDiscount').value;
+        const min_order_amount = document.getElementById('minOrderAmount').value;
+        // Có thể bổ sung max_uses, valid_until nếu cần
+        try {
+            const response = await fetch('/api/admin/discount-codes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ code, description, discount_type, discount_value, min_order_amount })
+            });
+            const result = await response.json();
+            if (response.ok) {
+                showNotification('Thêm mã giảm giá thành công!', 'success');
+                closeModal('addPromotionModal');
+                addPromotionForm.reset();
+                loadPromotions();
+            } else {
+                showNotification('Lỗi: ' + (result.error || 'Không thể thêm mã giảm giá'), 'error');
+            }
+        } catch (error) {
+            showNotification('Lỗi kết nối khi thêm mã giảm giá', 'error');
+        }
+    };
+}
+
+// Hiện modal sửa mã giảm giá
+let editingDiscountId = null;
+function editDiscountCode(id) {
+    const codeRow = document.querySelector(`button[onclick="editDiscountCode(${id})"]`);
+    if (!codeRow) return;
+    // Lấy dữ liệu từ data-attribute
+    document.getElementById('promotionName').value = codeRow.getAttribute('data-code') || '';
+    document.getElementById('promotionDescription').value = codeRow.getAttribute('data-description') || '';
+    document.getElementById('discountType').value = codeRow.getAttribute('data-type') || '';
+    document.getElementById('promotionDiscount').value = codeRow.getAttribute('data-value') || '';
+    document.getElementById('minOrderAmount').value = codeRow.getAttribute('data-min') || '';
+    editingDiscountId = id;
+    document.getElementById('addPromotionModal').style.display = 'block';
+    // Đổi nút submit thành "Cập nhật"
+    document.getElementById('submitPromotionBtn').textContent = 'Cập nhật';
+}
+
+// Xử lý cập nhật mã giảm giá khi đang ở chế độ sửa
+if (addPromotionForm) {
+    addPromotionForm.onsubmit = async function(e) {
+        e.preventDefault();
+        const code = document.getElementById('promotionName').value.trim();
+        const description = document.getElementById('promotionDescription').value.trim();
+        const discount_type = document.getElementById('discountType').value;
+        const discount_value = document.getElementById('promotionDiscount').value;
+        const min_order_amount = document.getElementById('minOrderAmount').value;
+        try {
+            let response, result;
+            if (editingDiscountId) {
+                response = await fetch(`/api/admin/discount-codes/${editingDiscountId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ code, description, discount_type, discount_value, min_order_amount })
+                });
+                result = await response.json();
+                if (response.ok) {
+                    showNotification('Cập nhật mã giảm giá thành công!', 'success');
+                } else {
+                    showNotification('Lỗi: ' + (result.error || 'Không thể cập nhật mã giảm giá'), 'error');
+                }
+            } else {
+                response = await fetch('/api/admin/discount-codes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ code, description, discount_type, discount_value, min_order_amount })
+                });
+                result = await response.json();
+                if (response.ok) {
+                    showNotification('Thêm mã giảm giá thành công!', 'success');
+                } else {
+                    showNotification('Lỗi: ' + (result.error || 'Không thể thêm mã giảm giá'), 'error');
+                }
+            }
+            closeModal('addPromotionModal');
+            addPromotionForm.reset();
+            editingDiscountId = null;
+            document.getElementById('submitPromotionBtn').textContent = 'Thêm mã giảm giá';
+            loadPromotions();
+        } catch (error) {
+            showNotification('Lỗi kết nối khi lưu mã giảm giá', 'error');
+        }
+    };
+}
+
+// Xóa mã giảm giá
+async function deleteDiscountCode(id) {
+    if (!confirm('Bạn có chắc chắn muốn xóa mã giảm giá này?')) return;
+    try {
+        const response = await fetch(`/api/admin/discount-codes/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        const result = await response.json();
+        if (response.ok) {
+            showNotification('Xóa mã giảm giá thành công!', 'success');
+            loadPromotions();
+        } else {
+            showNotification('Lỗi: ' + (result.error || 'Không thể xóa mã giảm giá'), 'error');
+        }
+    } catch (error) {
+        showNotification('Lỗi kết nối khi xóa mã giảm giá', 'error');
+    }
+}
+
+window.openAddPromotionModal = openAddPromotionModal;
+window.closeModal = closeModal;
+window.editDiscountCode = editDiscountCode;
+window.deleteDiscountCode = deleteDiscountCode;
+// Sidebar navigation: chuyển trang khi click menu
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebarLinks = document.querySelectorAll('.sidebar .nav-link');
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            if (href) {
+                window.location.href = href;
+            }
+        });
+    });
+});
+// Load stock data for admin-stock.html
+async function loadStock() {
+    try {
+        const response = await fetch('/api/products');
+        const data = await response.json();
+        if (response.ok && data.products) {
+            displayStock(data.products);
+        } else {
+            showNotification('Không thể tải dữ liệu tồn kho', 'error');
+        }
+    } catch (error) {
+        showNotification('Lỗi kết nối khi tải tồn kho', 'error');
+    }
+}
+
+function displayStock(products) {
+    const stockTbody = document.getElementById('stockTableBody');
+    if (!stockTbody) return;
+    stockTbody.innerHTML = '';
+    if (!products || products.length === 0) {
+        stockTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#aaa;">Không có dữ liệu tồn kho</td></tr>';
+        return;
+    }
+    products.forEach(product => {
+        let status = '', statusClass = '';
+        if (product.stock === 0) {
+            status = 'Hết hàng';
+            statusClass = 'status-outstock';
+        } else if (product.stock <= 10) {
+            status = 'Sắp hết hàng';
+            statusClass = 'status-processing';
+        } else {
+            status = 'Bình thường';
+            statusClass = 'status-instock';
+        }
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>SP${String(product.id).padStart(3, '0')}</td>
+            <td>${product.name}</td>
+            <td>${product.brand_name || 'N/A'}</td>
+            <td>${product.stock}</td>
+            <td><span class="status ${statusClass}">${status}</span></td>
+            <td>
+                <button class="btn btn-edit btn-sm" onclick="editProduct(${product.id})">Sửa</button>
+            </td>
+        `;
+        stockTbody.appendChild(row);
+    });
+}
+
+window.loadStock = loadStock;
+window.displayStock = displayStock;
+// Vẽ biểu đồ tròn doanh thu theo thương hiệu
+function renderPieChart(brandData) {
+    if (!window.Chart) return;
+    const ctx = document.getElementById('dashboardPieChart');
+    if (!ctx) return;
+    if (window.dashboardPieChartInstance) {
+        window.dashboardPieChartInstance.destroy();
+    }
+    const labels = brandData.map(b => b.brand);
+    const data = brandData.map(b => b.revenue);
+    window.dashboardPieChartInstance = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Tỉ lệ doanh thu theo thương hiệu',
+                data,
+                backgroundColor: [
+                    '#3498db','#e67e22','#27ae60','#8e44ad','#f39c12','#1abc9c','#c0392b','#34495e','#9b59b6','#2ecc71'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: true } }
+        }
+    });
+}
+
+// Vẽ biểu đồ đường doanh thu theo ngày
+function renderLineChart(dailyData) {
+    if (!window.Chart) return;
+    const ctx = document.getElementById('dashboardLineChart');
+    if (!ctx) return;
+    if (window.dashboardLineChartInstance) {
+        window.dashboardLineChartInstance.destroy();
+    }
+    const labels = dailyData.map(d => {
+        const date = new Date(d.date);
+        return date.toLocaleDateString('vi-VN');
+    }).reverse();
+    const revenueData = dailyData.map(d => d.revenue || 0).reverse();
+    window.dashboardLineChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Doanh thu',
+                    data: revenueData,
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52,152,219,0.1)',
+                    tension: 0.3,
+                    fill: true,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#3498db',
+                    pointBorderColor: '#fff',
+                    pointHoverRadius: 7,
+                    pointHoverBackgroundColor: '#3498db',
+                    pointHoverBorderColor: '#e67e22',
+                    borderWidth: 3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true },
+                tooltip: { enabled: true }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Doanh thu (VND)' }
+                }
+            }
+        }
+    });
+}
 // Custom Notification Function
 function showNotification(message, type = 'success', duration = 3000) {
     // Remove existing notifications
@@ -360,7 +648,6 @@ function showTab(event, tabName) {
 // Initialize admin page
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Admin page initialized');
-    
     // Check if user is admin
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (user.role !== 'admin') {
@@ -368,13 +655,23 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // Show dashboard by default
-    showTab({ currentTarget: document.querySelector('.nav-link') }, 'dashboard');
-    
-    // Load initial data
-    loadReports();
-    loadProducts();
-    loadOrders();
+    // Detect page and load data accordingly
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent && mainContent.id === 'stock') {
+        loadStock();
+    } else if (mainContent && mainContent.id === 'products') {
+        loadProducts();
+    } else if (mainContent && mainContent.id === 'customers') {
+        loadCustomers();
+    } else if (mainContent && mainContent.id === 'brands') {
+        loadBrands();
+    } else if (mainContent && mainContent.id === 'promotions') {
+        loadPromotions && loadPromotions();
+    } else if (mainContent && mainContent.id === 'orders') {
+        loadOrders();
+    } else if (mainContent && mainContent.id === 'dashboard') {
+        loadReports();
+    }
 });
 
 // Mobile menu functions
@@ -501,7 +798,12 @@ async function confirmDeleteCustomer() {
 // Load customers from API
 async function loadCustomers() {
     try {
-        const response = await fetch('/api/users/customers');
+        const token = localStorage.getItem('token'); // hoặc nơi bạn lưu token
+        const response = await fetch('/api/users/customers', {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
         const data = await response.json();
         
         if (response.ok && data.customers) {
@@ -550,7 +852,7 @@ async function loadCategories() {
         const response = await fetch('/api/categories');
         const data = await response.json();
         
-        if (response.ok && data.categories) {
+        if (response.ok && Array.isArray(data.categories)) {
             const categorySelect = document.getElementById('productCategory');
             if (categorySelect) {
                 categorySelect.innerHTML = '<option value="">Chọn loại sản phẩm</option>';
@@ -684,12 +986,10 @@ async function loadOrders() {
             return;
         }
         
-        // Tạo HTML cho mỗi đơn hàng
+        // Tạo HTML cho mỗi đơn hàng (có nút xóa/sửa trạng thái)
         const ordersHTML = data.orders.map((order, index) => {
-            console.log(`Processing order ${index}:`, order);
             const d = new Date(order.order_date);
             const dateStr = d.toLocaleDateString('vi-VN');
-            // Định dạng giá tiền kiểu VNĐ
             const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
             let statusLabel = '';
             switch(order.status) {
@@ -699,6 +999,14 @@ async function loadOrders() {
                 case 'delivered': statusLabel = '<span class="status-badge status-delivered">Hoàn thành</span>'; break;
                 case 'cancelled': statusLabel = '<span class="status-badge status-cancelled">Đã hủy</span>'; break;
                 default: statusLabel = order.status;
+            }
+            // Nút đổi trạng thái đơn hàng (ví dụ: hoàn thành/hủy)
+            let actionBtns = `<button class='btn btn-primary btn-sm btn-detail' onclick='showOrderDetail(${order.id})'>Chi tiết</button>`;
+            if(order.status !== 'delivered' && order.status !== 'cancelled') {
+                actionBtns += ` <button class='btn btn-success btn-sm' onclick='updateOrderStatus(${order.id},"delivered")'>Hoàn thành</button>`;
+                actionBtns += ` <button class='btn btn-danger btn-sm' onclick='deleteOrder(${order.id})'>Xóa</button>`;
+            } else {
+                actionBtns += ` <button class='btn btn-danger btn-sm' onclick='deleteOrder(${order.id})'>Xóa</button>`;
             }
             return `
                 <tr>
@@ -716,12 +1024,54 @@ async function loadOrders() {
                     <td>${order.items || 'N/A'}</td>
                     <td>${totalStr}</td>
                     <td>${statusLabel}</td>
-                    <td>
-                        <button class="btn btn-primary btn-sm btn-detail" onclick="showOrderDetail(${order.id})">Chi tiết</button>
-                    </td>
+                    <td>${actionBtns}</td>
                 </tr>
             `;
         }).join('');
+// Xóa đơn hàng (admin)
+async function deleteOrder(orderId) {
+    if (!confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')) return;
+    const token = localStorage.getItem('token');
+    try {
+        const res = await fetch(`/api/orders/${orderId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.ok) {
+            showNotification('Đã xóa đơn hàng thành công!', 'success');
+            loadOrders();
+        } else {
+            const data = await res.json();
+            showNotification('Lỗi: ' + (data.error || 'Không thể xóa đơn hàng'), 'error');
+        }
+    } catch (err) {
+        showNotification('Lỗi kết nối khi xóa đơn hàng', 'error');
+    }
+}
+
+// Cập nhật trạng thái đơn hàng (admin)
+async function updateOrderStatus(orderId, status) {
+    const token = localStorage.getItem('token');
+    try {
+        const res = await fetch(`/api/orders/${orderId}/status`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status })
+        });
+        if (res.ok) {
+            showNotification('Cập nhật trạng thái thành công!', 'success');
+            loadOrders();
+        } else {
+            const data = await res.json();
+            showNotification('Lỗi: ' + (data.error || 'Không thể cập nhật trạng thái'), 'error');
+        }
+    } catch (err) {
+        showNotification('Lỗi kết nối khi cập nhật trạng thái', 'error');
+    }
+}
 
         // Tạo HTML cho dashboard (không có cột Ngày đặt)
         const dashboardHTML = data.orders.map((order, index) => {
@@ -960,7 +1310,7 @@ function displayBrands(brands) {
     const brandsTbody = document.getElementById('brandsTableBody');
     if (!brandsTbody) return;
 
-    if (brands.length === 0) {
+    if (!Array.isArray(brands) || brands.length === 0) {
         brandsTbody.innerHTML = `
             <tr>
                 <td colspan="3">
@@ -1049,30 +1399,28 @@ window.showMobileTab = function(tabName) {
 async function loadReports() {
     console.log('Loading reports data...');
     try {
-        // Load summary data
-        console.log('Fetching summary data...');
-        const summaryResponse = await fetch('/api/reports/summary');
-        const summaryData = await summaryResponse.json();
-        console.log('Summary data received:', summaryData);
-        
-        if (summaryResponse.ok) {
-            displayReportSummary(summaryData);
-            console.log('Summary data displayed successfully');
+        // Load dữ liệu cho 2 biểu đồ dashboard
+        const token = localStorage.getItem('token');
+        // Pie chart: doanh thu theo thương hiệu
+        const pieRes = await fetch('/api/reports/brand-revenue', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const pieData = await pieRes.json();
+        if (pieRes.ok) {
+            renderPieChart(pieData.brands);
         } else {
-            console.error('Failed to load summary data:', summaryData.error);
+            console.error('Failed to load brand revenue data:', pieData.error);
         }
-        
-        // Load daily revenue data
-        console.log('Fetching daily revenue data...');
-        const dailyResponse = await fetch('/api/reports/daily-revenue');
-        const dailyData = await dailyResponse.json();
-        console.log('Daily revenue data received:', dailyData);
-        
-        if (dailyResponse.ok) {
-            displayDailyRevenue(dailyData.daily);
-            console.log('Daily revenue data displayed successfully');
+        // Line chart: doanh thu theo ngày
+        const lineRes = await fetch('/api/reports/daily-revenue', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const lineData = await lineRes.json();
+        if (lineRes.ok) {
+            renderLineChart(lineData.daily);
+            displayDailyRevenue(lineData.daily);
         } else {
-            console.error('Failed to load daily revenue data:', dailyData.error);
+            console.error('Failed to load daily revenue data:', lineData.error);
         }
         
     } catch (error) {
@@ -1101,6 +1449,13 @@ function displayReportSummary(data) {
     if (stockElement) {
         stockElement.textContent = data.stock_count || 0;
     }
+    // Vẽ biểu đồ dashboard
+    renderDashboardChart({
+        order_count: data.order_count,
+        revenue: data.revenue,
+        stock_count: data.stock_count,
+        new_customers: data.new_customers
+    });
     
     // Update reports page stats using correct IDs
     const reportsRevenueElement = document.getElementById('revenue');
