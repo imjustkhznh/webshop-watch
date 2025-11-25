@@ -69,45 +69,25 @@ exports.createBrand = async (req, res, next) => {
     }
 };
 
-// @desc    Update brand
+// @desc    Update brand (chỉ cập nhật name)
 // @route   PUT /api/brands/:id
 // @access  Private/Admin
 exports.updateBrand = async (req, res, next) => {
     try {
-        const { name, description, logo, is_active } = req.body;
-        
-        let brand = await Brand.findByPk(req.params.id);
-        
-        if (!brand) {
-            return res.status(404).json({
-                success: false,
-                error: 'Brand not found'
-            });
+        const { name } = req.body;
+        if (!name) {
+            return res.status(400).json({ success: false, error: 'Name is required' });
         }
-        
-        // Check if name is being updated and if it's already taken
-        if (name && name !== brand.name) {
-            const existingBrand = await Brand.findOne({ where: { name } });
-            if (existingBrand) {
-                return res.status(400).json({
-                    success: false,
-                    error: 'Brand with this name already exists'
-                });
-            }
+        // Kiểm tra trùng tên
+        const allBrands = await Brand.getAllBrands();
+        if (allBrands.some(b => b.name === name && b.id != req.params.id)) {
+            return res.status(400).json({ success: false, error: 'Brand with this name already exists' });
         }
-        
-        // Update brand
-        brand = await brand.update({
-            name: name || brand.name,
-            description: description !== undefined ? description : brand.description,
-            logo: logo !== undefined ? logo : brand.logo,
-            is_active: is_active !== undefined ? is_active : brand.is_active
-        });
-        
-        res.status(200).json({
-            success: true,
-            data: brand
-        });
+        const updated = await Brand.updateBrandById(req.params.id, { name });
+        if (!updated) {
+            return res.status(404).json({ success: false, error: 'Brand not found' });
+        }
+        res.status(200).json({ success: true });
     } catch (err) {
         next(err);
     }

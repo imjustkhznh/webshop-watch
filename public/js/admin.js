@@ -10,6 +10,12 @@ function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) modal.style.display = 'none';
 }
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.style.display = 'block';
+}
+window.openModal = openModal;
+window.closeModal = closeModal;
 
 // Thêm mới mã giảm giá
 const addPromotionForm = document.getElementById('addPromotionForm');
@@ -1547,7 +1553,8 @@ if (editBrandForm) {
             const response = await fetch(`/api/brands/${brandId}`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify({
                     name: brandName

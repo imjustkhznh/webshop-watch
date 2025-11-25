@@ -6,13 +6,21 @@ async function getAllBrands() {
     return rows;
 }
 
-// Ví dụ: Thêm brand mới
-async function createBrand({ name, description, logo, is_active }) {
+// Thêm brand mới (chỉ có name)
+async function createBrand({ name }) {
     const [result] = await pool.query(
-        'INSERT INTO brands (name, description, logo, is_active) VALUES (?, ?, ?, ?)',
-        [name, description, logo, is_active]
+        'INSERT INTO brands (name) VALUES (?)',
+        [name]
     );
     return result.insertId;
+}
+// Update brand by id (chỉ có name)
+async function updateBrandById(id, { name }) {
+    const [result] = await pool.query(
+        'UPDATE brands SET name = ? WHERE id = ?',
+        [name, id]
+    );
+    return result.affectedRows > 0;
 }
 
 // Lấy brand theo id
@@ -24,5 +32,6 @@ async function getBrandById(id) {
 module.exports = {
     getAllBrands,
     getBrandById,
-    createBrand
+    createBrand,
+    updateBrandById
 };

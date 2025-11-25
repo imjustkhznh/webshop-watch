@@ -510,7 +510,7 @@ function displayProducts(products) {
                     <i class="fas fa-heart"></i>
                 </button>
                 <a href="product.html?id=${product.id}">
-                    <img src="${product.image}" alt="${product.name}">
+                    <img src="${product.image || product.image_url || 'images/products/dongho1.webp'}" alt="${product.name}">
                 </a>
                 <h4>
                     <a href="product.html?id=${product.id}" style="color:inherit;text-decoration:none;">

@@ -1,3 +1,208 @@
+/* --- Professional Stock Table --- */
+/* --- Simple Stock Table --- */
+#stock .table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: none;
+    overflow: hidden;
+    margin-bottom: 18px;
+    font-size: 1.04rem;
+    border: 1px solid #e0e0e0;
+}
+#stock .table thead th {
+    background: #f7f7f7;
+    color: #222;
+    font-weight: 700;
+    padding: 14px 0 14px 0;
+    text-align: center;
+    font-size: 1.05rem;
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+#stock .table tbody tr {
+    transition: background 0.15s;
+}
+#stock .table tbody tr:hover {
+    background: #f5f5f5;
+}
+#stock .table td {
+    padding: 12px 0 12px 0;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 1.01rem;
+    color: #222;
+}
+#stock .table td:last-child {
+    min-width: 100px;
+}
+#stock .table tr:last-child td {
+    border-bottom: none;
+}
+#stock .status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 0.97rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+#stock .status-instock {
+    background: #f2f2f2;
+    color: #222;
+}
+#stock .status-processing {
+    background: #f2f2f2;
+    color: #888;
+}
+#stock .status-outstock {
+    background: #f2f2f2;
+    color: #c00;
+}
+#stock .btn-edit {
+    background: #e0e0e0;
+    color: #222;
+    border: none;
+    border-radius: 4px;
+    padding: 7px 18px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background 0.18s;
+    box-shadow: none;
+}
+#stock .btn-edit:hover {
+    background: #bdbdbd;
+    color: #000;
+    transform: none;
+}
+@media (max-width: 700px) {
+    #stock .table thead {
+        display: none;
+    }
+    #stock .table, #stock .table tbody, #stock .table tr, #stock .table td {
+        display: block;
+        width: 100%;
+    }
+    #stock .table tr {
+        margin-bottom: 18px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(52, 73, 94, 0.07);
+        background: #fff;
+        padding: 10px 0;
+    }
+    #stock .table td {
+        text-align: left;
+        padding: 10px 16px;
+        border-bottom: none;
+        position: relative;
+    }
+    #stock .table td:before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #764ba2;
+        display: block;
+        margin-bottom: 4px;
+        font-size: 0.97rem;
+    }
+}
+#updateStockModal .modal-content {
+    padding: 32px 32px 28px 32px;
+}
+#updateStockModal .form-group {
+    margin-bottom: 22px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+#updateStockModal .form-group input {
+    margin-bottom: 2px;
+}
+/* --- Professional Stock Update Modal --- */
+#updateStockModal .modal-content {
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: none;
+    padding: 0 0 18px 0;
+    max-width: 420px;
+    min-width: 280px;
+    border: 1px solid #e0e0e0;
+    animation: none;
+}
+#updateStockModal .modal-header {
+    background: #e3f0fc;
+    color: #1565c0;
+    border-radius: 6px 6px 0 0;
+    padding: 18px 24px 10px 24px;
+    border-bottom: 1px solid #b3d1f1;
+}
+#updateStockModal .modal-title {
+    font-size: 1.18rem;
+    font-weight: 700;
+    margin: 0 auto;
+    color: #1565c0;
+    text-align: center;
+    width: 100%;
+}
+#updateStockModal .close {
+    color: #888;
+    font-size: 20px;
+    opacity: 0.85;
+    transition: color 0.2s;
+}
+#updateStockModal .close:hover {
+    color: #000;
+}
+#updateStockModal .form-group label {
+    color: #222;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 7px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+#updateStockModal .form-group input {
+    border: 1.5px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 12px 12px;
+    font-size: 15px;
+    background: #fafafa;
+    transition: border 0.18s;
+    max-width: 340px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+#updateStockModal .btn.btn-primary {
+    display: block;
+    width: 180px;
+    margin: 18px auto 0 auto;
+    padding: 14px 0;
+    font-size: 1.08rem;
+    font-weight: 700;
+    background: #2196f3;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    box-shadow: none;
+    transition: background 0.18s;
+}
+#updateStockModal .btn.btn-primary:hover {
+    background: #1565c0;
+    color: #fff;
+    transform: none;
+}
+@media (max-width: 600px) {
+    #updateStockModal .modal-content {
+        min-width: unset;
+        width: 98vw;
+        padding: 0;
+    }
+    #updateStockModal .modal-header {
+        padding: 12px 8px 8px 12px;
+    }
+}
 /* Admin CSS - Mobile-First Design */
 * {
     margin: 0;
@@ -1061,7 +1266,6 @@ body {
     color: #333;
     padding: 25px 30px;
     border-radius: 12px 12px 0 0;
-    display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
