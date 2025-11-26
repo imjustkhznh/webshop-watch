@@ -874,6 +874,40 @@
         <button id="closeCancelOrderBtn" style="background:#888;color:#fff;padding:10px 24px;border:none;border-radius:6px;font-weight:600;">Đóng</button>
       </div>
     </div>
+
+    <!-- Modal yêu cầu hoàn đơn hàng -->
+    <div id="returnOrderModal" class="modal" style="display:none;">
+      <div class="modal-content" style="max-width:520px;margin:auto;padding:28px 24px;border-radius:12px;background:#fff;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+        <h3 style="color:#7c6240;margin-bottom:16px;text-align:center;">Yêu cầu hoàn / trả hàng</h3>
+        <div id="returnOrderInfo" style="background:#f8f9fa;border-radius:8px;padding:12px 14px;font-size:0.9rem;margin-bottom:16px;">
+          <!-- thông tin đơn sẽ được JS điền -->
+        </div>
+        <form id="returnOrderForm" onsubmit="event.preventDefault(); submitReturnRequest();">
+          <div style="margin-bottom:12px;">
+            <label for="returnReason" style="display:block;margin-bottom:6px;font-weight:600;font-size:0.9rem;">Lý do hoàn đơn</label>
+            <select id="returnReason" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ddd;font-size:0.9rem;">
+              <option value="">-- Chọn lý do --</option>
+              <option value="Sản phẩm bị lỗi / hỏng">Sản phẩm bị lỗi / hỏng</option>
+              <option value="Giao sai sản phẩm">Giao sai sản phẩm</option>
+              <option value="Sản phẩm không giống mô tả">Sản phẩm không giống mô tả</option>
+              <option value="Khác">Khác (ghi rõ mô tả bên dưới)</option>
+            </select>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label for="returnDescription" style="display:block;margin-bottom:6px;font-weight:600;font-size:0.9rem;">Mô tả chi tiết</label>
+            <textarea id="returnDescription" rows="3" placeholder="Mô tả tình trạng sản phẩm, lý do muốn hoàn..." style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ddd;font-size:0.9rem;resize:vertical;"></textarea>
+          </div>
+          <div style="margin-bottom:16px;">
+            <label for="returnEvidence" style="display:block;margin-bottom:6px;font-weight:600;font-size:0.9rem;">Ảnh minh chứng (link hình ảnh)</label>
+            <input id="returnEvidence" type="text" placeholder="Dán link Google Drive, Imgur hoặc ảnh sản phẩm..." style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ddd;font-size:0.9rem;" />
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:10px;">
+            <button type="button" onclick="closeReturnOrderModal()" style="background:#888;color:#fff;padding:8px 18px;border:none;border-radius:6px;font-weight:600;font-size:0.9rem;">Hủy</button>
+            <button type="submit" style="background:#7c6240;color:#fff;padding:8px 20px;border:none;border-radius:6px;font-weight:600;font-size:0.9rem;">Gửi yêu cầu</button>
+          </div>
+        </form>
+      </div>
+    </div>
     
     <!-- Cart Popup JavaScript -->
     <script>
@@ -1284,16 +1318,35 @@
                 return;
             }
             
+            // Lưu lại orders để dùng khi mở form hoàn đơn
+            window._currentCustomerOrders = orders;
+
             ordersList.innerHTML = orders.map(order => {
                 const statusClass = `status-${order.status}`;
                 const statusText = {
                     'pending': 'Chờ xử lý',
                     'processing': 'Đang xử lý',
+                    'shipped': 'Đang giao',
                     'delivered': 'Đã giao',
-                    'cancelled': 'Đã hủy'
+                    'cancelled': 'Đã hủy',
+                    'returned': 'Hoàn / trả hàng'
                 }[order.status] || order.status;
                 
                 const orderDate = new Date(order.created_at).toLocaleDateString('vi-VN');
+
+                // Quy tắc hiển thị nút hành động cho khách
+                const canCancel = (order.status === 'pending' || order.status === 'processing');
+                // Cho phép hoàn hàng trong vòng 1 ngày sau khi đơn ở trạng thái đã giao
+                let canReturn = false;
+                if (order.status === 'delivered') {
+                    const completedAtStr = order.delivered_at || order.updated_at || order.created_at;
+                    const completedAt = completedAtStr ? new Date(completedAtStr) : null;
+                    if (completedAt && !isNaN(completedAt.getTime())) {
+                        const diffMs = Date.now() - completedAt.getTime();
+                        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+                        canReturn = diffMs <= ONE_DAY_MS;
+                    }
+                }
                 
                 return `
                     <div class="order-card" style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 15px;">
@@ -1323,6 +1376,16 @@
                                 <button onclick="viewOrderDetail(${order.id})" class="action-btn btn-detail" style="padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem; background: #7c6240; color: #fff;">
                                     <i class="fas fa-eye"></i> Chi tiết
                                 </button>
+                                ${canReturn ? `
+                                    <button onclick="returnOrder(${order.id})" class="action-btn" style="padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem; background: #ff9800; color: #fff;">
+                                        <i class="fas fa-undo"></i> Hoàn hàng
+                                    </button>
+                                ` : ''}
+                                ${canCancel ? `
+                                    <button onclick="cancelOrder(${order.id})" class="action-btn" style="padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem; background: #e53935; color: #fff;">
+                                        <i class="fas fa-times"></i> Hủy đơn
+                                    </button>
+                                ` : ''}
                             </div>
                         </div>
                     </div>
@@ -1422,7 +1485,150 @@
             document.querySelectorAll('.cart-count').forEach(el => el.textContent = count);
         }
     }
+
+    // Hủy đơn hàng (khách tự hủy khi đơn còn chờ xử lý / đã nhận đơn)
+    let pendingCancelOrderId = null;
+
+    function cancelOrder(orderId) {
+        pendingCancelOrderId = orderId;
+        const textEl = document.getElementById('cancelOrderText');
+        if (textEl) {
+            textEl.innerHTML = `Bạn chắc chắn muốn hủy đơn hàng <b>#${orderId}</b> này?`;
+        }
+        const modal = document.getElementById('cancelOrderModal');
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
+
+    function closeCancelOrderModal() {
+        const modal = document.getElementById('cancelOrderModal');
+        if (modal) modal.style.display = 'none';
+        pendingCancelOrderId = null;
+    }
+
+    // Xử lý nút trong modal hủy đơn
+    document.addEventListener('DOMContentLoaded', function() {
+        const closeBtn = document.getElementById('closeCancelOrderBtn');
+        const modal = document.getElementById('cancelOrderModal');
+        const confirmBtn = document.getElementById('confirmCancelOrderBtn');
+
+        if (closeBtn) {
+            closeBtn.onclick = closeCancelOrderModal;
+        }
+        if (modal) {
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    closeCancelOrderModal();
+                }
+            };
+        }
+        if (confirmBtn) {
+            confirmBtn.onclick = async function() {
+                if (!pendingCancelOrderId) return;
+                const orderId = pendingCancelOrderId;
+                const token = localStorage.getItem('token');
+                try {
+                    const res = await fetch(`/api/orders/${orderId}/status/customer`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: 'cancelled' })
+                    });
+                    const data = await res.json();
+                    if (res.ok && (data.success || !data.error)) {
+                        showNotification(`Đã hủy đơn hàng #${orderId}`, 'success');
+                        // Reload danh sách đơn theo filter hiện tại
+                        const activeFilter = document.querySelector('.order-filters .filter-btn.active');
+                        const filter = activeFilter ? activeFilter.getAttribute('data-filter') : 'all';
+                        loadOrders(filter);
+                    } else {
+                        showNotification(data.error || 'Không thể hủy đơn hàng!', 'error');
+                    }
+                } catch (e) {
+                    showNotification('Có lỗi khi hủy đơn hàng!', 'error');
+                } finally {
+                    closeCancelOrderModal();
+                }
+            };
+        }
+    });
     
+    // Hoàn / trả hàng: mở form yêu cầu hoàn đơn
+    let pendingReturnOrderId = null;
+
+    function returnOrder(orderId) {
+        pendingReturnOrderId = orderId;
+        const order = (window._currentCustomerOrders || []).find(o => o.id === orderId);
+
+        const modal = document.getElementById('returnOrderModal');
+        if (!modal) return;
+
+        const infoEl = document.getElementById('returnOrderInfo');
+        if (infoEl && order) {
+            const orderDate = new Date(order.created_at).toLocaleDateString('vi-VN');
+            infoEl.innerHTML = `
+                <p><strong>Mã đơn hàng:</strong> #${order.id}</p>
+                <p><strong>Ngày đặt:</strong> ${orderDate}</p>
+                <p><strong>Tổng tiền:</strong> ${new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND'}).format(order.total_amount)}</p>
+            `;
+        }
+
+        modal.style.display = 'flex';
+    }
+
+    async function submitReturnRequest() {
+        if (!pendingReturnOrderId) return;
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const reason = document.getElementById('returnReason').value.trim();
+        const description = document.getElementById('returnDescription').value.trim();
+        const evidence = document.getElementById('returnEvidence').value.trim();
+
+        if (!reason) {
+            alert('Vui lòng chọn hoặc nhập lý do hoàn đơn.');
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/orders/${pendingReturnOrderId}/return-request`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ reason, description, evidence })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                showNotification(`Đã gửi yêu cầu hoàn hàng cho đơn #${pendingReturnOrderId}.`, 'success');
+                const activeFilter = document.querySelector('.order-filters .filter-btn.active');
+                const filter = activeFilter ? activeFilter.getAttribute('data-filter') : 'all';
+                loadOrders(filter);
+            } else {
+                showNotification(data.error || 'Không thể gửi yêu cầu hoàn đơn!', 'error');
+            }
+        } catch (e) {
+            showNotification('Có lỗi khi gửi yêu cầu hoàn đơn!', 'error');
+        } finally {
+            closeReturnOrderModal();
+        }
+    }
+
+    function closeReturnOrderModal() {
+        const modal = document.getElementById('returnOrderModal');
+        if (modal) modal.style.display = 'none';
+        pendingReturnOrderId = null;
+        const form = document.getElementById('returnOrderForm');
+        if (form) form.reset();
+    }
+
     async function viewOrderDetail(orderId) {
         try {
             const token = localStorage.getItem('token');

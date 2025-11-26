@@ -20,7 +20,7 @@ window.closeModal = closeModal;
 // Thêm mới mã giảm giá
 const addPromotionForm = document.getElementById('addPromotionForm');
 if (addPromotionForm) {
-    addPromotionForm.onsubmit = async function(e) {
+    addPromotionForm.onsubmit = async function (e) {
         e.preventDefault();
         const code = document.getElementById('promotionName').value.trim();
         const description = document.getElementById('promotionDescription').value.trim();
@@ -71,7 +71,7 @@ function editDiscountCode(id) {
 
 // Xử lý cập nhật mã giảm giá khi đang ở chế độ sửa
 if (addPromotionForm) {
-    addPromotionForm.onsubmit = async function(e) {
+    addPromotionForm.onsubmit = async function (e) {
         e.preventDefault();
         const code = document.getElementById('promotionName').value.trim();
         const description = document.getElementById('promotionDescription').value.trim();
@@ -149,10 +149,10 @@ window.closeModal = closeModal;
 window.editDiscountCode = editDiscountCode;
 window.deleteDiscountCode = deleteDiscountCode;
 // Sidebar navigation: chuyển trang khi click menu
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const sidebarLinks = document.querySelectorAll('.sidebar .nav-link');
     sidebarLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const href = this.getAttribute('href');
             if (href) {
@@ -235,7 +235,7 @@ function renderPieChart(brandData) {
                 label: 'Tỉ lệ doanh thu theo thương hiệu',
                 data,
                 backgroundColor: [
-                    '#3498db','#e67e22','#27ae60','#8e44ad','#f39c12','#1abc9c','#c0392b','#34495e','#9b59b6','#2ecc71'
+                    '#3498db', '#e67e22', '#27ae60', '#8e44ad', '#f39c12', '#1abc9c', '#c0392b', '#34495e', '#9b59b6', '#2ecc71'
                 ]
             }]
         },
@@ -304,7 +304,7 @@ function renderMonthlyChart(monthlyData) {
     if (window.dashboardMonthlyChartInstance) {
         window.dashboardMonthlyChartInstance.destroy();
     }
-    const labels = monthlyData.map(item => `${item.year}-${String(item.month).padStart(2,'0')}`);
+    const labels = monthlyData.map(item => `${item.year}-${String(item.month).padStart(2, '0')}`);
     const data = monthlyData.map(item => item.revenue);
     window.dashboardMonthlyChartInstance = new Chart(ctx, {
         type: 'bar',
@@ -354,14 +354,14 @@ function showNotification(message, type = 'success', duration = 3000) {
     existingNotifications.forEach(notification => {
         notification.remove();
     });
-    
+
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `custom-notification ${type}`;
-    
+
     // Set icon based on type
     let icon = 'fas fa-check-circle';
-    switch(type) {
+    switch (type) {
         case 'error':
             icon = 'fas fa-exclamation-circle';
             break;
@@ -374,7 +374,7 @@ function showNotification(message, type = 'success', duration = 3000) {
         default:
             icon = 'fas fa-check-circle';
     }
-    
+
     notification.innerHTML = `
         <div class="notification-content">
             <i class="${icon} notification-icon"></i>
@@ -384,15 +384,15 @@ function showNotification(message, type = 'success', duration = 3000) {
             </button>
         </div>
     `;
-    
+
     // Add to page
     document.body.appendChild(notification);
-    
+
     // Show notification with animation
     setTimeout(() => {
         notification.classList.add('show');
     }, 100);
-    
+
     // Auto remove after duration
     if (duration > 0) {
         setTimeout(() => {
@@ -419,7 +419,7 @@ async function loadProducts() {
     try {
         const response = await fetch('/api/products');
         const data = await response.json();
-        
+
         if (response.ok && data.products) {
             products = data.products;
             displayProducts();
@@ -438,7 +438,7 @@ async function loadProducts() {
 function displayProducts() {
     const productTable = document.querySelector('#products .table tbody');
     const mobileCardsContainer = document.querySelector('#products .mobile-cards');
-    
+
     if (!productTable && !mobileCardsContainer) return;
 
     // Clear existing content
@@ -463,7 +463,7 @@ function displayProducts() {
             status = 'Bình thường';
             statusClass = 'status-instock';
         }
-        
+
         // Desktop table row
         if (productTable) {
             const row = document.createElement('tr');
@@ -486,7 +486,7 @@ function displayProducts() {
             `;
             productTable.appendChild(row);
         }
-        
+
         // Mobile card
         if (mobileCardsContainer) {
             const card = document.createElement('div');
@@ -586,13 +586,13 @@ function updateProductStats() {
 // Update pagination
 function updatePagination() {
     const totalPages = Math.ceil(products.length / productsPerPage);
-    
+
     // Update page info
     const currentPageNum = document.getElementById('currentPageNum');
     const totalPagesSpan = document.getElementById('totalPages');
     const showingProducts = document.getElementById('showingProducts');
     const totalProducts = document.getElementById('totalProducts');
-    
+
     if (currentPageNum) currentPageNum.textContent = currentPage;
     if (totalPagesSpan) totalPagesSpan.textContent = totalPages;
     if (showingProducts) {
@@ -601,17 +601,17 @@ function updatePagination() {
         showingProducts.textContent = `${startIndex}-${endIndex}`;
     }
     if (totalProducts) totalProducts.textContent = products.length;
-    
+
     // Update button states
     const prevButtons = document.querySelectorAll('.btn-prev');
     const nextButtons = document.querySelectorAll('.btn-next');
-    
+
     prevButtons.forEach(btn => {
         btn.disabled = currentPage === 1;
         btn.style.opacity = currentPage === 1 ? '0.5' : '1';
         btn.style.cursor = currentPage === 1 ? 'not-allowed' : 'pointer';
     });
-    
+
     nextButtons.forEach(btn => {
         btn.disabled = currentPage === totalPages;
         btn.style.opacity = currentPage === totalPages ? '0.5' : '1';
@@ -707,7 +707,7 @@ function showTab(event, tabName) {
 }
 
 // Initialize admin page
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('Admin page initialized');
     // Check if user is admin
     const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -739,7 +739,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function toggleMobileMenu() {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.querySelector('.sidebar-overlay');
-    
+
     sidebar.classList.toggle('active');
     overlay.classList.toggle('active');
 }
@@ -747,7 +747,7 @@ function toggleMobileMenu() {
 function closeMobileMenu() {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.querySelector('.sidebar-overlay');
-    
+
     sidebar.classList.remove('active');
     overlay.classList.remove('active');
 }
@@ -791,10 +791,10 @@ function showMobileTab(tabName) {
 }
 
 // Close mobile menu when clicking on nav links
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function () {
             if (window.innerWidth <= 768) {
                 closeMobileMenu();
             }
@@ -809,13 +809,13 @@ async function deleteCustomer(customerId) {
         id: customerId,
         displayId: `KH${String(customerId).padStart(3, '0')}`
     };
-    
+
     // Update modal content
     const deleteCustomerName = document.getElementById('deleteCustomerName');
     if (deleteCustomerName) {
         deleteCustomerName.textContent = `KH${String(customerId).padStart(3, '0')}`;
     }
-    
+
     // Show delete confirmation modal
     const customerDeleteConfirmModal = document.getElementById('customerDeleteConfirmModal');
     if (customerDeleteConfirmModal) {
@@ -826,15 +826,15 @@ async function deleteCustomer(customerId) {
 async function confirmDeleteCustomer() {
     const customerInfo = window.customerToDelete;
     if (!customerInfo) return;
-    
+
     try {
         console.log('Deleting customer with ID:', customerInfo.id);
         const response = await fetch(`/api/customers/${customerInfo.id}`, {
             method: 'DELETE'
         });
-        
+
         console.log('Delete response status:', response.status);
-        
+
         if (response.ok) {
             showNotification(`Đã xóa khách hàng ${customerInfo.displayId} thành công!`, 'success');
             // Reload customers to update the list
@@ -866,7 +866,7 @@ async function loadCustomers() {
             }
         });
         const data = await response.json();
-        
+
         if (response.ok && data.customers) {
             displayCustomers(data.customers);
         } else {
@@ -882,7 +882,7 @@ async function loadCustomers() {
 // Display customers in table
 function displayCustomers(customers) {
     const customerTable = document.querySelector('#customers .table tbody');
-    
+
     if (!customerTable) return;
 
     // Clear existing content
@@ -912,7 +912,7 @@ async function loadCategories() {
     try {
         const response = await fetch('/api/categories');
         const data = await response.json();
-        
+
         if (response.ok && Array.isArray(data.categories)) {
             const categorySelect = document.getElementById('productCategory');
             if (categorySelect) {
@@ -936,7 +936,7 @@ async function loadBrands() {
     try {
         const response = await fetch('/api/brands');
         const data = await response.json();
-        
+
         if (response.ok && data.brands) {
             const brandSelect = document.getElementById('productBrand');
             if (brandSelect) {
@@ -967,7 +967,7 @@ function loadProductFormData() {
 // Format Vietnamese address names
 function formatVietnameseAddress(address) {
     if (!address) return 'N/A';
-    
+
     // Common Vietnamese address mappings
     const addressMap = {
         'chauduc': 'Châu Đức',
@@ -981,17 +981,17 @@ function formatVietnameseAddress(address) {
         'danang': 'Đà Nẵng',
         'đànẵng': 'Đà Nẵng'
     };
-    
+
     // Convert to lowercase for comparison
     const lowerAddress = address.toLowerCase();
-    
+
     // Check if we have a mapping
     for (const [key, value] of Object.entries(addressMap)) {
         if (lowerAddress.includes(key)) {
             return value;
         }
     }
-    
+
     // If no mapping found, try to capitalize properly
     return address.charAt(0).toUpperCase() + address.slice(1).toLowerCase();
 }
@@ -1005,7 +1005,7 @@ async function loadOrders() {
             console.error('No token found');
             return;
         }
-        
+
         const res = await fetch('/api/admin/orders', {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -1016,47 +1016,47 @@ async function loadOrders() {
         console.log('Orders data:', data);
         console.log('Orders array:', data.orders);
         console.log('Orders count:', data.orders ? data.orders.length : 0);
-        
+
         // Store orders globally for detail view
         window.currentOrders = data.orders || [];
-        
+
         // Render cho bảng Quản lý đơn hàng
         const ordersTbody = document.getElementById('ordersTableBody');
         console.log('Found orders tbody element:', ordersTbody);
-        
+
         // Render cho bảng Dashboard
         const dashboardTbody = document.getElementById('dashboardOrdersTableBody');
         console.log('Found dashboard tbody element:', dashboardTbody);
-        
+
         if (!ordersTbody && !dashboardTbody) {
             console.error('No orders table body found!');
             return;
         }
-        
-        // Giới hạn 10 đơn gần nhất
-        const recentOrders = (data.orders || []).slice(0, 10);
-        // Tạo HTML cho mỗi đơn hàng (có nút xóa/sửa trạng thái)
-        const ordersHTML = recentOrders.map((order, index) => {
+
+        const allOrders = data.orders || [];
+
+        // Tạo HTML cho bảng Quản lý đơn hàng (dùng toàn bộ danh sách, sẽ được filter bằng ô tìm kiếm)
+        const buildOrdersRows = (ordersSource) => ordersSource.map((order, index) => {
             const d = new Date(order.order_date);
             const dateStr = d.toLocaleDateString('vi-VN');
             const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
             let statusLabel = '';
-            switch(order.status) {
+            switch (order.status) {
                 case 'pending': statusLabel = '<span class="status-badge status-pending">Chờ xử lý</span>'; break;
-                case 'processing': statusLabel = '<span class="status-badge status-processing">Đang xử lý</span>'; break;
-                case 'shipped': statusLabel = '<span class="status-badge status-shipped">Đã giao</span>'; break;
+                case 'processing': statusLabel = '<span class="status-badge status-processing">Đã nhận đơn</span>'; break;
+                case 'shipping':
+                case 'shipped': statusLabel = '<span class="status-badge status-shipped">Đang giao</span>'; break;
                 case 'delivered': statusLabel = '<span class="status-badge status-delivered">Hoàn thành</span>'; break;
                 case 'cancelled': statusLabel = '<span class="status-badge status-cancelled">Đã hủy</span>'; break;
+                case 'returned': statusLabel = '<span class="status-badge status-cancelled">Hoàn / trả hàng</span>'; break;
                 default: statusLabel = order.status;
             }
-            // Nút đổi trạng thái đơn hàng (ví dụ: hoàn thành/hủy)
-            let actionBtns = `<button class='btn btn-primary btn-sm btn-detail' onclick='showOrderDetail(${order.id})'>Chi tiết</button>`;
-            if(order.status !== 'delivered' && order.status !== 'cancelled') {
-                actionBtns += ` <button class='btn btn-success btn-sm' onclick='updateOrderStatus(${order.id},"delivered")'>Hoàn thành</button>`;
-                actionBtns += ` <button class='btn btn-danger btn-sm' onclick='deleteOrder(${order.id})'>Xóa</button>`;
-            } else {
-                actionBtns += ` <button class='btn btn-danger btn-sm' onclick='deleteOrder(${order.id})'>Xóa</button>`;
-            }
+            // Nút đổi trạng thái đơn hàng: chỉ dùng 1 nút Cập nhật trạng thái (chọn các trạng thái, bao gồm Hoàn thành) + nút Xóa
+            let actionBtns = `<button class='btn btn-primary btn-sm btn-detail' onclick='openOrderStatusDialog(${order.id}, "${order.status}")'>Cập nhật trạng thái</button>`;
+
+            actionBtns += ` <button class='btn btn-danger btn-sm' onclick='deleteOrder(${order.id})' title='Xóa đơn hàng'>
+                                <i class="fas fa-trash"></i>
+                            </button>`;
             return `
                 <tr>
                     <td>#DH${order.id.toString().padStart(3, '0')}</td>
@@ -1077,6 +1077,14 @@ async function loadOrders() {
                 </tr>
             `;
         }).join('');
+
+        // Expose để hàm tìm kiếm có thể dùng lại
+        window.buildOrdersRows = buildOrdersRows;
+
+        // Giới hạn 10 đơn gần nhất cho dashboard
+        const recentOrders = allOrders.slice(0, 10);
+        // HTML cho bảng quản lý đơn hàng (ban đầu: tất cả)
+        let ordersHTML = buildOrdersRows(allOrders);
         // Tạo HTML cho dashboard (không có cột Ngày đặt)
         const dashboardHTML = recentOrders.map((order, index) => {
             console.log(`Processing dashboard order ${index}:`, order);
@@ -1085,12 +1093,14 @@ async function loadOrders() {
             // Định dạng giá tiền kiểu VNĐ
             const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
             let statusLabel = '';
-            switch(order.status) {
+            switch (order.status) {
                 case 'pending': statusLabel = '<span class="status-badge status-pending">Chờ xử lý</span>'; break;
-                case 'processing': statusLabel = '<span class="status-badge status-processing">Đang xử lý</span>'; break;
-                case 'shipped': statusLabel = '<span class="status-badge status-shipped">Đã giao</span>'; break;
+                case 'processing': statusLabel = '<span class="status-badge status-processing">Đã nhận đơn</span>'; break;
+                case 'shipping':
+                case 'shipped': statusLabel = '<span class="status-badge status-shipped">Đang giao</span>'; break;
                 case 'delivered': statusLabel = '<span class="status-badge status-delivered">Hoàn thành</span>'; break;
                 case 'cancelled': statusLabel = '<span class="status-badge status-cancelled">Đã hủy</span>'; break;
+                case 'returned': statusLabel = '<span class="status-badge status-cancelled">Hoàn / trả hàng</span>'; break;
                 default: statusLabel = order.status;
             }
             return `
@@ -1104,24 +1114,24 @@ async function loadOrders() {
                     <td>${totalStr}</td>
                     <td>${statusLabel}</td>
                     <td>
-                        <button class="btn btn-primary btn-sm btn-detail" onclick="showOrderDetail(${order.id})">Chi tiết</button>
+                        <button class="btn btn-primary btn-sm btn-detail" onclick="openOrderStatusDialog(${order.id}, '${order.status}')">Cập nhật</button>
                     </td>
                 </tr>
             `;
         }).join('');
-        
+
         // Render vào bảng Quản lý đơn hàng
         if (ordersTbody) {
             ordersTbody.innerHTML = ordersHTML;
             console.log('Rendered orders to orders table');
         }
-        
+
         // Render vào bảng Dashboard
         if (dashboardTbody) {
             dashboardTbody.innerHTML = dashboardHTML;
             console.log('Rendered orders to dashboard table');
         }
-        
+
         // Render mobile cards cho dashboard
         const dashboardCardsContainer = document.querySelector('.dashboard-orders-cards');
         if (dashboardCardsContainer) {
@@ -1129,29 +1139,29 @@ async function loadOrders() {
                 const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                 let statusClass = '';
                 let statusText = '';
-                switch(order.status) {
-                    case 'pending': 
-                        statusClass = 'pending'; 
-                        statusText = 'Chờ xử lý'; 
+                switch (order.status) {
+                    case 'pending':
+                        statusClass = 'pending';
+                        statusText = 'Chờ xử lý';
                         break;
-                    case 'processing': 
-                        statusClass = 'processing'; 
-                        statusText = 'Đang xử lý'; 
+                    case 'processing':
+                        statusClass = 'processing';
+                        statusText = 'Đang xử lý';
                         break;
-                    case 'shipped': 
-                        statusClass = 'shipped'; 
-                        statusText = 'Đã giao'; 
+                    case 'shipped':
+                        statusClass = 'shipped';
+                        statusText = 'Đã giao';
                         break;
-                    case 'delivered': 
-                        statusClass = 'completed'; 
-                        statusText = 'Hoàn thành'; 
+                    case 'delivered':
+                        statusClass = 'completed';
+                        statusText = 'Hoàn thành';
                         break;
-                    case 'cancelled': 
-                        statusClass = 'cancelled'; 
-                        statusText = 'Đã hủy'; 
+                    case 'cancelled':
+                        statusClass = 'cancelled';
+                        statusText = 'Đã hủy';
                         break;
-                    default: 
-                        statusClass = 'pending'; 
+                    default:
+                        statusClass = 'pending';
                         statusText = order.status;
                 }
                 return `
@@ -1191,7 +1201,7 @@ async function loadOrders() {
             dashboardCardsContainer.innerHTML = mobileCardsHTML;
             console.log('Rendered mobile cards for dashboard orders');
         }
-        
+
         // Render mobile cards cho orders page
         const ordersCardsContainer = document.querySelector('.orders-mobile-cards');
         if (ordersCardsContainer) {
@@ -1201,29 +1211,29 @@ async function loadOrders() {
                 const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                 let statusClass = '';
                 let statusText = '';
-                switch(order.status) {
-                    case 'pending': 
-                        statusClass = 'pending'; 
-                        statusText = 'Chờ xử lý'; 
+                switch (order.status) {
+                    case 'pending':
+                        statusClass = 'pending';
+                        statusText = 'Chờ xử lý';
                         break;
-                    case 'processing': 
-                        statusClass = 'processing'; 
-                        statusText = 'Đang xử lý'; 
+                    case 'processing':
+                        statusClass = 'processing';
+                        statusText = 'Đang xử lý';
                         break;
-                    case 'shipped': 
-                        statusClass = 'shipped'; 
-                        statusText = 'Đã giao'; 
+                    case 'shipped':
+                        statusClass = 'shipped';
+                        statusText = 'Đã giao';
                         break;
-                    case 'delivered': 
-                        statusClass = 'completed'; 
-                        statusText = 'Hoàn thành'; 
+                    case 'delivered':
+                        statusClass = 'completed';
+                        statusText = 'Hoàn thành';
                         break;
-                    case 'cancelled': 
-                        statusClass = 'cancelled'; 
-                        statusText = 'Đã hủy'; 
+                    case 'cancelled':
+                        statusClass = 'cancelled';
+                        statusText = 'Đã hủy';
                         break;
-                    default: 
-                        statusClass = 'pending'; 
+                    default:
+                        statusClass = 'pending';
                         statusText = order.status;
                 }
                 return `
@@ -1275,14 +1285,14 @@ async function loadOrders() {
             ordersCardsContainer.innerHTML = ordersMobileCardsHTML;
             console.log('Rendered mobile cards for orders page');
         }
-        
+
         console.log('Orders loaded successfully!');
-        
+
     } catch (error) {
         console.error('Error loading orders:', error);
         const ordersTbody = document.getElementById('ordersTableBody');
         const dashboardTbody = document.getElementById('dashboardOrdersTableBody');
-        
+
         if (ordersTbody) {
             ordersTbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #e74c3c;">Lỗi tải dữ liệu đơn hàng</td></tr>';
         }
@@ -1375,7 +1385,7 @@ function deleteBrand(brandId, brandName) {
 
 // Add orders case to showTab function
 const originalShowTab = window.showTab;
-window.showTab = function(event, tabName) {
+window.showTab = function (event, tabName) {
     originalShowTab(event, tabName);
     if (tabName === 'orders') {
         loadOrders();
@@ -1388,7 +1398,7 @@ window.showTab = function(event, tabName) {
 
 // Add orders case to showMobileTab function  
 const originalShowMobileTab = window.showMobileTab;
-window.showMobileTab = function(tabName) {
+window.showMobileTab = function (tabName) {
     originalShowMobileTab(tabName);
     if (tabName === 'orders') {
         loadOrders();
@@ -1397,7 +1407,7 @@ window.showMobileTab = function(tabName) {
     } else if (tabName === 'brands') {
         loadBrands();
     }
-}; 
+};
 
 // Load reports data from API
 async function loadReports() {
@@ -1443,7 +1453,7 @@ async function loadReports() {
         } else {
             console.error('Failed to load monthly revenue data:', monthlyData.error);
         }
-        
+
     } catch (error) {
         console.error('Error loading reports:', error);
         showNotification('Lỗi kết nối khi tải báo cáo', 'error');
@@ -1453,10 +1463,10 @@ async function loadReports() {
 // Add brand form submission
 const addBrandForm = document.getElementById('addBrandForm');
 if (addBrandForm) {
-    addBrandForm.onsubmit = async function(e) {
+    addBrandForm.onsubmit = async function (e) {
         e.preventDefault();
         const brandName = document.getElementById('brandName').value;
-        
+
         try {
             const response = await fetch('/api/brands', {
                 method: 'POST',
@@ -1467,9 +1477,9 @@ if (addBrandForm) {
                     name: brandName
                 })
             });
-            
+
             const result = await response.json();
-            
+
             if (response.ok) {
                 showNotification('Thêm thương hiệu thành công!', 'success');
                 closeModal('addBrandModal');
@@ -1488,11 +1498,11 @@ if (addBrandForm) {
 // Edit brand form submission
 const editBrandForm = document.getElementById('editBrandForm');
 if (editBrandForm) {
-    editBrandForm.onsubmit = async function(e) {
+    editBrandForm.onsubmit = async function (e) {
         e.preventDefault();
         const brandId = document.getElementById('editBrandId').value;
         const brandName = document.getElementById('editBrandName').value;
-        
+
         try {
             const response = await fetch(`/api/brands/${brandId}`, {
                 method: 'PUT',
@@ -1504,9 +1514,9 @@ if (editBrandForm) {
                     name: brandName
                 })
             });
-            
+
             const result = await response.json();
-            
+
             if (response.ok) {
                 showNotification('Cập nhật thương hiệu thành công!', 'success');
                 closeModal('editBrandModal');
@@ -1527,9 +1537,9 @@ async function deleteBrandConfirm(brandId) {
         const response = await fetch(`/api/brands/${brandId}`, {
             method: 'DELETE'
         });
-        
+
         const result = await response.json();
-        
+
         if (response.ok) {
             showNotification('Xóa thương hiệu thành công!', 'success');
             loadBrands(); // Reload brands list
@@ -1563,6 +1573,140 @@ async function deleteOrder(orderId) {
     }
 }
 
+// Hộp thoại chọn trạng thái mới cho đơn hàng (admin) - UI bằng modal đẹp hơn, không cần nhập số
+function openOrderStatusDialog(orderId, currentStatus) {
+    const options = [
+        { status: 'pending', label: 'Chờ xử lý' },
+        { status: 'processing', label: 'Đã nhận đơn' },
+        { status: 'shipping', label: 'Đang giao' },
+        // delivered = đơn đã giao xong (hoàn thành), cancelled = hủy trước khi giao, returned = khách hoàn/trả đơn
+        { status: 'delivered', label: 'Hoàn thành (đã giao xong)' },
+        { status: 'cancelled', label: 'Hủy đơn (không nhận hàng)' },
+        { status: 'returned', label: 'Hoàn / trả hàng' }
+    ];
+
+    // Tạo overlay
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.inset = '0';
+    overlay.style.background = 'rgba(0,0,0,0.35)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '9999';
+
+    // Tạo modal
+    const modal = document.createElement('div');
+    modal.style.background = 'linear-gradient(135deg, #ffffff, #f7f9fc)';
+    modal.style.borderRadius = '10px';
+    modal.style.boxShadow = '0 10px 30px rgba(0,0,0,0.15)';
+    modal.style.padding = '20px 24px';
+    modal.style.minWidth = '340px';
+    modal.style.maxWidth = '420px';
+    modal.style.fontFamily = 'system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif';
+
+    const title = document.createElement('h3');
+    title.textContent = `Cập nhật trạng thái đơn #DH${String(orderId).padStart(3, '0')}`;
+    title.style.margin = '0 0 8px 0';
+    title.style.fontSize = '18px';
+    title.style.color = '#2c3e50';
+
+    const subtitle = document.createElement('p');
+    subtitle.textContent = 'Chọn một trạng thái bên dưới để cập nhật:';
+    subtitle.style.margin = '0 0 16px 0';
+    subtitle.style.fontSize = '13px';
+    subtitle.style.color = '#7f8c8d';
+
+    const list = document.createElement('div');
+    list.style.display = 'flex';
+    list.style.flexDirection = 'column';
+    list.style.gap = '8px';
+
+    options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = opt.label;
+        btn.style.padding = '8px 12px';
+        btn.style.borderRadius = '6px';
+        btn.style.border = '1px solid #e1e5ee';
+        // Màu theo trạng thái
+        let bg = '#f7f8fa';
+        let fg = '#2c3e50';
+        if (opt.status === 'pending') { bg = '#fff8e6'; fg = '#e0a100'; }
+        if (opt.status === 'processing') { bg = '#e8f4ff'; fg = '#1d6fdc'; }
+        if (opt.status === 'shipping') { bg = '#e6f9ff'; fg = '#16a3b6'; }
+        if (opt.status === 'delivered') { bg = '#e6f8ec'; fg = '#1c9c4a'; }
+        if (opt.status === 'cancelled') { bg = '#fdeeee'; fg = '#d12f3b'; }
+        if (opt.status === 'returned') { bg = '#f4ecff'; fg = '#8e44ad'; }
+        if (opt.status === currentStatus) {
+            // nhấn mạnh trạng thái hiện tại
+            bg = '#fff';
+            btn.style.border = '1px solid ' + fg;
+        }
+        btn.style.background = bg;
+        btn.style.color = fg;
+        btn.style.fontSize = '13px';
+        btn.style.textAlign = 'left';
+        btn.style.cursor = 'pointer';
+        btn.style.display = 'flex';
+        btn.style.justifyContent = 'space-between';
+        btn.style.alignItems = 'center';
+
+        if (opt.status === currentStatus) {
+            const tag = document.createElement('span');
+            tag.textContent = 'Hiện tại';
+            tag.style.fontSize = '11px';
+            tag.style.color = '#1d6fdc';
+            tag.style.fontWeight = '500';
+            btn.appendChild(tag);
+        }
+
+        btn.addEventListener('click', () => {
+            if (opt.status !== currentStatus) {
+                updateOrderStatus(orderId, opt.status);
+            }
+            document.body.removeChild(overlay);
+        });
+
+        list.appendChild(btn);
+    });
+
+    const footer = document.createElement('div');
+    footer.style.display = 'flex';
+    footer.style.justifyContent = 'flex-end';
+    footer.style.marginTop = '16px';
+    footer.style.gap = '8px';
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.type = 'button';
+    cancelBtn.textContent = 'Đóng';
+    cancelBtn.style.padding = '6px 14px';
+    cancelBtn.style.borderRadius = '6px';
+    cancelBtn.style.border = '1px solid #dcdfe3';
+    cancelBtn.style.background = '#fff';
+    cancelBtn.style.cursor = 'pointer';
+    cancelBtn.style.fontSize = '13px';
+    cancelBtn.addEventListener('click', () => {
+        document.body.removeChild(overlay);
+    });
+
+    footer.appendChild(cancelBtn);
+
+    modal.appendChild(title);
+    modal.appendChild(subtitle);
+    modal.appendChild(list);
+    modal.appendChild(footer);
+
+    overlay.appendChild(modal);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            document.body.removeChild(overlay);
+        }
+    });
+
+    document.body.appendChild(overlay);
+}
+
 // Cập nhật trạng thái đơn hàng (admin)
 async function updateOrderStatus(orderId, status) {
     const token = localStorage.getItem('token');
@@ -1591,17 +1735,17 @@ async function updateOrderStatus(orderId, status) {
 function showOrderDetail(orderId) {
     // Find the order in the current data
     const order = window.currentOrders ? window.currentOrders.find(o => o.id === orderId) : null;
-    
+
     if (!order) {
         showNotification('Không thể tìm thấy thông tin đơn hàng', 'error');
         return;
     }
-    
+
     const orderDate = new Date(order.order_date).toLocaleDateString('vi-VN');
     const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-    
+
     let statusText = '';
-    switch(order.status) {
+    switch (order.status) {
         case 'pending': statusText = 'Chờ xử lý'; break;
         case 'processing': statusText = 'Đang xử lý'; break;
         case 'shipped': statusText = 'Đã giao'; break;
@@ -1609,7 +1753,7 @@ function showOrderDetail(orderId) {
         case 'cancelled': statusText = 'Đã hủy'; break;
         default: statusText = order.status;
     }
-    
+
     const detailHTML = `
         <div style="padding: 20px;">
             <div style="margin-bottom: 20px;">
@@ -1637,7 +1781,7 @@ function showOrderDetail(orderId) {
             </div>
         </div>
     `;
-    
+
     // Hiển thị modal chi tiết đơn hàng
     const modalContent = document.getElementById('orderDetailContent');
     if (modalContent) {
@@ -1647,25 +1791,178 @@ function showOrderDetail(orderId) {
         // Fallback nếu không tìm thấy modal
         showNotification(detailHTML.replace(/<[^>]*>/g, ''), 'info');
     }
-} 
+}
+
+// ===== YÊU CẦU HOÀN HÀNG (ADMIN) =====
+async function loadReturnRequests() {
+    const token = localStorage.getItem('token');
+    const container = document.getElementById('returnRequestsContent');
+    if (!container) return;
+
+    container.innerHTML = '<p>Đang tải danh sách yêu cầu hoàn hàng...</p>';
+
+    try {
+        const res = await fetch('/api/orders/returns', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await res.json();
+        if (!res.ok || !data.requests) {
+            container.innerHTML = `<p style="color:#e74c3c;">Lỗi: ${data.error || 'Không thể tải yêu cầu hoàn hàng'}</p>`;
+            return;
+        }
+        const requests = data.requests;
+        // Lưu global cho modal chi tiết
+        window.returnRequestsCache = requests;
+        if (!requests.length) {
+            container.innerHTML = '<p>Không có yêu cầu hoàn / trả hàng nào.</p>';
+            return;
+        }
+        const rows = requests.map(r => {
+            const created = new Date(r.created_at).toLocaleString('vi-VN');
+            const statusText = {
+                pending: 'Chờ duyệt',
+                approved: 'Đã chấp nhận',
+                rejected: 'Đã từ chối'
+            }[r.status] || r.status;
+            return `
+                <tr onclick="showReturnRequestDetail(${r.id})" style="cursor:pointer;">
+                    <td>#${r.id}</td>
+                    <td>#DH${String(r.order_id).padStart(3, '0')}</td>
+                    <td>${created}</td>
+                    <td>${r.reason || ''}</td>
+                    <td>${statusText}</td>
+                </tr>
+            `;
+        }).join('');
+        container.innerHTML = `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#YC</th>
+                        <th>Mã đơn</th>
+                        <th>Ngày gửi</th>
+                        <th>Lý do</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rows}
+                </tbody>
+            </table>
+        `;
+    } catch (err) {
+        container.innerHTML = '<p style="color:#e74c3c;">Lỗi kết nối khi tải yêu cầu hoàn hàng.</p>';
+    }
+}
+
+function openReturnRequestsModal() {
+    const modal = document.getElementById('returnRequestsModal');
+    if (!modal) return;
+    modal.style.display = 'block';
+    loadReturnRequests();
+}
+
+async function showReturnRequestDetail(id) {
+    const requests = window.returnRequestsCache || [];
+    const req = requests.find(r => r.id === id);
+    if (!req) return;
+
+    const token = localStorage.getItem('token');
+    let order = null;
+    try {
+        const res = await fetch(`/api/orders/${req.order_id}`, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            order = data.order || null;
+        }
+    } catch (e) {
+        // ignore
+    }
+
+    const modal = document.getElementById('returnRequestDetailModal');
+    const content = document.getElementById('returnRequestDetailContent');
+    if (!modal || !content) return;
+
+    const created = new Date(req.created_at).toLocaleString('vi-VN');
+    const statusText = {
+        pending: 'Chờ duyệt',
+        approved: 'Đã chấp nhận',
+        rejected: 'Đã từ chối'
+    }[req.status] || req.status;
+
+    const reason = (req.reason || '').replace(/\n/g, '<br>');
+    const desc = (req.description || '').replace(/\n/g, '<br>');
+
+    let orderHtml = '<em>Không thể tải thông tin đơn hàng</em>';
+    if (order) {
+        const orderDate = new Date(order.created_at).toLocaleString('vi-VN');
+        const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        const details = order.order_details || order.items || [];
+        const itemsHtml = details.map(d => `
+            <li>
+                <strong>${d.product_name || ''}</strong>
+                &times; ${d.quantity || 1} -
+                ${Number(d.price || 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+            </li>
+        `).join('');
+
+        orderHtml = `
+            <p><strong>Mã đơn:</strong> #DH${String(order.id).padStart(3, '0')}</p>
+            <p><strong>Ngày đặt:</strong> ${orderDate}</p>
+            <p><strong>Trạng thái:</strong> ${order.status}</p>
+            <p><strong>Tổng tiền:</strong> ${totalStr}</p>
+            <p><strong>Sản phẩm:</strong></p>
+            <ul style="padding-left:18px;">${itemsHtml || '<li><em>Không có dữ liệu sản phẩm</em></li>'}</ul>
+        `;
+    }
+
+    content.innerHTML = `
+        <div style="padding:16px 20px;">
+            <h3 style="margin-top:0;color:#111827;">Yêu cầu #${req.id}</h3>
+            <div style="margin-bottom:16px;">
+                <h4 style="margin:0 0 6px 0;color:#374151;">Thông tin yêu cầu</h4>
+                <p><strong>Mã đơn:</strong> #DH${String(req.order_id).padStart(3, '0')}</p>
+                <p><strong>Ngày gửi:</strong> ${created}</p>
+                <p><strong>Trạng thái:</strong> ${statusText}</p>
+                <p><strong>Lý do:</strong> ${reason || '<em>Không có</em>'}</p>
+                <p><strong>Mô tả chi tiết:</strong><br>${desc || '<em>Không có</em>'}</p>
+                ${req.evidence ? `<p><strong>Ảnh minh chứng:</strong> <a href="${req.evidence}" target="_blank" rel="noopener">Xem ảnh / link</a></p>` : ''}
+            </div>
+            <div>
+                <h4 style="margin:0 0 6px 0;color:#374151;">Thông tin đơn hàng</h4>
+                ${orderHtml}
+            </div>
+        </div>
+    `;
+
+    modal.style.display = 'block';
+}
+
+function closeReturnRequestsModal() {
+    const modal = document.getElementById('returnRequestsModal');
+    if (!modal) return;
+    modal.style.display = 'none';
+}
 
 // Hàm load lại danh sách mã giảm giá
 async function loadPromotions() {
-  try {
-    const response = await fetch('/api/admin/discount-codes', {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-    const data = await response.json();
-    if (response.ok && data.discountCodes) {
-      // Render bảng (desktop)
-      const tbody = document.getElementById('discountCodesTableBody');
-      if (tbody) {
-        tbody.innerHTML = '';
-        data.discountCodes.forEach(code => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
+    try {
+        const response = await fetch('/api/admin/discount-codes', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        const data = await response.json();
+        if (response.ok && data.discountCodes) {
+            // Render bảng (desktop)
+            const tbody = document.getElementById('discountCodesTableBody');
+            if (tbody) {
+                tbody.innerHTML = '';
+                data.discountCodes.forEach(code => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
             <td>${code.code}</td>
             <td>${code.description || '-'}</td>
             <td>${code.discount_type === 'percentage' ? 'Phần trăm' : 'Số tiền'}</td>
@@ -1687,17 +1984,17 @@ async function loadPromotions() {
               <button class="btn btn-danger btn-sm" onclick="deleteDiscountCode(${code.id})">Xóa</button>
             </td>
           `;
-          tbody.appendChild(row);
-        });
-      }
-      // Render card (mobile)
-      const cardsContainer = document.getElementById('promotionCardsContainer');
-      if (cardsContainer) {
-        cardsContainer.innerHTML = '';
-        data.discountCodes.forEach(code => {
-          const card = document.createElement('div');
-          card.className = 'promotion-card';
-          card.innerHTML = `
+                    tbody.appendChild(row);
+                });
+            }
+            // Render card (mobile)
+            const cardsContainer = document.getElementById('promotionCardsContainer');
+            if (cardsContainer) {
+                cardsContainer.innerHTML = '';
+                data.discountCodes.forEach(code => {
+                    const card = document.createElement('div');
+                    card.className = 'promotion-card';
+                    card.innerHTML = `
             <div class="promo-row"><span class="promo-label">Mã:</span><span class="promo-value">${code.code}</span></div>
             <div class="promo-row"><span class="promo-label">Mô tả:</span><span class="promo-value">${code.description || '-'}</span></div>
             <div class="promo-row"><span class="promo-label">Loại:</span><span class="promo-value">${code.discount_type === 'percentage' ? 'Phần trăm' : 'Số tiền'}</span></div>
@@ -1719,16 +2016,16 @@ async function loadPromotions() {
               <button class="btn btn-danger btn-sm" onclick="deleteDiscountCode(${code.id})"><i class='fas fa-trash'></i> Xóa</button>
             </div>
           `;
-          cardsContainer.appendChild(card);
-        });
-      }
-    } else {
-      showNotification('Không thể tải danh sách mã giảm giá', 'error');
+                    cardsContainer.appendChild(card);
+                });
+            }
+        } else {
+            showNotification('Không thể tải danh sách mã giảm giá', 'error');
+        }
+    } catch (error) {
+        showNotification('Lỗi kết nối khi tải mã giảm giá', 'error');
     }
-  } catch (error) {
-    showNotification('Lỗi kết nối khi tải mã giảm giá', 'error');
-  }
-} 
+}
 
 // Hàm đăng xuất cho mobile
 function logoutAdmin() {
@@ -1737,7 +2034,7 @@ function logoutAdmin() {
         sessionStorage.clear();
         window.location.href = 'login.html';
     }
-} 
+}
 
 // Expose frequently used functions for inline handlers
 window.loadProducts = loadProducts;
@@ -1757,5 +2054,63 @@ window.loadProductFormData = loadProductFormData;
 window.loadOrders = loadOrders;
 window.deleteOrder = deleteOrder;
 window.updateOrderStatus = updateOrderStatus;
+window.openOrderStatusDialog = openOrderStatusDialog;
 window.showOrderDetail = showOrderDetail;
 window.logoutAdmin = logoutAdmin;
+window.openReturnRequestsModal = openReturnRequestsModal;
+window.closeReturnRequestsModal = closeReturnRequestsModal;
+window.showReturnRequestDetail = showReturnRequestDetail;
+
+// Tìm kiếm đơn hàng trong trang quản lý đơn hàng (theo mã đơn, tên, SĐT, email, trạng thái, sản phẩm)
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('adminOrdersSearchInput');
+    const searchForm = document.getElementById('adminOrdersSearchForm');
+    const ordersTbody = document.getElementById('ordersTableBody');
+
+    if (!searchInput || !ordersTbody) return;
+
+    const doFilter = () => {
+        const keyword = searchInput.value.trim().toLowerCase();
+        const orders = window.currentOrders || [];
+        if (!keyword) {
+            // Hiển thị lại toàn bộ
+            const event = new Event('reload-orders-no-filter');
+            document.dispatchEvent(event);
+            return;
+        }
+        const filtered = orders.filter(o => {
+            const fields = [
+                `dh${o.id}`,
+                String(o.id || ''),
+                o.customer_name || '',
+                o.customer_phone || '',
+                o.customer_email || '',
+                o.customer_address || '',
+                o.status || '',
+                o.items || ''
+            ].join(' ').toLowerCase();
+            return fields.includes(keyword);
+        });
+
+        // Render lại bảng bằng hàm buildOrdersRows đã khai báo trong loadOrders (dùng lại logic format)
+        if (typeof window.buildOrdersRows === 'function') {
+            ordersTbody.innerHTML = window.buildOrdersRows(filtered);
+        } else {
+            // fallback: chỉ hiển thị số lượng kết quả
+            ordersTbody.innerHTML = `<tr><td colspan="8">Tìm thấy ${filtered.length} đơn phù hợp, vui lòng tải lại trang.</td></tr>`;
+        }
+    };
+
+    searchInput.addEventListener('input', () => {
+        // Đợi người dùng dừng gõ 300ms rồi mới filter
+        clearTimeout(searchInput._searchTimer);
+        searchInput._searchTimer = setTimeout(doFilter, 300);
+    });
+
+    if (searchForm) {
+        searchForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            doFilter();
+        });
+    }
+});

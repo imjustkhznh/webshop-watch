@@ -252,10 +252,12 @@
         function getStatusText(status) {
             const statusMap = {
                 'pending': 'Chờ xử lý',
-                'processing': 'Đang xử lý',
+                'processing': 'Đã nhận đơn',
+                'shipping': 'Đang giao',
                 'shipped': 'Đang giao',
-                'delivered': 'Đã giao',
-                'cancelled': 'Đã hủy'
+                'delivered': 'Hoàn thành',
+                'cancelled': 'Đã hủy',
+                'returned': 'Hoàn / trả hàng'
             };
             return statusMap[status] || status;
         }

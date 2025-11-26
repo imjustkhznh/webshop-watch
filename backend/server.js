@@ -179,6 +179,28 @@ const initDatabase = async (connection) => {
             } catch (error) {
                 console.log('ℹ️ Error creating discount codes table:', error.message);
             }
+
+            // Create order_returns table for return/hoàn hàng requests
+            try {
+                await connection.execute(`
+                    CREATE TABLE IF NOT EXISTS order_returns (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        order_id INT NOT NULL,
+                        user_id INT NOT NULL,
+                        reason VARCHAR(255),
+                        description TEXT,
+                        evidence TEXT,
+                        status ENUM('pending','approved','rejected') DEFAULT 'pending',
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                        INDEX idx_order_id (order_id),
+                        INDEX idx_user_id (user_id)
+                    )
+                `);
+                console.log('✅ order_returns table created/verified');
+            } catch (error) {
+                console.log('ℹ️ Error creating order_returns table:', error.message);
+            }
         } catch (error) {
             console.log('ℹ️ Error checking/adding customer columns:', error.message);
         }

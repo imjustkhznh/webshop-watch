@@ -191,6 +191,37 @@ class Order {
             connection.release();
         }
     }
+
+    // Tạo yêu cầu hoàn/ trả hàng cho đơn hàng
+    static async createReturnRequest({ order_id, user_id, reason, description, evidence }) {
+        const connection = await getConnection();
+        try {
+            const [result] = await connection.execute(
+                `INSERT INTO order_returns (order_id, user_id, reason, description, evidence)
+                 VALUES (?, ?, ?, ?, ?)`,
+                [order_id, user_id, reason || null, description || null, evidence || null]
+            );
+            return result.insertId;
+        } finally {
+            connection.release();
+        }
+    }
+
+    // Lấy các yêu cầu hoàn hàng (cho admin, có thể dùng sau này)
+    static async getReturnRequests() {
+        const connection = await getConnection();
+        try {
+            const [rows] = await connection.execute(`
+                SELECT r.*, o.total_amount, o.status as order_status
+                FROM order_returns r
+                JOIN orders o ON r.order_id = o.id
+                ORDER BY r.created_at DESC
+            `);
+            return rows;
+        } finally {
+            connection.release();
+        }
+    }
 }
 
 module.exports = Order;

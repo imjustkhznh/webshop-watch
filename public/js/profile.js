@@ -366,6 +366,8 @@ function displayOrders() {
         const statusText = getStatusText(order.status);
         const formattedDate = formatDate(order.created_at);
         const formattedAmount = formatPrice(parseFloat(order.total_amount) || 0);
+        const canCancel = (order.status === 'pending' || order.status === 'processing');
+        const canReturn = canReturnOrder(order);
         
         return `
             <div class="order-card">
@@ -396,7 +398,12 @@ function displayOrders() {
                                 <i class="fas fa-redo"></i> Đặt lại
                             </button>
                         ` : ''}
-                        ${(order.status === 'pending' || order.status === 'processing') ? `
+                        ${canReturn ? `
+                            <button class="action-btn btn-cancel" style="background:#ff9800;color:#fff;" onclick="returnOrder(${order.id})">
+                                <i class="fas fa-undo"></i> Hoàn hàng
+                            </button>
+                        ` : ''}
+                        ${canCancel ? `
                             <button class="action-btn btn-cancel" style="background:#e53935;color:#fff;" onclick="cancelOrder(${order.id})">
                                 <i class="fas fa-times"></i> Hủy đơn
                             </button>
@@ -571,11 +578,28 @@ function viewProduct(productId) {
 function getStatusText(status) {
     const statusMap = {
         'pending': 'Chờ xử lý',
-        'processing': 'Đang xử lý',
-        'delivered': 'Đã giao',
-        'cancelled': 'Đã hủy'
+        'processing': 'Đã nhận đơn',
+        'shipping': 'Đang giao',
+        'shipped': 'Đang giao',
+        'delivered': 'Hoàn thành',
+        'cancelled': 'Đã hủy',
+        'returned': 'Hoàn / trả hàng'
     };
     return statusMap[status] || status;
+}
+
+// Kiểm tra đơn có còn trong thời gian cho phép hoàn hàng không (mặc định 1 ngày sau khi hoàn thành)
+function canReturnOrder(order) {
+    if (!order || order.status !== 'delivered') return false;
+    // Ưu tiên dùng delivered_at nếu backend có, nếu không thì dùng updated_at, cuối cùng fallback created_at
+    const completedAtStr = order.delivered_at || order.updated_at || order.created_at;
+    if (!completedAtStr) return false;
+    const completedAt = new Date(completedAtStr);
+    if (isNaN(completedAt.getTime())) return false;
+
+    const diffMs = Date.now() - completedAt.getTime();
+    const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+    return diffMs <= ONE_DAY_MS;
 }
 
 function formatDate(dateString) {
@@ -722,6 +746,54 @@ function cancelOrder(orderId) {
     document.getElementById('cancelOrderText').innerHTML = `Bạn chắc chắn muốn hủy đơn hàng <b>#${orderId}</b> này?`;
     document.getElementById('cancelOrderModal').style.display = 'flex';
 }
+
+// Hoàn / trả hàng (chỉ cho phép trong 1 ngày sau khi đơn ở trạng thái Hoàn thành)
+function returnOrder(orderId) {
+    const order = allOrders.find(o => o.id === orderId);
+    if (!order) {
+        showNotification('Không tìm thấy thông tin đơn hàng!', 'error');
+        return;
+    }
+    if (!canReturnOrder(order)) {
+        showNotification('Đơn hàng này đã quá thời hạn 1 ngày để yêu cầu hoàn hàng.', 'warning');
+        return;
+    }
+
+    if (!confirm(`Bạn chắc chắn muốn yêu cầu hoàn hàng cho đơn #${orderId}?`)) {
+        return;
+    }
+
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    fetch(`/api/orders/${orderId}/status`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        // Frontend dùng 'returned', backend sẽ map về trạng thái phù hợp trong DB
+        body: JSON.stringify({ status: 'returned' })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Yêu cầu hoàn hàng cho đơn #' + orderId + ' đã được gửi.', 'success');
+            // Cập nhật trạng thái trong bộ nhớ để hiển thị lại
+            order.status = 'returned';
+            displayOrders();
+        } else {
+            showNotification(data.error || 'Không thể hoàn hàng cho đơn này!', 'error');
+        }
+    })
+    .catch(() => {
+        showNotification('Có lỗi khi gửi yêu cầu hoàn hàng!', 'error');
+    });
+}
+
+// Đảm bảo các hàm được dùng trong HTML inline có mặt trên window
+window.viewOrderDetail = viewOrderDetail;
+window.reorderItems = reorderItems;
+window.cancelOrder = cancelOrder;
+window.returnOrder = returnOrder;
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {

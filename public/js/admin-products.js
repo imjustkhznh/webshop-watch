@@ -72,6 +72,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    const addProductForm = document.getElementById('addProductForm');
+    const submitBtn = document.getElementById('submitProductBtn');
+
+    // Hàm chuẩn bị form ở chế độ thêm mới
+    function resetProductForm() {
+        if (!addProductForm) return;
+        addProductForm.reset();
+        addProductForm.dataset.mode = 'create';
+        addProductForm.dataset.productId = '';
+        const preview = document.getElementById('currentImagePreview');
+        if (preview) preview.innerHTML = '';
+        if (submitBtn) submitBtn.textContent = 'Thêm sản phẩm';
+    }
+
+    // Hàm mở modal thêm sản phẩm (được gọi từ HTML)
+    function openAddProductModal() {
+        // Đảm bảo select brand/category đã có dữ liệu
+        Promise.all([loadBrands(), loadCategories()]).finally(() => {
+            resetProductForm();
+            openModal('addProductModal');
+        });
+    }
+    window.openAddProductModal = openAddProductModal;
+
     // Sửa sản phẩm - chuyển sang async để đảm bảo select đã được load
     async function editProduct(id) {
         const product = productList.find(p => p.id == id);
@@ -94,13 +118,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             preview.innerHTML = '';
         }
-        // Đổi nút submit thành cập nhật
-        const submitBtn = document.getElementById('submitProductBtn');
-        submitBtn.textContent = 'Cập nhật sản phẩm';
-        submitBtn.onclick = function(e) {
-            e.preventDefault();
-            updateProduct(id);
-        };
+        // Đặt form ở chế độ cập nhật
+        if (addProductForm) {
+            addProductForm.dataset.mode = 'edit';
+            addProductForm.dataset.productId = id;
+        }
+        if (submitBtn) {
+            submitBtn.textContent = 'Cập nhật sản phẩm';
+        }
     }
     window.editProduct = editProduct;
 
@@ -147,6 +172,63 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (err) {
             alert(err.message);
         }
+    }
+
+    // Thêm mới sản phẩm
+    async function createProduct() {
+        const name = document.getElementById('productName').value.trim();
+        const brand_id = document.getElementById('productBrand').value;
+        const category_id = document.getElementById('productCategory').value;
+        const price = document.getElementById('productPrice').value;
+        const stock = document.getElementById('productStock').value;
+        const description = document.getElementById('productDescription').value;
+        const image_url = document.getElementById('productImage').value;
+
+        if (!name || !brand_id || !category_id || !price || !stock) {
+            alert('Vui lòng nhập đầy đủ các trường bắt buộc.');
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
+            const res = await fetch('/api/products', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({ name, brand_id, category_id, price, stock, description, image_url })
+            });
+
+            if (res.status === 401) {
+                alert('Bạn cần đăng nhập/đăng nhập lại để thực hiện hành động này.');
+                return;
+            }
+
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                throw new Error(data.error || 'Thêm sản phẩm thất bại');
+            }
+
+            closeModal('addProductModal');
+            resetProductForm();
+            fetchProducts();
+        } catch (err) {
+            alert(err.message);
+        }
+    }
+
+    // Bắt sự kiện submit form để phân biệt thêm mới / cập nhật
+    if (addProductForm) {
+        addProductForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const mode = addProductForm.dataset.mode || 'create';
+            if (mode === 'edit' && addProductForm.dataset.productId) {
+                updateProduct(addProductForm.dataset.productId);
+            } else {
+                createProduct();
+            }
+        });
     }
 
     // Gọi lại fetchProducts và lưu productList

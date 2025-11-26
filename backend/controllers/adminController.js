@@ -75,6 +75,16 @@ const Order = require('../models/Order');
 exports.getOrders = async (req, res) => {
     try {
         const orders = await Order.getAll();
+
+        // Gắn thêm thông tin sản phẩm cho từng đơn để hiển thị ở trang admin
+        for (const order of orders) {
+            const details = await Order.getOrderDetails(order.id);
+            // Chuỗi mô tả sản phẩm: "Tên SP xSố lượng, ..."
+            order.items = details && details.length
+                ? details.map(d => `${d.product_name || 'Sản phẩm'} x${d.quantity}`).join(', ')
+                : 'N/A';
+        }
+
         res.json({
             success: true,
             orders
