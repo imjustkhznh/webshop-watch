@@ -275,11 +275,11 @@ body {
     position: fixed;
     top: 0;
     left: -100%;
-    width: 280px;
+    width: 260px;
     height: 100vh;
     background: #2c3e50;
     color: white;
-    padding: 20px;
+    padding: 18px 16px;
     z-index: 9998;
     transition: left 0.3s cubic-bezier(0.4,0,0.2,1);
     overflow-y: auto;
@@ -318,7 +318,7 @@ body {
 .nav-link {
     display: flex;
     align-items: center;
-    padding: 15px;
+    padding: 10px 12px;
     color: white;
     text-decoration: none;
     border-radius: 10px;
@@ -339,7 +339,7 @@ body {
 
 .nav-link i {
     margin-right: 15px;
-    width: 20px;
+    width: 18px;
     text-align: center;
     font-size: 18px;
 }
@@ -690,6 +690,21 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
+/* Điều chỉnh riêng cho cột thao tác ở trang sản phẩm:
+   - Hiển thị cả nút Sửa và Xóa gọn gàng, không bị tràn khỏi ô */
+#products .table td:last-child {
+    white-space: normal;
+    overflow: visible;
+}
+
+#products .table td:last-child .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    margin: 2px 3px;
+}
+
 /* Đảm bảo nút "Cập nhật" trong bảng orders luôn hiển thị đúng */
 #orders .table th:last-child,
 #orders .table td:last-child {
@@ -1004,11 +1019,11 @@ body {
     .sidebar {
         position: fixed;
         left: 0;
-        width: 280px;
+        width: 230px;
     }
     
     .main-content {
-        margin-left: 280px;
+        margin-left: 230px;
         margin-top: 0;
         padding: 20px;
     }
@@ -1079,11 +1094,11 @@ body {
 /* Large Desktop Styles (1024px and up) */
 @media (min-width: 1024px) {
     .sidebar {
-        width: 300px;
+        width: 240px;
     }
     
     .main-content {
-        margin-left: 300px;
+        margin-left: 240px;
     }
     
     .content-section {
@@ -1540,23 +1555,24 @@ body {
 /* Modal xác nhận xóa styles */
 .delete-confirm-content {
     text-align: center;
-    padding: 20px 0;
+    padding: 16px 0;
 }
 
 .delete-icon {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .delete-actions {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-top: 30px;
+    gap: 12px;
+    margin-top: 18px;
 }
 
 .delete-actions .btn {
-    padding: 12px 24px;
+    padding: 8px 18px;
     font-weight: 500;
+    font-size: 14px;
 }
 
 .btn-secondary {
@@ -1571,6 +1587,45 @@ body {
 
 .modal-body {
     padding: 20px;
+}
+
+/* Nhỏ gọn riêng cho modal xóa sản phẩm trên trang sản phẩm */
+#deleteConfirmModal .delete-modal-content {
+    max-width: 420px !important;
+    min-height: auto !important;
+    padding-bottom: 18px;
+}
+
+#deleteConfirmModal .modal-header {
+    padding: 16px 20px;
+}
+
+#deleteConfirmModal .modal-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#deleteConfirmModal .modal-body {
+    padding: 16px 22px 18px;
+}
+
+#deleteConfirmModal .delete-icon i {
+    color: #e74c3c;
+    font-size: 32px;
+}
+
+#deleteConfirmModal .delete-title {
+    margin: 10px 0 6px;
+    color: #2c3e50;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#deleteConfirmModal .delete-text {
+    text-align: center;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+    font-size: 14px;
 }
 
 /* Notification styles */
@@ -1633,6 +1688,89 @@ body {
 }
 
 /* Reports Chart Styles */
+.dashboard-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 22px 18px;
+    box-shadow: 0 12px 28px rgba(15, 76, 129, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(15, 76, 129, 0.1);
+}
+
+.stat-heading {
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #7d8a99;
+    margin: 0;
+}
+
+.stat-card h3 {
+    font-size: 1.85rem;
+    margin: 0;
+    color: #1f3241;
+}
+
+.stat-subtext {
+    font-size: 0.9rem;
+    color: #95a5a6;
+    margin: 0;
+}
+
+.dashboard-chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.chart-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 16px 30px rgba(15, 76, 129, 0.07);
+    border: 1px solid rgba(15, 76, 129, 0.05);
+}
+
+.chart-card h3 {
+    margin-bottom: 14px;
+    font-size: 1.25rem;
+    color: #1f3241;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.chart-card canvas {
+    max-width: 100%;
+    display: block;
+}
+
+/* Tiêu đề phụ cho biểu đồ nằm chung 1 khung (ví dụ: doanh thu theo tháng dưới doanh thu theo ngày) */
+.chart-subtitle {
+    margin-top: 24px;
+    margin-bottom: 14px;
+    font-size: 1.1rem;
+    color: #1f3241;
+    font-weight: 600;
+}
+
 .daily-revenue-chart {
     background: white;
     border-radius: 12px;
@@ -2625,6 +2763,36 @@ body {
 }
 .search-box button:hover {
   background: #5a6fd8;
+}
+
+/* Tối ưu ô tìm kiếm trên trang sản phẩm cho nhẹ nhàng, tinh tế hơn */
+#products .search-box {
+  background: transparent;
+  border-bottom: none;
+  padding: 0;
+  margin-bottom: 16px;
+  flex-direction: row;
+  align-items: center;
+}
+
+#products .search-box input {
+  flex: 1;
+  border-radius: 999px;
+  padding: 10px 16px;
+}
+
+#products .search-box button {
+  width: auto;
+  border-radius: 999px;
+  padding: 9px 14px;
+  background: #f1f3f5;
+  color: #495057;
+  border: 1px solid #dee2e6;
+}
+
+#products .search-box button:hover {
+  background: #e2e6ea;
+  color: #343a40;
 }
 
 .content-header-wrapper {

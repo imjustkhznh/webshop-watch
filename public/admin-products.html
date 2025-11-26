@@ -136,28 +136,28 @@
                 </form>
             </div>
         </div>
-        <!-- Modal xác nhận xóa sản phẩm -->
+        <!-- Modal xác nhận xóa sản phẩm (nhỏ gọn, đơn giản) -->
         <div id="deleteConfirmModal" class="modal">
-          <div class="modal-content" style="max-width: 400px;">
+          <div class="modal-content delete-modal-content">
             <div class="modal-header">
-              <h2>Xác nhận xóa</h2>
+              <h2>Xóa sản phẩm</h2>
               <span class="close" onclick="closeModal('deleteConfirmModal')">&times;</span>
             </div>
             <div class="modal-body">
               <div class="delete-confirm-content">
                 <div class="delete-icon">
-                  <i class="fas fa-exclamation-triangle" style="color: #e74c3c; font-size: 48px;"></i>
+                  <i class="fas fa-exclamation-triangle"></i>
                 </div>
-                <h3 id="deleteProductName" style="margin: 20px 0; color: #2c3e50; text-align: center;"></h3>
-                <p style="text-align: center; color: #7f8c8d; margin-bottom: 30px;">
-                  Bạn có chắc chắn muốn xóa sản phẩm này? Hành động này không thể hoàn tác.
+                <h3 id="deleteProductName" class="delete-title"></h3>
+                <p class="delete-text">
+                  Bạn có muốn xóa sản phẩm này? Hành động này không thể hoàn tác.
                 </p>
                 <div class="delete-actions">
                   <button type="button" class="btn btn-secondary" onclick="closeModal('deleteConfirmModal')">
-                    <i class="fas fa-times"></i> Hủy
+                    Hủy
                   </button>
                   <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="confirmDeleteProduct()">
-                    <i class="fas fa-trash"></i> Xác nhận xóa
+                    Xóa
                   </button>
                 </div>
               </div>

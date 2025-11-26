@@ -296,6 +296,57 @@ function renderLineChart(dailyData) {
         }
     });
 }
+
+function renderMonthlyChart(monthlyData) {
+    if (!window.Chart) return;
+    const ctx = document.getElementById('dashboardMonthlyChart');
+    if (!ctx) return;
+    if (window.dashboardMonthlyChartInstance) {
+        window.dashboardMonthlyChartInstance.destroy();
+    }
+    const labels = monthlyData.map(item => `${item.year}-${String(item.month).padStart(2,'0')}`);
+    const data = monthlyData.map(item => item.revenue);
+    window.dashboardMonthlyChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Doanh thu',
+                data,
+                backgroundColor: '#67c5fb'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Doanh thu (VND)' }
+                }
+            }
+        }
+    });
+}
+
+function updateDashboardStats(summary = {}) {
+    const ordersEl = document.getElementById('stat-orders-value');
+    const revenueEl = document.getElementById('stat-revenue-value');
+    const stockEl = document.getElementById('stat-stock-value');
+    const customersEl = document.getElementById('stat-customers-value');
+
+    if (ordersEl) {
+        ordersEl.textContent = summary.order_count ?? 0;
+    }
+    if (revenueEl) {
+        revenueEl.textContent = formatPrice(summary.revenue || 0);
+    }
+    if (stockEl) {
+        stockEl.textContent = summary.stock ?? 0;
+    }
+    if (customersEl) {
+        customersEl.textContent = summary.new_customers ?? 0;
+    }
+}
 // Custom Notification Function
 function showNotification(message, type = 'success', duration = 3000) {
     // Remove existing notifications
@@ -912,20 +963,6 @@ function loadProductFormData() {
 }
 
 // Export functions for global use
-window.loadProducts = loadProducts;
-window.displayProducts = displayProducts;
-window.changePage = changePage;
-window.showTab = showTab;
-window.showNotification = showNotification;
-window.toggleMobileMenu = toggleMobileMenu;
-window.closeMobileMenu = closeMobileMenu;
-window.showMobileTab = showMobileTab;
-window.deleteCustomer = deleteCustomer;
-window.loadCustomers = loadCustomers;
-window.displayCustomers = displayCustomers;
-window.loadCategories = loadCategories;
-window.loadBrands = loadBrands;
-window.loadProductFormData = loadProductFormData;
 
 // Format Vietnamese address names
 function formatVietnameseAddress(address) {
@@ -996,8 +1033,10 @@ async function loadOrders() {
             return;
         }
         
+        // Giới hạn 10 đơn gần nhất
+        const recentOrders = (data.orders || []).slice(0, 10);
         // Tạo HTML cho mỗi đơn hàng (có nút xóa/sửa trạng thái)
-        const ordersHTML = data.orders.map((order, index) => {
+        const ordersHTML = recentOrders.map((order, index) => {
             const d = new Date(order.order_date);
             const dateStr = d.toLocaleDateString('vi-VN');
             const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -1038,53 +1077,8 @@ async function loadOrders() {
                 </tr>
             `;
         }).join('');
-// Xóa đơn hàng (admin)
-async function deleteOrder(orderId) {
-    if (!confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')) return;
-    const token = localStorage.getItem('token');
-    try {
-        const res = await fetch(`/api/orders/${orderId}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': 'Bearer ' + token }
-        });
-        if (res.ok) {
-            showNotification('Đã xóa đơn hàng thành công!', 'success');
-            loadOrders();
-        } else {
-            const data = await res.json();
-            showNotification('Lỗi: ' + (data.error || 'Không thể xóa đơn hàng'), 'error');
-        }
-    } catch (err) {
-        showNotification('Lỗi kết nối khi xóa đơn hàng', 'error');
-    }
-}
-
-// Cập nhật trạng thái đơn hàng (admin)
-async function updateOrderStatus(orderId, status) {
-    const token = localStorage.getItem('token');
-    try {
-        const res = await fetch(`/api/orders/${orderId}/status`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ status })
-        });
-        if (res.ok) {
-            showNotification('Cập nhật trạng thái thành công!', 'success');
-            loadOrders();
-        } else {
-            const data = await res.json();
-            showNotification('Lỗi: ' + (data.error || 'Không thể cập nhật trạng thái'), 'error');
-        }
-    } catch (err) {
-        showNotification('Lỗi kết nối khi cập nhật trạng thái', 'error');
-    }
-}
-
         // Tạo HTML cho dashboard (không có cột Ngày đặt)
-        const dashboardHTML = data.orders.map((order, index) => {
+        const dashboardHTML = recentOrders.map((order, index) => {
             console.log(`Processing dashboard order ${index}:`, order);
             const d = new Date(order.order_date);
             const dateStr = d.toLocaleDateString('vi-VN');
@@ -1131,7 +1125,7 @@ async function updateOrderStatus(orderId, status) {
         // Render mobile cards cho dashboard
         const dashboardCardsContainer = document.querySelector('.dashboard-orders-cards');
         if (dashboardCardsContainer) {
-            const mobileCardsHTML = data.orders.map((order, index) => {
+            const mobileCardsHTML = recentOrders.map((order, index) => {
                 const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                 let statusClass = '';
                 let statusText = '';
@@ -1201,7 +1195,7 @@ async function updateOrderStatus(orderId, status) {
         // Render mobile cards cho orders page
         const ordersCardsContainer = document.querySelector('.orders-mobile-cards');
         if (ordersCardsContainer) {
-            const ordersMobileCardsHTML = data.orders.map((order, index) => {
+            const ordersMobileCardsHTML = recentOrders.map((order, index) => {
                 const d = new Date(order.order_date);
                 const dateStr = d.toLocaleDateString('vi-VN');
                 const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -1411,6 +1405,15 @@ async function loadReports() {
     try {
         // Load dữ liệu cho 2 biểu đồ dashboard
         const token = localStorage.getItem('token');
+        const summaryRes = await fetch('/api/reports/summary', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const summaryData = await summaryRes.json();
+        if (summaryRes.ok) {
+            updateDashboardStats(summaryData.summary || {});
+        } else {
+            console.error('Failed to load report summary:', summaryData.error);
+        }
         // Pie chart: doanh thu theo thương hiệu
         const pieRes = await fetch('/api/reports/brand-revenue', {
             headers: { 'Authorization': 'Bearer ' + token }
@@ -1428,82 +1431,23 @@ async function loadReports() {
         const lineData = await lineRes.json();
         if (lineRes.ok) {
             renderLineChart(lineData.daily);
-            displayDailyRevenue(lineData.daily);
         } else {
             console.error('Failed to load daily revenue data:', lineData.error);
+        }
+        const monthlyRes = await fetch('/api/reports/monthly-revenue', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const monthlyData = await monthlyRes.json();
+        if (monthlyRes.ok) {
+            renderMonthlyChart(monthlyData.monthly);
+        } else {
+            console.error('Failed to load monthly revenue data:', monthlyData.error);
         }
         
     } catch (error) {
         console.error('Error loading reports:', error);
         showNotification('Lỗi kết nối khi tải báo cáo', 'error');
     }
-}
-
-// Display report summary data
-function displayReportSummary(data) {
-    // Update dashboard stats
-    const revenueElement = document.querySelector('#dashboard .stat-card:nth-child(2) .stat-content h3');
-    const ordersElement = document.querySelector('#dashboard .stat-card:nth-child(1) .stat-content h3');
-    const customersElement = document.querySelector('#dashboard .stat-card:nth-child(4) .stat-content h3');
-    const stockElement = document.querySelector('#dashboard .stat-card:nth-child(3) .stat-content h3');
-    
-    if (revenueElement) {
-        revenueElement.textContent = formatPrice(data.revenue);
-    }
-    if (ordersElement) {
-        ordersElement.textContent = data.order_count || 0;
-    }
-    if (customersElement) {
-        customersElement.textContent = data.new_customers || 0;
-    }
-    if (stockElement) {
-        stockElement.textContent = data.stock_count || 0;
-    }
-    // Vẽ biểu đồ dashboard
-    renderDashboardChart({
-        order_count: data.order_count,
-        revenue: data.revenue,
-        stock_count: data.stock_count,
-        new_customers: data.new_customers
-    });
-    
-    // Update reports page stats using correct IDs
-    const reportsRevenueElement = document.getElementById('revenue');
-    const reportsOrdersElement = document.getElementById('order_count');
-    const reportsCustomersElement = document.getElementById('new_customers');
-    const topProductElement = document.getElementById('top_product');
-    
-    if (reportsRevenueElement) {
-        reportsRevenueElement.textContent = formatPrice(data.revenue);
-    }
-    if (reportsOrdersElement) {
-        reportsOrdersElement.textContent = data.order_count || 0;
-    }
-    if (reportsCustomersElement) {
-        reportsCustomersElement.textContent = data.new_customers || 0;
-    }
-    if (topProductElement) {
-        topProductElement.textContent = data.top_product || 'Chưa có dữ liệu';
-    }
-}
-
-// Display daily revenue in table
-function displayDailyRevenue(dailyData) {
-    const tableBody = document.querySelector('#dailyRevenueTable tbody');
-    if (!tableBody) return;
-    
-    const tableHTML = dailyData.map(day => {
-        const date = new Date(day.date);
-        const formattedDate = date.toLocaleDateString('vi-VN');
-        return `
-            <tr>
-                <td>${formattedDate}</td>
-                <td>${formatPrice(day.revenue)}</td>
-            </tr>
-        `;
-    }).join('');
-    
-    tableBody.innerHTML = tableHTML;
 }
 
 // Add brand form submission
@@ -1595,6 +1539,51 @@ async function deleteBrandConfirm(brandId) {
     } catch (error) {
         console.error('Error deleting brand:', error);
         showNotification('Lỗi kết nối khi xóa thương hiệu', 'error');
+    }
+}
+
+// Xóa đơn hàng (admin)
+async function deleteOrder(orderId) {
+    if (!confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')) return;
+    const token = localStorage.getItem('token');
+    try {
+        const res = await fetch(`/api/orders/${orderId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.ok) {
+            showNotification('Đã xóa đơn hàng thành công!', 'success');
+            loadOrders();
+        } else {
+            const data = await res.json();
+            showNotification('Lỗi: ' + (data.error || 'Không thể xóa đơn hàng'), 'error');
+        }
+    } catch (err) {
+        showNotification('Lỗi kết nối khi xóa đơn hàng', 'error');
+    }
+}
+
+// Cập nhật trạng thái đơn hàng (admin)
+async function updateOrderStatus(orderId, status) {
+    const token = localStorage.getItem('token');
+    try {
+        const res = await fetch(`/api/orders/${orderId}/status`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status })
+        });
+        if (res.ok) {
+            showNotification('Cập nhật trạng thái thành công!', 'success');
+            loadOrders();
+        } else {
+            const data = await res.json();
+            showNotification('Lỗi: ' + (data.error || 'Không thể cập nhật trạng thái'), 'error');
+        }
+    } catch (err) {
+        showNotification('Lỗi kết nối khi cập nhật trạng thái', 'error');
     }
 }
 
@@ -1749,3 +1738,24 @@ function logoutAdmin() {
         window.location.href = 'login.html';
     }
 } 
+
+// Expose frequently used functions for inline handlers
+window.loadProducts = loadProducts;
+window.displayProducts = displayProducts;
+window.changePage = changePage;
+window.showTab = showTab;
+window.showNotification = showNotification;
+window.toggleMobileMenu = toggleMobileMenu;
+window.closeMobileMenu = closeMobileMenu;
+window.showMobileTab = showMobileTab;
+window.deleteCustomer = deleteCustomer;
+window.loadCustomers = loadCustomers;
+window.displayCustomers = displayCustomers;
+window.loadCategories = loadCategories;
+window.loadBrands = loadBrands;
+window.loadProductFormData = loadProductFormData;
+window.loadOrders = loadOrders;
+window.deleteOrder = deleteOrder;
+window.updateOrderStatus = updateOrderStatus;
+window.showOrderDetail = showOrderDetail;
+window.logoutAdmin = logoutAdmin;

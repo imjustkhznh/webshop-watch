@@ -267,7 +267,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 showNotification('Đăng ký thành công! Vui lòng đăng nhập.', 'success');
                 window.location.href = 'login.html';
             } else {
-                showNotification(data.message || 'Đăng ký thất bại. Vui lòng thử lại.', 'error');
+                const errorMsg = data.error || data.message || 'Đăng ký thất bại. Vui lòng thử lại.';
+                console.warn('Register API error:', data);
+                showNotification(errorMsg, 'error');
             }
         } catch (error) {
             console.error('Registration error:', error);

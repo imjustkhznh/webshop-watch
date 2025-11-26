@@ -10,6 +10,9 @@ router.get('/summary', authenticateToken, isAdmin, reportController.getSummary);
 // Lấy doanh thu theo ngày (admin)
 router.get('/daily-revenue', authenticateToken, isAdmin, reportController.getDailyRevenue);
 
+// Lấy doanh thu theo tháng (admin)
+router.get('/monthly-revenue', authenticateToken, isAdmin, reportController.getMonthlyRevenue);
+
 // Lấy doanh thu theo thương hiệu (pie chart)
 router.get('/brand-revenue', authenticateToken, isAdmin, reportController.getBrandRevenue);
 

@@ -180,10 +180,11 @@
 async function loadCitizenProducts() {
     const res = await fetch('/api/products');
     const data = await res.json();
-    // Lọc chỉ lấy sản phẩm Citizen và loại "Đeo tay"
-    const products = (data.products || []).filter(p => 
-        p.brand_name === 'Citizen' && p.category_name === 'Đeo tay'
-    );
+    // Lọc tất cả sản phẩm có thương hiệu Citizen (không giới hạn loại, không phân biệt hoa thường)
+    const products = (data.products || []).filter(p => {
+        const brand = (p.brand_name || p.brand || '').toLowerCase().trim();
+        return brand === 'citizen';
+    });
     const grid = document.querySelector('.product-list');
     grid.innerHTML = '';
     
@@ -204,6 +205,7 @@ async function loadCitizenProducts() {
         if (discount > 0) {
             salePrice = Math.round(originalPrice * (1 - discount / 100));
         }
+        const imageUrl = resolveImagePath(product.image);
         
         // Check if product is in wishlist
         const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
@@ -212,8 +214,8 @@ async function loadCitizenProducts() {
         grid.innerHTML += `
         <div class="product-card">
             <div class="product-image">
-                <img src="${product.image || 'static/no-image.png'}" alt="${product.name}" />
-                <button class="wishlist-btn ${isInWishlist ? 'active' : ''}" onclick="toggleWishlist(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${salePrice}, '${product.image || 'static/no-image.png'}')">
+                <img src="${imageUrl}" alt="${product.name}" />
+                <button class="wishlist-btn ${isInWishlist ? 'active' : ''}" onclick="toggleWishlist(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${salePrice}, '${imageUrl}')">
                     <i class="fas fa-heart"></i>
                 </button>
                 ${discount > 0 ? `<span class='discount-badge'>-${discount}%</span>` : ''}
@@ -225,7 +227,7 @@ async function loadCitizenProducts() {
                     <span class="sale-price">${salePrice.toLocaleString('vi-VN', {style:'currency',currency:'VND'})}</span>
                 </div>
                 <div class="button-group">
-                    <button class="add-to-cart" onclick="addToCart(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${salePrice}, '${product.image}')">Thêm vào giỏ</button>
+                    <button class="add-to-cart" onclick="addToCart(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${salePrice}, '${imageUrl}')">Thêm vào giỏ</button>
                     <a href="product.html?id=${product.id}" class="btn-detail">Xem chi tiết</a>
                 </div>
             </div>

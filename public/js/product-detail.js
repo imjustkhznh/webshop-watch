@@ -14,20 +14,27 @@ function formatPrice(price) {
     }).format(price);
 }
 
+function normalizeImage(imagePath) {
+    if (typeof resolveImagePath === 'function') {
+        return resolveImagePath(imagePath);
+    }
+    return imagePath || 'images/products/dongho1.webp';
+}
+
 function generateProductImages(product) {
     // Tạo nhiều ảnh từ ảnh chính (giả lập)
-    const baseImage = product.image;
+    const baseImage = normalizeImage(product.image);
     const images = [baseImage];
     
     // Thêm các ảnh khác nhau dựa trên thương hiệu
     if (product.brand_name) {
         const brand = product.brand_name.toLowerCase();
         if (brand.includes('casio')) {
-            images.push('static/casio1.webp');
+            images.push(normalizeImage('static/casio1.webp'));
         } else if (brand.includes('citizen')) {
-            images.push('static/citizen-sale_1741339694.jpg.webp');
+            images.push(normalizeImage('static/citizen-sale_1741339694.jpg.webp'));
         } else if (brand.includes('orient')) {
-            images.push('static/Orient-RA-AS0106L30B-2.webp');
+            images.push(normalizeImage('static/Orient-RA-AS0106L30B-2.webp'));
         }
     }
     
@@ -140,15 +147,16 @@ async function loadRelatedProducts(productId, brandId, categoryId) {
             return;
         }
         
-        container.innerHTML = relatedProducts.map(product => 
-            '<div class="product-card" onclick="window.location.href=\'product.html?id=' + product.id + '\'">' +
-                '<img src="' + product.image + '" alt="' + product.name + '">' +
+        container.innerHTML = relatedProducts.map(product => {
+            const imageUrl = normalizeImage(product.image);
+            return '<div class="product-card" onclick="window.location.href=\'product.html?id=' + product.id + '\'">' +
+                '<img src="' + imageUrl + '" alt="' + product.name + '">' +
                 '<div class="product-card-info">' +
                     '<div class="product-card-title">' + product.name + '</div>' +
                     '<div class="product-card-price">' + formatPrice(product.price) + '</div>' +
                 '</div>' +
-            '</div>'
-        ).join('');
+            '</div>';
+        }).join('');
     } catch (error) {
         console.error('Error loading related products:', error);
     }
@@ -289,7 +297,7 @@ async function loadProductDetail() {
                     '<i class="fas fa-credit-card"></i>' +
                     'Mua ngay' +
                 '</button>' +
-                '<button class="wishlist-btn ' + wishlistClass + '" onclick="toggleWishlist(' + currentProduct.id + ', \'' + productNameEscaped + '\', ' + salePrice + ', \'' + currentProduct.image + '\')">' +
+                '<button class="wishlist-btn ' + wishlistClass + '" onclick="toggleWishlist(' + currentProduct.id + ', \'' + productNameEscaped + '\', ' + salePrice + ', \'' + normalizeImage(currentProduct.image) + '\')">' +
                     '<i class="fas fa-heart"></i>' +
                 '</button>' +
             '</div>';

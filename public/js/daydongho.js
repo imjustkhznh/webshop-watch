@@ -34,6 +34,7 @@ function renderDayDongHoProducts(products) {
         if (discount > 0) {
             salePrice = Math.round(originalPrice * (1 - discount / 100));
         }
+        const imageUrl = resolveImagePath(product.image);
         
         // Check if product is in wishlist
         const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
@@ -42,8 +43,8 @@ function renderDayDongHoProducts(products) {
         grid.innerHTML += `
         <div class="product-card" data-id="${product.id}">
             <div class="product-image">
-                <img src="${product.image || 'static/no-image.png'}" alt="${product.name}">
-                <button class="wishlist-btn ${isInWishlist ? 'active' : ''}" onclick="toggleWishlist(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${salePrice}, '${product.image || 'static/no-image.png'}')">
+                <img src="${imageUrl}" alt="${product.name}">
+                <button class="wishlist-btn ${isInWishlist ? 'active' : ''}" onclick="toggleWishlist(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${salePrice}, '${imageUrl}')">
                     <i class="fas fa-heart"></i>
                 </button>
                 ${discount > 0 ? `<span class="discount-badge">-${discount}%</span>` : ''}

@@ -33,14 +33,40 @@
           <h1>Bảng điều khiển</h1>
           <p>Chào mừng bạn đến với hệ thống quản lý TimeLuxe</p>
         </div>
-        <div style="display: flex; gap: 40px; margin: 40px 0 0 0; flex-wrap: wrap; justify-content: flex-start; align-items: flex-start;">
-          <div style="flex: 1 1 350px; min-width: 350px; max-width: 480px; background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(52,152,219,0.07); padding: 24px;">
-            <h3 style="margin-bottom: 18px; font-size: 1.1rem; color: #3498db; font-weight: 700;">Tỉ lệ doanh thu theo thương hiệu</h3>
+        <div class="dashboard-stat-grid">
+            <div class="stat-card">
+                <p class="stat-heading">ĐƠN HÀNG</p>
+                <h3 id="stat-orders-value">0</h3>
+                <p class="stat-subtext">Tổng số đơn đã xử lý</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-heading">DOANH THU</p>
+                <h3 id="stat-revenue-value">0 ₫</h3>
+                <p class="stat-subtext">Doanh thu đã xác nhận</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-heading">TỒN KHO</p>
+                <h3 id="stat-stock-value">0</h3>
+                <p class="stat-subtext">Số lượng sản phẩm còn</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-heading">KHÁCH HÀNG MỚI</p>
+                <h3 id="stat-customers-value">0</h3>
+                <p class="stat-subtext">Trong 24 giờ gần nhất</p>
+            </div>
+        </div>
+        <div class="dashboard-chart-grid">
+          <div class="chart-card">
+            <h3>Tỉ lệ doanh thu theo thương hiệu</h3>
             <canvas id="dashboardPieChart" width="400" height="400"></canvas>
           </div>
-          <div style="flex: 2 1 600px; min-width: 400px; max-width: 900px; background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(52,152,219,0.07); padding: 24px;">
-            <h3 style="margin-bottom: 18px; font-size: 1.1rem; color: #e67e22; font-weight: 700;">Doanh thu theo ngày</h3>
+          <div class="chart-card">
+            <h3>Doanh thu theo ngày</h3>
             <canvas id="dashboardLineChart" width="900" height="320"></canvas>
+
+            <!-- Biểu đồ doanh thu theo tháng nằm cùng khung, phía dưới biểu đồ theo ngày -->
+            <h3 class="chart-subtitle">Doanh thu theo tháng</h3>
+            <canvas id="dashboardMonthlyChart" width="900" height="320"></canvas>
           </div>
         </div>
         <div class="content-section">
@@ -69,6 +95,7 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/admin.js"></script>
 </body>
 </html>

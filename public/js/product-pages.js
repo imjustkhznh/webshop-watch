@@ -58,6 +58,45 @@ function showNotification(message, type = 'success', duration = 3000) {
     }
 }
 
+// Normalize image paths coming from API/database
+function resolveImagePath(imagePath) {
+    const fallback = 'images/products/dongho1.webp';
+    if (!imagePath || typeof imagePath !== 'string') {
+        return fallback;
+    }
+
+    let normalized = imagePath.trim();
+
+    // Keep absolute URLs untouched
+    if (/^https?:\/\//i.test(normalized)) {
+        return normalized;
+    }
+
+    // Remove leading slashes to keep paths relative to /public
+    normalized = normalized.replace(/^\/+/, '');
+
+    // Legacy "static/" folder → map to images/products
+    if (normalized.startsWith('static/')) {
+        normalized = normalized.replace(/^static\//, '');
+    }
+
+    // Already in images folder, keep as-is
+    if (normalized.startsWith('images/')) {
+        return normalized;
+    }
+
+    // Products stored as "products/xxx"
+    if (normalized.startsWith('products/')) {
+        return `images/${normalized}`;
+    }
+
+    // Default: assume it's just a filename under images/products
+    const fileName = normalized.split('/').pop() || 'dongho1.webp';
+    return `images/products/${fileName}`;
+}
+
+window.resolveImagePath = resolveImagePath;
+
 // Authentication functions
 function checkAuthStatus() {
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');

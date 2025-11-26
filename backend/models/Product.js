@@ -124,6 +124,11 @@ class Product {
                 values.push(productData.stock);
             }
 
+            // Nếu không có trường nào cần cập nhật thì bỏ qua, tránh lỗi SQL
+            if (updates.length === 0) {
+                return false;
+            }
+
             values.push(id);
 
             const [result] = await connection.execute(

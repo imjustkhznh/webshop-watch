@@ -1,7 +1,7 @@
 // admin-orders.js
 // Logic cho trang Quản lý đơn hàng
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // TODO: Gọi API lấy danh sách đơn hàng và render bảng
     // Ví dụ dữ liệu mẫu:
     const orders = [

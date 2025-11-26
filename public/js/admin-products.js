@@ -5,17 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Lấy danh sách sản phẩm từ API và render bảng
     const tbody = document.querySelector('tbody');
 
-    async function fetchProducts() {
-        try {
-            const res = await fetch('/api/products');
-            if (!res.ok) throw new Error('Lỗi khi lấy danh sách sản phẩm');
-            const data = await res.json();
-            if (!Array.isArray(data.products)) throw new Error('Dữ liệu trả về không hợp lệ');
-            renderTable(data.products);
-        } catch (err) {
-            tbody.innerHTML = `<tr><td colspan=\"8\" style=\"color:red\">${err.message}</td></tr>`;
-        }
-    }
+    // Lưu danh sách sản phẩm để tra cứu khi sửa / xóa
+    let productList = [];
+    let currentDeleteProductId = null;
 
     function renderTable(data) {
         tbody.innerHTML = '';
@@ -29,16 +21,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${item.price ? item.price.toLocaleString() + '₫' : ''}</td>
                 <td>${item.stock ?? ''}</td>
                 <td>${item.status || (item.stock > 0 ? 'Còn hàng' : 'Hết hàng')}</td>
-                <td><button class="btn btn-primary" onclick="editProduct('${item.id}')">Sửa</button> <button class="btn btn-danger">Xóa</button></td>
+                <td>
+                    <button class="btn btn-sm btn-primary" onclick="editProduct('${item.id}')">Sửa</button>
+                    <button class="btn btn-sm btn-danger" onclick="openDeleteProductModal('${item.id}')">Xóa</button>
+                </td>
             `;
             tbody.appendChild(tr);
         });
     }
-
-    // Hàm sửa sản phẩm
-
-    // Lưu danh sách sản phẩm để tra cứu khi sửa
-    let productList = [];
 
     // Load brands và categories để điền select
     async function loadBrands() {
@@ -114,6 +104,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     window.editProduct = editProduct;
 
+    // Mở modal xác nhận xóa sản phẩm
+    function openDeleteProductModal(id) {
+        const product = productList.find(p => p.id == id);
+        if (!product) return alert('Không tìm thấy sản phẩm!');
+        currentDeleteProductId = id;
+        const nameElem = document.getElementById('deleteProductName');
+        if (nameElem) {
+            nameElem.textContent = `Bạn đang xóa: ${product.name}`;
+        }
+        openModal('deleteConfirmModal');
+    }
+    window.openDeleteProductModal = openDeleteProductModal;
+
     async function updateProduct(id) {
         // Lấy dữ liệu từ form
         const name = document.getElementById('productName').value.trim();
@@ -159,6 +162,37 @@ document.addEventListener('DOMContentLoaded', function() {
             tbody.innerHTML = `<tr><td colspan=\"8\" style=\"color:red\">${err.message}</td></tr>`;
         }
     }
+
+    // Xác nhận xóa sản phẩm (gọi từ nút trong modal)
+    async function confirmDeleteProduct() {
+        if (!currentDeleteProductId) {
+            return closeModal('deleteConfirmModal');
+        }
+        try {
+            const token = localStorage.getItem('token');
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
+            const res = await fetch(`/api/products/${currentDeleteProductId}`, {
+                method: 'DELETE',
+                headers
+            });
+            if (res.status === 401) {
+                alert('Bạn cần đăng nhập/đăng nhập lại để thực hiện hành động này.');
+                return;
+            }
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.error || 'Xóa sản phẩm thất bại');
+            }
+            closeModal('deleteConfirmModal');
+            currentDeleteProductId = null;
+            fetchProducts();
+        } catch (err) {
+            alert(err.message);
+        }
+    }
+    window.confirmDeleteProduct = confirmDeleteProduct;
     // Load brands/categories for the add-product modal selects
     loadBrands();
     loadCategories();
