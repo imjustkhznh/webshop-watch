@@ -75,9 +75,21 @@ const Order = require('../models/Order');
 exports.getOrders = async (req, res) => {
     try {
         const orders = await Order.getAll();
+        const returnRequests = await Order.getReturnRequests();
+
+        const approvedReturnMap = new Set();
+        returnRequests.forEach(request => {
+            if (request.status === 'approved') {
+                approvedReturnMap.add(request.order_id);
+            }
+        });
 
         // Gắn thêm thông tin sản phẩm cho từng đơn để hiển thị ở trang admin
         for (const order of orders) {
+            if (approvedReturnMap.has(order.id)) {
+                order.status = 'returned';
+            }
+
             const details = await Order.getOrderDetails(order.id);
             // Chuỗi mô tả sản phẩm: "Tên SP xSố lượng, ..."
             order.items = details && details.length

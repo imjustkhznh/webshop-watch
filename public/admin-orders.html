@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
@@ -18,13 +20,22 @@
             <p>Quản lý hệ thống</p>
         </div>
         <ul class="nav-menu">
-            <li class="nav-item"><a href="admin-dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Tổng quan</a></li>
-            <li class="nav-item"><a href="admin-products.html" class="nav-link"><i class="fas fa-box"></i> Quản lý sản phẩm</a></li>
-            <li class="nav-item"><a href="admin-orders.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Quản lý đơn hàng</a></li>
-            <li class="nav-item"><a href="admin-customers.html" class="nav-link"><i class="fas fa-users"></i> Quản lý khách hàng</a></li>
-            <li class="nav-item"><a href="admin-promotions.html" class="nav-link"><i class="fas fa-percentage"></i> Giảm giá</a></li>
-            <li class="nav-item"><a href="admin-brands.html" class="nav-link"><i class="fas fa-tag"></i> Quản lý thương hiệu</a></li>
-            <li class="nav-item"><a href="admin-stock.html" class="nav-link"><i class="fas fa-warehouse"></i> Quản lý tồn kho</a></li>
+      <li class="nav-item"><a href="admin-dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Tổng
+          quan</a></li>
+      <li class="nav-item"><a href="admin-products.html" class="nav-link"><i class="fas fa-box"></i> Quản lý sản
+          phẩm</a></li>
+      <li class="nav-item"><a href="admin-orders.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Quản lý đơn
+          hàng</a></li>
+      <li class="nav-item"><a href="admin-customers.html" class="nav-link"><i class="fas fa-users"></i> Quản lý khách
+          hàng</a></li>
+      <li class="nav-item"><a href="admin-promotions.html" class="nav-link"><i class="fas fa-percentage"></i> Giảm
+          giá</a></li>
+      <li class="nav-item"><a href="admin-brands.html" class="nav-link"><i class="fas fa-tag"></i> Quản lý thương
+          hiệu</a></li>
+      <li class="nav-item"><a href="admin-stock.html" class="nav-link"><i class="fas fa-warehouse"></i> Quản lý tồn
+          kho</a></li>
+      <li class="nav-item"><a href="admin-messages.html" class="nav-link"><i class="fas fa-comments"></i> Tin nhắn người
+          dùng</a></li>
         </ul>
     </div>
     <div class="main-content" id="orders">
@@ -36,22 +47,43 @@
             <div class="section-header">
                 <h2>Danh sách đơn hàng</h2>
             </div>
-            <!-- Hàng trên: nút xem yêu cầu hoàn hàng -->
-            <div style="display:flex; justify-content:flex-end; margin: 6px 0 4px 0;">
-                <button type="button" onclick="openReturnRequestsModal()" title="Xem các yêu cầu hoàn / trả hàng"
-                    style="border: none; background: #10b981; color: #fff; padding: 8px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(16,185,129,0.35);">
-                    <i class="fas fa-undo-alt"></i>
-                    <span>Yêu cầu hoàn hàng</span>
-                </button>
-            </div>
-            <!-- Hàng dưới: Thanh tìm kiếm đơn hàng kiểu ô bo tròn, kéo dài ngang bằng bảng -->
-            <div style="margin: 0 0 20px 0; display: flex; justify-content: center;">
-                <form id="adminOrdersSearchForm" class="dhda-search-bar" style="width: 100%; max-width: 100%; display: flex; align-items: center; background: #fff; border-radius: 999px; border: 1px solid #e1e5ee; padding: 6px 10px; box-shadow: 0 1px 3px rgba(15,23,42,0.04);">
-                    <input id="adminOrdersSearchInput" type="text" placeholder="Tìm kiếm đơn hàng, khách hàng, số điện thoại..." style="flex: 1; border: none; outline: none; padding: 4px 8px; font-size: 14px; color: #333; background: transparent;" />
-                    <button type="submit" style="border: none; background: #1d6fdc; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
+      <!-- Hàng trên: nút xem yêu cầu hoàn hàng -->
+      <div style="display:flex; justify-content:flex-end; margin: 6px 0 12px 0;">
+        <button type="button" onclick="openReturnRequestsModal()" title="Xem các yêu cầu hoàn / trả hàng"
+          style="border: none; background: #10b981; color: #fff; padding: 10px 20px; border-radius: 12px; font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 6px 18px rgba(16,185,129,0.35);">
+          <i class="fas fa-undo-alt"></i>
+          <span>Yêu cầu hoàn hàng</span>
+        </button>
+      </div>
+      <!-- Bảng yêu cầu hoàn hàng dạng panel -->
+      <div id="returnRequestsPanel" class="return-panel" style="display:none;">
+        <div class="return-panel-header">
+          <div>
+            <h2>Yêu cầu hoàn / trả hàng</h2>
+            <p>Theo dõi và xử lý các yêu cầu đổi trả của khách hàng</p>
+          </div>
+          <div class="return-panel-actions">
+            <button type="button" class="btn btn-light" onclick="closeReturnRequestsModal()">Đóng</button>
+            <button type="button" class="btn btn-primary" onclick="loadReturnRequests()">
+              <i class="fas fa-rotate"></i> Tải lại
+            </button>
+          </div>
+        </div>
+        <div id="returnRequestsContent" class="return-panel-body">
+          <!-- nội dung sẽ được JS render -->
+        </div>
+      </div>
+      <!-- Hàng dưới: Thanh tìm kiếm đơn hàng kiểu ô bo tròn, kéo dài ngang bằng bảng -->
+      <div style="margin: 0 0 20px 0; display: flex; justify-content: center;">
+        <form id="adminOrdersSearchForm" class="dhda-search-bar"
+          style="width: 100%; max-width: 100%; display: flex; align-items: center; background: #fff; border-radius: 999px; border: 1px solid #e1e5ee; padding: 6px 10px; box-shadow: 0 1px 3px rgba(15,23,42,0.04);">
+          <input id="adminOrdersSearchInput" type="text" placeholder="Tìm kiếm đơn hàng, khách hàng, số điện thoại..."
+            style="flex: 1; border: none; outline: none; padding: 4px 8px; font-size: 14px; color: #333; background: transparent;" />
+          <button type="submit"
+            style="border: none; background: #1d6fdc; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
             </div>
             <div class="table-wrapper">
                 <table class="table">
@@ -89,37 +121,28 @@
             </div>
           </div>
         </div>
-        <!-- Modal danh sách yêu cầu hoàn hàng -->
-        <div id="returnRequestsModal" class="modal" style="display:none;">
-          <div class="modal-content return-modal-content" style="max-height:85vh; overflow-y:auto;">
-            <div class="modal-header">
-              <h2>Yêu cầu hoàn / trả hàng</h2>
-              <span class="close" onclick="closeReturnRequestsModal()">&times;</span>
-            </div>
-            <div id="returnRequestsContent" style="padding: 16px;">
-              <!-- nội dung sẽ được JS render -->
-            </div>
-          </div>
+
+    <!-- Modal chi tiết một yêu cầu hoàn hàng -->
+    <div id="returnRequestDetailModal" class="modal modal-center" style="display:none;">
+      <div class="modal-content return-detail-modal">
+        <div class="modal-header">
+          <h2>Chi tiết yêu cầu hoàn / trả hàng</h2>
+          <span class="close"
+            onclick="document.getElementById('returnRequestDetailModal').style.display='none'">&times;</span>
         </div>
-        <!-- Modal chi tiết một yêu cầu hoàn hàng -->
-        <div id="returnRequestDetailModal" class="modal" style="display:none;">
-          <div class="modal-content return-modal-content" style="max-height:90vh; overflow-y:auto;">
-            <div class="modal-header">
-              <h2>Chi tiết yêu cầu hoàn / trả hàng</h2>
-              <span class="close" onclick="document.getElementById('returnRequestDetailModal').style.display='none'">&times;</span>
-            </div>
-            <div id="returnRequestDetailContent" style="padding: 12px 16px;">
-              <!-- chi tiết sẽ được JS fill -->
-            </div>
-            <div style="padding:10px 16px; text-align:right; border-top:1px solid #e5e7eb;">
-              <button type="button" onclick="document.getElementById('returnRequestDetailModal').style.display='none'"
-                      style="padding:8px 18px; border-radius:6px; border:none; background:#6b7280; color:#fff; font-weight:600; font-size:0.9rem; cursor:pointer;">
-                Quay lại
-              </button>
-            </div>
-          </div>
+        <div id="returnRequestDetailContent" class="return-detail-content">
+          <!-- chi tiết sẽ được JS fill -->
         </div>
+        <div class="return-detail-footer">
+          <button type="button" class="btn btn-secondary"
+            onclick="document.getElementById('returnRequestDetailModal').style.display='none'">
+            Quay lại
+          </button>
+        </div>
+      </div>
+    </div>
     </div>
     <script src="js/admin.js"></script>
 </body>
+
 </html>

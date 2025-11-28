@@ -11,6 +11,8 @@ router.get('/', orderController.getAllOrders);
 
 // Admin xem danh sách yêu cầu hoàn đơn (đặt TRƯỚC route :id để tránh bị nhầm với id = 'returns')
 router.get('/returns', isAdmin, orderController.getReturnRequests);
+// Admin xử lý yêu cầu hoàn đơn
+router.put('/returns/:id', isAdmin, orderController.processReturnRequest);
 
 // Lấy đơn hàng theo ID
 router.get('/:id', orderController.getOrderById);

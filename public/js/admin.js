@@ -148,6 +148,68 @@ window.openAddPromotionModal = openAddPromotionModal;
 window.closeModal = closeModal;
 window.editDiscountCode = editDiscountCode;
 window.deleteDiscountCode = deleteDiscountCode;
+
+function initializeAdminLayout(user = {}) {
+    buildAdminTopbar(user);
+    highlightActiveSidebarLink();
+}
+
+function buildAdminTopbar(user = {}) {
+    const main = document.querySelector('.main-content');
+    if (!main || main.querySelector('.admin-topbar')) return;
+
+    const displayName = user.full_name || user.username || user.email || 'Administrator';
+    const initials = displayName
+        .split(' ')
+        .map(part => part.charAt(0))
+        .join('')
+        .slice(0, 2)
+        .toUpperCase();
+
+    const topbar = document.createElement('div');
+    topbar.className = 'admin-topbar';
+    topbar.innerHTML = `
+        <div class="topbar-left">
+            <button class="sidebar-toggle" type="button" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="topbar-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="adminTopbarSearch" placeholder="Tìm kiếm nhanh..." />
+            </div>
+        </div>
+        <div class="topbar-right">
+            <button class="topbar-btn" type="button"><i class="far fa-moon"></i></button>
+            <button class="topbar-btn" type="button"><i class="far fa-bell"></i></button>
+            <div class="topbar-profile">
+                <div class="avatar">${initials || 'AD'}</div>
+                <div>
+                    <strong>${displayName}</strong>
+                    <span>Administrator</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    main.prepend(topbar);
+    const toggleBtn = topbar.querySelector('.sidebar-toggle');
+    toggleBtn?.addEventListener('click', toggleMobileMenu);
+}
+
+function highlightActiveSidebarLink() {
+    const currentPage = window.location.pathname.split('/').pop();
+    const links = document.querySelectorAll('.sidebar .nav-link');
+    links.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#')) return;
+        const normalized = href.split('/').pop();
+        if (normalized === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
 // Sidebar navigation: chuyển trang khi click menu
 document.addEventListener('DOMContentLoaded', function () {
     const sidebarLinks = document.querySelectorAll('.sidebar .nav-link');
@@ -716,6 +778,8 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
+    initializeAdminLayout(user);
+
     // Detect page and load data accordingly
     const mainContent = document.querySelector('.main-content');
     if (mainContent && mainContent.id === 'stock') {
@@ -1048,7 +1112,7 @@ async function loadOrders() {
                 case 'shipped': statusLabel = '<span class="status-badge status-shipped">Đang giao</span>'; break;
                 case 'delivered': statusLabel = '<span class="status-badge status-delivered">Hoàn thành</span>'; break;
                 case 'cancelled': statusLabel = '<span class="status-badge status-cancelled">Đã hủy</span>'; break;
-                case 'returned': statusLabel = '<span class="status-badge status-cancelled">Hoàn / trả hàng</span>'; break;
+                case 'returned': statusLabel = '<span class="status-badge status-cancelled">Đã hoàn đơn</span>'; break;
                 default: statusLabel = order.status;
             }
             // Nút đổi trạng thái đơn hàng: chỉ dùng 1 nút Cập nhật trạng thái (chọn các trạng thái, bao gồm Hoàn thành) + nút Xóa
@@ -1100,7 +1164,7 @@ async function loadOrders() {
                 case 'shipped': statusLabel = '<span class="status-badge status-shipped">Đang giao</span>'; break;
                 case 'delivered': statusLabel = '<span class="status-badge status-delivered">Hoàn thành</span>'; break;
                 case 'cancelled': statusLabel = '<span class="status-badge status-cancelled">Đã hủy</span>'; break;
-                case 'returned': statusLabel = '<span class="status-badge status-cancelled">Hoàn / trả hàng</span>'; break;
+                case 'returned': statusLabel = '<span class="status-badge status-cancelled">Đã hoàn đơn</span>'; break;
                 default: statusLabel = order.status;
             }
             return `
@@ -1582,7 +1646,7 @@ function openOrderStatusDialog(orderId, currentStatus) {
         // delivered = đơn đã giao xong (hoàn thành), cancelled = hủy trước khi giao, returned = khách hoàn/trả đơn
         { status: 'delivered', label: 'Hoàn thành (đã giao xong)' },
         { status: 'cancelled', label: 'Hủy đơn (không nhận hàng)' },
-        { status: 'returned', label: 'Hoàn / trả hàng' }
+        { status: 'returned', label: 'Đã hoàn đơn' }
     ];
 
     // Tạo overlay
@@ -1825,12 +1889,21 @@ async function loadReturnRequests() {
                 rejected: 'Đã từ chối'
             }[r.status] || r.status;
             return `
-                <tr onclick="showReturnRequestDetail(${r.id})" style="cursor:pointer;">
+                <tr>
                     <td>#${r.id}</td>
                     <td>#DH${String(r.order_id).padStart(3, '0')}</td>
                     <td>${created}</td>
                     <td>${r.reason || ''}</td>
                     <td>${statusText}</td>
+                    <td style="white-space:nowrap; display:flex; gap:6px;">
+                        <button class="btn btn-success btn-sm" onclick="showReturnRequestDetail(${r.id})">
+                            Chi tiết
+                        </button>
+                        ${r.status === 'pending' ? `
+                            <button class="btn btn-primary btn-sm" onclick="handleReturnRequestAction(${r.id}, 'approve')">Đồng ý</button>
+                            <button class="btn btn-danger btn-sm" onclick="handleReturnRequestAction(${r.id}, 'reject')">Từ chối</button>
+                        ` : ''}
+                    </td>
                 </tr>
             `;
         }).join('');
@@ -1843,6 +1916,7 @@ async function loadReturnRequests() {
                         <th>Ngày gửi</th>
                         <th>Lý do</th>
                         <th>Trạng thái</th>
+                        <th>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1856,10 +1930,13 @@ async function loadReturnRequests() {
 }
 
 function openReturnRequestsModal() {
-    const modal = document.getElementById('returnRequestsModal');
-    if (!modal) return;
-    modal.style.display = 'block';
+    const panel = document.getElementById('returnRequestsPanel');
+    if (!panel) return;
+    panel.style.display = 'block';
     loadReturnRequests();
+    setTimeout(() => {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
 }
 
 async function showReturnRequestDetail(id) {
@@ -1885,54 +1962,132 @@ async function showReturnRequestDetail(id) {
     const content = document.getElementById('returnRequestDetailContent');
     if (!modal || !content) return;
 
-    const created = new Date(req.created_at).toLocaleString('vi-VN');
-    const statusText = {
+    const requestStatusMap = {
         pending: 'Chờ duyệt',
         approved: 'Đã chấp nhận',
         rejected: 'Đã từ chối'
-    }[req.status] || req.status;
+    };
+    const orderStatusMap = {
+        pending: 'Chờ xử lý',
+        processing: 'Đã nhận đơn',
+        shipping: 'Đang giao',
+        shipped: 'Đã giao',
+        delivered: 'Hoàn thành',
+        cancelled: 'Đã hủy',
+        returned: 'Đã hoàn đơn'
+    };
 
-    const reason = (req.reason || '').replace(/\n/g, '<br>');
-    const desc = (req.description || '').replace(/\n/g, '<br>');
+    const created = new Date(req.created_at).toLocaleString('vi-VN');
+    const orderDate = order?.created_at ? new Date(order.created_at).toLocaleString('vi-VN') : 'Không có';
+    const totalStr = order?.total_amount ? formatPrice(Number(order.total_amount)) : '—';
+    const customerName = order?.customer_name || req.customer_name || 'Không có';
+    const customerPhone = order?.customer_phone || req.customer_phone || 'Không có';
+    const customerEmail = order?.customer_email || req.customer_email || 'Không có';
+    const customerAddress = order?.customer_address || req.customer_address || 'Không có';
+    const customerNote = order?.customer_note || req.customer_note || 'Không có';
+    const reason = (req.reason || '').trim().replace(/\n/g, '<br>') || '<em>Không có</em>';
+    const desc = (req.description || '').trim().replace(/\n/g, '<br>') || '<em>Không có</em>';
+    const reqStatusText = requestStatusMap[req.status] || req.status || 'Không xác định';
+    const orderStatusText = order ? (orderStatusMap[order.status] || order.status || 'Không xác định') : 'Không xác định';
 
-    let orderHtml = '<em>Không thể tải thông tin đơn hàng</em>';
-    if (order) {
-        const orderDate = new Date(order.created_at).toLocaleString('vi-VN');
-        const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-        const details = order.order_details || order.items || [];
-        const itemsHtml = details.map(d => `
-            <li>
-                <strong>${d.product_name || ''}</strong>
-                &times; ${d.quantity || 1} -
-                ${Number(d.price || 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-            </li>
-        `).join('');
-
-        orderHtml = `
-            <p><strong>Mã đơn:</strong> #DH${String(order.id).padStart(3, '0')}</p>
-            <p><strong>Ngày đặt:</strong> ${orderDate}</p>
-            <p><strong>Trạng thái:</strong> ${order.status}</p>
-            <p><strong>Tổng tiền:</strong> ${totalStr}</p>
-            <p><strong>Sản phẩm:</strong></p>
-            <ul style="padding-left:18px;">${itemsHtml || '<li><em>Không có dữ liệu sản phẩm</em></li>'}</ul>
-        `;
+    const rawDetails = order?.order_details || order?.items || [];
+    let normalizedDetails = [];
+    if (Array.isArray(rawDetails)) {
+        normalizedDetails = rawDetails;
+    } else if (typeof rawDetails === 'string') {
+        normalizedDetails = rawDetails.split(',').map(item => ({
+            product_name: item.trim(),
+            quantity: '',
+            price: ''
+        }));
     }
 
-    content.innerHTML = `
-        <div style="padding:16px 20px;">
-            <h3 style="margin-top:0;color:#111827;">Yêu cầu #${req.id}</h3>
-            <div style="margin-bottom:16px;">
-                <h4 style="margin:0 0 6px 0;color:#374151;">Thông tin yêu cầu</h4>
-                <p><strong>Mã đơn:</strong> #DH${String(req.order_id).padStart(3, '0')}</p>
-                <p><strong>Ngày gửi:</strong> ${created}</p>
-                <p><strong>Trạng thái:</strong> ${statusText}</p>
-                <p><strong>Lý do:</strong> ${reason || '<em>Không có</em>'}</p>
-                <p><strong>Mô tả chi tiết:</strong><br>${desc || '<em>Không có</em>'}</p>
-                ${req.evidence ? `<p><strong>Ảnh minh chứng:</strong> <a href="${req.evidence}" target="_blank" rel="noopener">Xem ảnh / link</a></p>` : ''}
+    const itemsHtml = normalizedDetails.length
+        ? normalizedDetails.map((d, idx) => {
+            const qty = d.quantity || d.qty || 1;
+            const price = d.price ? formatPrice(Number(d.price)) : (d.total_price ? formatPrice(Number(d.total_price)) : '—');
+            return `
+                <div class="return-detail-item" data-index="${idx}">
+                    <div>
+                        <p class="item-name">${d.product_name || 'Sản phẩm'}</p>
+                        <p class="item-meta">Số lượng: <strong>${qty}</strong></p>
+                    </div>
+                    <span class="item-price">${price}</span>
+                </div>
+            `;
+        }).join('')
+        : '<p class="muted-text">Không có dữ liệu sản phẩm.</p>';
+
+    const evidenceList = (req.evidence || '')
+        .split(/[\n,;]+/)
+        .map(url => url.trim())
+        .filter(Boolean);
+
+    const evidenceHtml = evidenceList.length
+        ? `
+            <div class="return-detail-evidence">
+                ${evidenceList.map(url => {
+            const isImage = /^data:image\//i.test(url) || /\.(png|jpe?g|gif|webp|bmp|svg)$/i.test(url);
+            return `
+                        <div class="evidence-card">
+                            ${isImage ? `<img src="${url}" alt="Ảnh minh chứng">` : `<div class="evidence-placeholder"><i class="fas fa-paperclip"></i></div>`}
+                            <a href="${url}" target="_blank" rel="noopener">Xem minh chứng</a>
+                        </div>
+                    `;
+        }).join('')}
             </div>
-            <div>
-                <h4 style="margin:0 0 6px 0;color:#374151;">Thông tin đơn hàng</h4>
-                ${orderHtml}
+        `
+        : '<p class="muted-text">Không có minh chứng được đính kèm.</p>';
+
+    content.innerHTML = `
+        <div class="return-detail">
+            <div class="return-detail__section">
+                <div class="return-detail__section-header">
+                    <span class="section-title">Yêu cầu #${req.id}</span>
+                    <span class="status-chip">${reqStatusText}</span>
+                </div>
+                <div class="return-detail__grid">
+                    <div><p class="label">Mã đơn</p><p class="value">#DH${String(req.order_id).padStart(3, '0')}</p></div>
+                    <div><p class="label">Ngày gửi</p><p class="value">${created}</p></div>
+                    <div><p class="label">Lý do</p><p class="value">${reason}</p></div>
+                    <div><p class="label">Mô tả chi tiết</p><p class="value">${desc}</p></div>
+                </div>
+            </div>
+
+            <div class="return-detail__section">
+                <div class="return-detail__section-header">
+                    <span class="section-title">Người gửi yêu cầu</span>
+                </div>
+                <div class="return-detail__grid">
+                    <div><p class="label">Khách hàng</p><p class="value">${customerName}</p></div>
+                    <div><p class="label">Số điện thoại</p><p class="value">${customerPhone}</p></div>
+                    <div><p class="label">Email</p><p class="value">${customerEmail}</p></div>
+                    <div><p class="label">Địa chỉ</p><p class="value">${customerAddress}</p></div>
+                    <div><p class="label">Ghi chú</p><p class="value">${customerNote}</p></div>
+                </div>
+            </div>
+
+            <div class="return-detail__section">
+                <div class="return-detail__section-header">
+                    <span class="section-title">Bằng chứng / ảnh sản phẩm lỗi</span>
+                </div>
+                ${evidenceHtml}
+            </div>
+
+            <div class="return-detail__section">
+                <div class="return-detail__section-header">
+                    <span class="section-title">Thông tin đơn hàng</span>
+                    <span class="status-chip status-chip--muted">${orderStatusText}</span>
+                </div>
+                <div class="return-detail__grid">
+                    <div><p class="label">Mã đơn</p><p class="value">#DH${order ? String(order.id).padStart(3, '0') : '---'}</p></div>
+                    <div><p class="label">Ngày đặt</p><p class="value">${orderDate}</p></div>
+                    <div><p class="label">Tổng tiền</p><p class="value">${totalStr}</p></div>
+                </div>
+                <div class="return-detail-items">
+                    <h4>Sản phẩm</h4>
+                    ${itemsHtml}
+                </div>
             </div>
         </div>
     `;
@@ -1940,10 +2095,34 @@ async function showReturnRequestDetail(id) {
     modal.style.display = 'block';
 }
 
+async function handleReturnRequestAction(id, action) {
+    const token = localStorage.getItem('token');
+    try {
+        const res = await fetch(`/api/orders/returns/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ action })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            showNotification(`Đã ${action === 'approve' ? 'chấp nhận' : 'từ chối'} yêu cầu #${id}`, 'success');
+            loadReturnRequests();
+            loadOrders();
+        } else {
+            showNotification(data.error || 'Không thể xử lý yêu cầu hoàn hàng', 'error');
+        }
+    } catch (err) {
+        showNotification('Lỗi kết nối khi xử lý yêu cầu hoàn hàng', 'error');
+    }
+}
+
 function closeReturnRequestsModal() {
-    const modal = document.getElementById('returnRequestsModal');
-    if (!modal) return;
-    modal.style.display = 'none';
+    const panel = document.getElementById('returnRequestsPanel');
+    if (!panel) return;
+    panel.style.display = 'none';
 }
 
 // Hàm load lại danh sách mã giảm giá
@@ -2060,6 +2239,7 @@ window.logoutAdmin = logoutAdmin;
 window.openReturnRequestsModal = openReturnRequestsModal;
 window.closeReturnRequestsModal = closeReturnRequestsModal;
 window.showReturnRequestDetail = showReturnRequestDetail;
+window.handleReturnRequestAction = handleReturnRequestAction;
 
 // Tìm kiếm đơn hàng trong trang quản lý đơn hàng (theo mã đơn, tên, SĐT, email, trạng thái, sản phẩm)
 document.addEventListener('DOMContentLoaded', function () {

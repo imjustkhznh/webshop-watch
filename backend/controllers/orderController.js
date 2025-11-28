@@ -121,11 +121,10 @@ exports.updateOrderStatus = async (req, res) => {
         }
         // Chuẩn hóa status từ UI về đúng các giá trị đang dùng trong DB
         // UI: pending, processing, shipping, delivered, cancelled, returned
-        // DB: pending, processing, shipped, delivered, cancelled
+        // DB: pending, processing, shipped, delivered, cancelled, returned
         if (status === 'shipping') status = 'shipped';
-        if (status === 'returned') status = 'cancelled';
 
-        const validStatuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+        const validStatuses = ['pending', 'processing', 'shipping', 'shipped', 'delivered', 'cancelled', 'returned'];
         if (!validStatuses.includes(status)) {
             return res.status(400).json({ error: 'Invalid status' });
         }
@@ -165,11 +164,6 @@ exports.updateOrderStatusCustomer = async (req, res) => {
         }
         if (!user || (user.role !== 'admin' && order.user_id !== user.id)) {
             return res.status(403).json({ error: 'Forbidden' });
-        }
-
-        // Map 'returned' về 'cancelled' trong DB, còn 'cancelled' giữ nguyên
-        if (status === 'returned') {
-            status = 'cancelled';
         }
 
         const updated = await Order.updateStatus(req.params.id, status);
@@ -239,6 +233,36 @@ exports.getReturnRequests = async (req, res) => {
     }
 };
 
+// Xử lý yêu cầu hoàn đơn (duyệt / từ chối)
+exports.processReturnRequest = async (req, res) => {
+    try {
+        const { action } = req.body;
+        if (!['approve', 'reject'].includes(action)) {
+            return res.status(400).json({ error: 'Invalid action' });
+        }
+
+        const request = await Order.findReturnRequestById(req.params.id);
+        if (!request) {
+            return res.status(404).json({ error: 'Return request not found' });
+        }
+
+        const newStatus = action === 'approve' ? 'approved' : 'rejected';
+        const updated = await Order.updateReturnRequestStatus(request.id, newStatus);
+        if (!updated) {
+            return res.status(500).json({ error: 'Failed to update return request' });
+        }
+
+        if (action === 'approve') {
+            await Order.updateStatus(request.order_id, 'returned');
+        }
+
+        res.json({ success: true, status: newStatus });
+    } catch (error) {
+        console.error('Process return request error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 // Xóa đơn hàng (Admin only)
 exports.deleteOrder = async (req, res) => {
     try {
@@ -266,4 +290,3 @@ exports.getRevenue = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
-

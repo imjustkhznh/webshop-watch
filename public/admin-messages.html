@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tin nhắn người dùng - TimeLuxe</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/testimonials.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>TimeLuxe</h2>
+      <p>Quản lý hệ thống</p>
+    </div>
+    <ul class="nav-menu">
+      <li class="nav-item"><a href="admin-dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Tổng
+          quan</a></li>
+      <li class="nav-item"><a href="admin-products.html" class="nav-link"><i class="fas fa-box"></i> Quản lý sản
+          phẩm</a></li>
+      <li class="nav-item"><a href="admin-orders.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Quản lý đơn
+          hàng</a></li>
+      <li class="nav-item"><a href="admin-customers.html" class="nav-link"><i class="fas fa-users"></i> Quản lý khách
+          hàng</a></li>
+      <li class="nav-item"><a href="admin-promotions.html" class="nav-link"><i class="fas fa-percentage"></i> Giảm
+          giá</a></li>
+      <li class="nav-item"><a href="admin-brands.html" class="nav-link"><i class="fas fa-tag"></i> Quản lý thương
+          hiệu</a></li>
+      <li class="nav-item"><a href="admin-stock.html" class="nav-link"><i class="fas fa-warehouse"></i> Quản lý tồn
+          kho</a></li>
+      <li class="nav-item"><a href="admin-messages.html" class="nav-link active"><i class="fas fa-comments"></i> Tin
+          nhắn
+          người dùng</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content" id="messages">
+    <div class="content-header">
+      <div>
+        <h1>Hộp thư khách hàng</h1>
+        <p>Trao đổi với khách hàng theo thời gian thực</p>
+      </div>
+      <div class="chat-header-actions">
+        <button id="refreshConversationsBtn" class="btn btn-light"><i class="fas fa-rotate"></i> Làm mới</button>
+        <button id="toggleOnlineBtn" class="btn btn-success"><i class="fas fa-circle"></i> Admin Online</button>
+      </div>
+    </div>
+
+    <div class="chat-wrapper">
+      <div class="conversation-sidebar">
+        <div class="conversation-search">
+          <i class="fas fa-search"></i>
+          <input type="text" id="conversationSearchInput" placeholder="Tìm kiếm khách hàng, số điện thoại...">
+        </div>
+        <div class="conversation-filters">
+          <button data-filter="all" class="filter-btn active">Tất cả</button>
+          <button data-filter="unread" class="filter-btn">Chưa đọc</button>
+          <button data-filter="return" class="filter-btn">Hoàn hàng</button>
+        </div>
+        <div id="conversationList" class="conversation-list">
+          <!-- JS render -->
+        </div>
+      </div>
+
+      <div class="chat-panel">
+        <div class="chat-empty" id="chatEmptyState">
+          <i class="fas fa-comments"></i>
+          <p>Chọn một cuộc trò chuyện bên trái để bắt đầu</p>
+        </div>
+        <div class="chat-container" id="chatContainer">
+          <div class="chat-header" id="chatHeader">
+            <!-- JS render -->
+          </div>
+          <div class="chat-body" id="chatBody">
+            <!-- JS render -->
+          </div>
+          <div class="chat-composer">
+            <div class="composer-actions">
+              <button id="attachImageBtn" title="Đính ảnh"><i class="fas fa-image"></i></button>
+              <button id="attachFileBtn" title="Đính tệp"><i class="fas fa-paperclip"></i></button>
+            </div>
+          <input type="file" id="chatImageInput" accept="image/*" hidden>
+          <input type="file" id="chatFileInput" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip" hidden>
+            <input type="text" id="chatInput" placeholder="Nhập tin nhắn...">
+            <button id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/admin-messages.js"></script>
+</body>
+
+</html>

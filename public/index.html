@@ -154,6 +154,45 @@
         </div>
         </div>
     </footer>
+
+    <!-- Floating chat widget -->
+    <div class="chat-widget-container">
+        <div class="chat-panel" id="chatPanel">
+            <div class="chat-panel-header">
+                <div>
+                    <p class="chat-panel-title">Hỗ trợ TimeLuxe</p>
+                    <span class="chat-panel-status"><i class="fas fa-circle"></i> Đang trực tuyến</span>
+                </div>
+                <button class="chat-close-btn" id="chatCloseBtn" aria-label="Đóng chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-panel-body" id="chatMessages">
+                <div class="chat-bubble incoming">
+                    <p>Xin chào! TimeLuxe có thể hỗ trợ gì cho bạn?</p>
+                    <span>08:30</span>
+                </div>
+            </div>
+            <form class="chat-panel-input" id="chatForm">
+                <div class="chat-input-actions">
+                    <button type="button" id="chatAttachImageBtn" aria-label="Đính ảnh">
+                        <i class="fas fa-image"></i>
+                    </button>
+                    <button type="button" id="chatAttachFileBtn" aria-label="Đính tệp">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                </div>
+                <input type="file" id="chatWidgetImageInput" accept="image/*" hidden />
+                <input type="file" id="chatWidgetFileInput" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip" hidden />
+                <input type="text" id="chatInputField" placeholder="Nhập tin nhắn..." autocomplete="off" />
+                <button type="submit" aria-label="Gửi tin nhắn"><i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+        <button class="chat-toggle-btn" id="chatToggleButton" aria-label="Mở chat hỗ trợ">
+            <i class="fas fa-comments"></i>
+            <span class="chat-toggle-label">Chat</span>
+        </button>
+    </div>
     <!-- Login Options Modal -->
     <div id="loginOptionsModal" class="modal">
         <div class="modal-content">
@@ -175,6 +214,8 @@
     <script src="js/carousel.js"></script>
     <script src="js/index.js"></script>
     <script src="js/smooth-scroll.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/chat-widget.js"></script>
 </body>
 </html>
 

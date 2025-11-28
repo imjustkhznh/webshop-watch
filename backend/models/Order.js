@@ -165,11 +165,17 @@ class Order {
         try {
             let query = `
                 SELECT 
-                    DATE(created_at) as date,
+                    DATE(o.created_at) as date,
                     COUNT(*) as order_count,
-                    SUM(total_amount) as total_revenue
-                FROM orders
-                WHERE status IN ('delivered', 'completed')
+                    SUM(o.total_amount) as total_revenue
+                FROM orders o
+                WHERE o.status IN ('delivered', 'completed')
+                  AND NOT EXISTS (
+                    SELECT 1
+                    FROM order_returns r
+                    WHERE r.order_id = o.id
+                      AND r.status = 'approved'
+                  )
             `;
             const params = [];
 
@@ -187,6 +193,31 @@ class Order {
 
             const [revenue] = await connection.execute(query, params);
             return revenue;
+        } finally {
+            connection.release();
+        }
+    }
+
+    // Lấy yêu cầu hoàn hàng theo ID
+    static async findReturnRequestById(id) {
+        const connection = await getConnection();
+        try {
+            const [rows] = await connection.execute('SELECT * FROM order_returns WHERE id = ?', [id]);
+            return rows[0];
+        } finally {
+            connection.release();
+        }
+    }
+
+    // Cập nhật trạng thái yêu cầu hoàn hàng
+    static async updateReturnRequestStatus(id, status) {
+        const connection = await getConnection();
+        try {
+            const [result] = await connection.execute(
+                'UPDATE order_returns SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+                [status, id]
+            );
+            return result.affectedRows > 0;
         } finally {
             connection.release();
         }
