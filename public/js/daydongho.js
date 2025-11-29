@@ -34,7 +34,7 @@ function renderDayDongHoProducts(products) {
         if (discount > 0) {
             salePrice = Math.round(originalPrice * (1 - discount / 100));
         }
-        const imageUrl = resolveImagePath(product.image);
+        const imageUrl = resolveImagePath(product.image || product.image_url || (product.images && product.images[0]));
         
         // Check if product is in wishlist
         const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');

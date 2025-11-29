@@ -1,28 +1,30 @@
 // Global error handler middleware
 const errorHandler = (err, req, res, next) => {
-    console.error('Error:', err);
+    // Always log full error stack to server console for easier debugging
+    console.error('Error:', err && err.message ? err.message : err);
+    if (err && err.stack) console.error(err.stack);
 
     // Database errors
-    if (err.code === 'ER_DUP_ENTRY') {
+    if (err && err.code === 'ER_DUP_ENTRY') {
         return res.status(400).json({ error: 'Duplicate entry' });
     }
 
-    if (err.code === 'ER_NO_REFERENCED_ROW_2') {
+    if (err && err.code === 'ER_NO_REFERENCED_ROW_2') {
         return res.status(400).json({ error: 'Referenced row not found' });
     }
 
     // JWT errors
-    if (err.name === 'JsonWebTokenError') {
+    if (err && err.name === 'JsonWebTokenError') {
         return res.status(401).json({ error: 'Invalid token' });
     }
 
-    if (err.name === 'TokenExpiredError') {
+    if (err && err.name === 'TokenExpiredError') {
         return res.status(401).json({ error: 'Token expired' });
     }
 
-    // Default error
-    res.status(err.status || 500).json({ 
-        error: err.message || 'Internal server error' 
+    // Default error — return message but avoid leaking stack to clients
+    res.status(err && err.status ? err.status : 500).json({ 
+        error: err && err.message ? err.message : 'Internal server error' 
     });
 };
 

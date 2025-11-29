@@ -13,7 +13,9 @@ exports.getAllProducts = async (req, res) => {
             offset
         });
 
-        res.json({ products });
+        // Ensure frontend compatibility: expose `image` field (alias for `image_url`)
+        const mapped = products.map(p => ({ ...p, image: p.image_url || p.image }));
+        res.json({ products: mapped });
     } catch (error) {
         console.error('Get products error:', error);
         res.status(500).json({ error: 'Internal server error' });
@@ -29,7 +31,9 @@ exports.getProductById = async (req, res) => {
             return res.status(404).json({ error: 'Product not found' });
         }
 
-        res.json({ product });
+        // Add `image` alias for frontend
+        const mappedProduct = { ...product, image: product.image_url || product.image };
+        res.json({ product: mappedProduct });
     } catch (error) {
         console.error('Get product error:', error);
         res.status(500).json({ error: 'Internal server error' });

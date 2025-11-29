@@ -29,6 +29,49 @@ body {
     transition: transform 0.3s ease;
 }
 
+/* Make sidebar a column so footer can stick to bottom */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-menu {
+    flex: 0 0 auto;
+    margin: 24px 0 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+.logout-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: transparent;
+    color: #ffdede;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.12s ease, transform 0.06s ease;
+}
+
+.logout-btn i {
+    font-size: 1.05rem;
+}
+
+.logout-btn:hover {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+}
+
 .sidebar-header h2 {
     font-size: 1.4rem;
     color: #fff;
@@ -215,6 +258,35 @@ body {
     position: relative;
     overflow: hidden;
 }
+
+
+.stat-heading {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+
+.stat-card h3 {
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: #000000;
+    line-height: 1.1;
+    word-break: break-all;
+}
+
+
+.stat-subtext {
+    font-size: 0.98rem;
+    color: #888;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+}
+
 
 .chart-card,
 .content-section {
@@ -941,9 +1013,9 @@ body {
 }
 
 .filter-btn.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: rgb(25, 109, 218);
     color: #fff;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 12px rgba(185, 188, 199, 0.4);
 }
 
 .conversation-list {
@@ -1836,45 +1908,7 @@ body {
     color: #2c3e50;
 }
 
-/* Search Box */
-.search-box {
-    background: white;
-    padding: 15px 0;
-    display: flex;
-    margin-bottom: 20px;
-    gap: 10px;
-    flex-direction: column;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.search-box input {
-    padding: 15px;
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-.search-box input:focus {
-    outline: none;
-    border-color: #667eea;
-}
-
-.search-box button {
-    padding: 15px 20px;
-    background: #667eea;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.search-box button:hover {
-    background: #5a6fd8;
-}
+/* search-box styles removed */
 
 /* Table Styles - Mobile Cards */
 .table-wrapper {
@@ -2279,14 +2313,17 @@ body {
 }
 
 .stat-card {
+    flex: 1 1 200px;
+    min-width: 200px;
+    max-width: 300px;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    margin-bottom: 16px;
-    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 24px 16px 20px 16px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    border: 1px solid #e0e0e0;
+    text-align: center;
 }
 
 .stat-icon {
@@ -2477,17 +2514,7 @@ body {
     margin: 0;
 }
 
-.brand-table .table thead th {
-    background: #007bff;
-    color: white;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 1px;
-    padding: 20px 24px;
-    border: none;
-    position: relative;
-}
+
 
 .brand-table .table thead th::after {
     content: '';
@@ -2517,7 +2544,6 @@ body {
 
 .brand-id {
     font-weight: 700;
-    color: #667eea;
     font-family: 'Courier New', monospace;
     font-size: 14px;
     background: #f8f9fa;
@@ -2933,50 +2959,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* Search box in header */
-.search-container {
-    display: flex;
-    justify-content: center;
-    width: auto;
-    max-width: 500px;
-    flex: 1;
-    min-width: 300px;
-}
-
-.search-box {
-    display: flex;
-    align-items: center;
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 8px 15px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.search-box input[type="text"] {
-    flex: 1;
-    border: none;
-    padding: 8px 0;
-    font-size: 0.95rem;
-    background: transparent;
-    outline: none;
-    color: #2d3748;
-}
-
-.search-box button {
-    background: none;
-    border: none;
-    color: #718096;
-    cursor: pointer;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.search-box button:hover {
-    color: #4a5568;
-}
+/* search-box styles removed */
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
@@ -3003,61 +2986,7 @@ body {
     }
 }
 
-/* ============================================
-   SEARCH BOX & MENU BUTTON STYLES
-   ============================================ */
-.search-box {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    background: #fff;
-    border-radius: 8px;
-    padding: 8px 15px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.menu-toggle {
-    background: none;
-    border: none;
-    color: #4a5568;
-    font-size: 1.25rem;
-    cursor: pointer;
-    padding: 8px;
-    margin-right: 10px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    display: none;
-}
-
-.menu-toggle:hover {
-    background: #f0f2f5;
-}
-
-.search-box input[type="text"] {
-    flex: 1;
-    border: none;
-    padding: 8px 0;
-    font-size: 0.95rem;
-    background: transparent;
-    outline: none;
-    color: #2d3748;
-}
-
-.search-box button[type="submit"] {
-    background: none;
-    border: none;
-    color: #718096;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-}
-
-.search-box button[type="submit"]:hover {
-    background: #f0f2f5;
-    color: #4a5568;
-}
+/* search-box styles removed */
 
 /* Responsive styles */
 @media (max-width: 1024px) {
@@ -3364,6 +3293,7 @@ body {
     .modal-content {
         margin: 10% auto !important;
         max-height: 80vh !important;
+/* search-box override removed */
         overflow-y: auto !important;
     }
 }
@@ -3678,16 +3608,7 @@ body {
     margin: 0;
 }
 
-.search-box {
-    background: #fff;
-    border-radius: 10px;
-    padding: 10px 8px;
-    margin-bottom: 16px;
-    display: flex;
-    gap: 8px;
-    flex-direction: column;
-    border-bottom: 1px solid #e9ecef;
-}
+/* search-box styles removed */
 
 .search-box input {
     padding: 12px;
@@ -3903,4 +3824,42 @@ body {
         margin: 0;
         letter-spacing: 0.2px;
     }
+}
+
+.dashboard-chart-grid {
+    display: flex;
+    gap: 24px;
+    align-items: stretch; /* Đảm bảo các card cao bằng nhau */
+}
+
+.chart-card {
+    flex: 1 1 0;
+    min-width: 320px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 0px 8px 0px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Đặt chiều cao tối thiểu hoặc cố định nếu muốn */
+    min-height: 520px; /* hoặc height: 520px; nếu muốn cố định */
+    box-sizing: border-box;
+}
+
+.chart-card h3,
+.chart-card .chart-subtitle {
+    margin-bottom: 12px;
+    margin-top: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+.chart-card canvas {
+    display: block;
+    margin: 0 auto 12px auto;
+    max-width: 100%;
+    height: auto;
 }

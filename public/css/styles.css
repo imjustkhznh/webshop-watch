@@ -1000,8 +1000,7 @@ footer {
     margin: 5% auto;
     padding: 30px;
     border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
+    width: 700px;
     position: relative;
     animation: slideIn 0.3s ease;
 }
@@ -1093,6 +1092,63 @@ footer {
     outline: none;
     border-color: #A97C50;
     box-shadow: 0 0 0 2px rgba(169, 124, 80, 0.2);
+}
+
+/* Modern form control styling (inputs, selects, textareas) */
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 0.95rem;
+    color: #222;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #A97C50;
+    box-shadow: 0 6px 18px rgba(169,124,80,0.08);
+    transform: translateY(-1px);
+}
+
+/* Select specific styling: remove native arrow and add custom SVG arrow */
+select.form-control {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23666' d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px;
+    padding-right: 42px; /* space for arrow */
+}
+
+/* Hide default arrow in IE/Edge */
+select.form-control::-ms-expand {
+    display: none;
+}
+
+/* Small size variant if needed */
+.form-control.small {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    border-radius: 6px;
+}
+
+/* Disabled state */
+.form-control:disabled, .form-control[disabled] {
+    background: #f5f6f7;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* Option styling: keep readable (limited control across browsers) */
+select.form-control option {
+    padding: 6px 8px;
 }
 
 .register-submit-btn {

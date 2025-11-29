@@ -27,6 +27,9 @@
             <li class="nav-item"><a href="admin-stock.html" class="nav-link"><i class="fas fa-warehouse"></i> Quản lý tồn kho</a></li>
             <li class="nav-item"><a href="admin-messages.html" class="nav-link"><i class="fas fa-comments"></i> Tin nhắn người dùng</a></li>
         </ul>
+                <div class="sidebar-footer">
+                        <button class="logout-btn" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+                </div>
     </div>
         <div class="main-content" id="promotions">
                 <div class="content-header">
@@ -40,9 +43,7 @@
                                         <i class="fas fa-plus"></i> Thêm mã giảm giá
                                 </button>
                         </div>
-                        <div class="search-box">
-                                <input type="text" id="discountCodeSearch" placeholder="Tìm kiếm mã giảm giá...">
-                        </div>
+                        <!-- search box removed -->
                         <table class="table">
                                 <thead>
                                         <tr>

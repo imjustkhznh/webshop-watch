@@ -58,42 +58,48 @@ function showNotification(message, type = 'success', duration = 3000) {
 }
 
 // Fetch dữ liệu sản phẩm loại "Khác" từ API
+// Yêu cầu: chỉ hiển thị sản phẩm có cả thương hiệu là "Khác" và loại sản phẩm là "Khác"
+function normalizeString(str) {
+    if (!str || typeof str !== 'string') return '';
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
 async function loadAccessoryProducts() {
     try {
-        console.log('🔍 Fetching products with category_id=4 (Khác)...');
-        const response = await fetch('/api/products?category_id=4');
+        console.log('🔍 Fetching all products to filter brand/category = Khác...');
+        const response = await fetch('/api/products');
         console.log('📡 Response status:', response.status);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
         console.log('📦 API response data:', data);
-        
-        if (data.products && data.products.length > 0) {
-            console.log(`✅ Found ${data.products.length} products in category "Khác":`);
-            data.products.forEach((product, index) => {
-                console.log(`   ${index + 1}. ${product.name} (ID: ${product.id}, Category: ${product.category_id})`);
-            });
-            
-            // Đảm bảo chỉ lấy sản phẩm thuộc category 4
-            const khacProducts = data.products.filter(product => product.category_id === 4);
-            console.log(`🎯 Filtered to ${khacProducts.length} products with category_id=4`);
-            
+
+        const products = Array.isArray(data.products) ? data.products : [];
+
+        // Filter where both brand and category are 'Khác' (normalize, ignore diacritics)
+        const khacProducts = products.filter(p => {
+            const brand = normalizeString(p.brand_name || p.brand || '');
+            const category = normalizeString(p.category_name || p.category || '');
+            return brand.includes('khac') && category.includes('khac');
+        });
+
+        console.log(`🎯 Filtered to ${khacProducts.length} products where brand & category = Khác`);
+
+        if (khacProducts.length > 0) {
             allAccessoryProducts = khacProducts;
             renderAccessoryProducts(khacProducts);
         } else {
-            console.log('❌ No products found in category 4 (Khác)');
             allAccessoryProducts = [];
             const grid = document.getElementById('sanphamkhac-grid');
             if (grid) {
-                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#888;font-size:1.2rem;">Không có sản phẩm nào thuộc loại "Khác". Vui lòng thêm sản phẩm qua trang Admin.</div>';
+                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#888;font-size:1.2rem;">Không có sản phẩm nào có cả thương hiệu và loại là "Khác". Vui lòng kiểm tra dữ liệu hoặc thêm sản phẩm qua trang Admin.</div>';
             }
         }
     } catch (error) {
         console.error('❌ Error fetching accessory products:', error);
-        // Hiển thị thông báo lỗi
         const grid = document.getElementById('sanphamkhac-grid');
         if (grid) {
             grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#888;font-size:1.2rem;">Không thể tải dữ liệu sản phẩm. Vui lòng thử lại sau.</div>';
@@ -151,7 +157,7 @@ function renderAccessoryProducts(products) {
         if (discount > 0) {
             salePrice = Math.round(originalPrice * (1 - discount / 100));
         }
-        const imageUrl = resolveImagePath(product.image);
+        const imageUrl = resolveImagePath(product.image || product.image_url || (product.images && product.images[0]));
         
         // Check if product is in wishlist
         const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');

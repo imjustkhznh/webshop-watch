@@ -534,27 +534,25 @@
             </div>
         </div>
         <div class="dhda-header-main" style="background: #7c6240;">
-            <div class="container dhda-header-main-flex" style="flex-direction: column; align-items: center;">
-                <a href="index.html" class="dhda-logo" style="margin-bottom: 12px;">
-                    <img src="images/logos/logo TIME LUXE.png" alt="TimeLuxe Logo" style="height: 150px; width: 150px; object-fit: contain;" />
+            <div class="container dhda-header-main-flex" style="display: flex; flex-direction: row; align-items: center; justify-content: space-around; gap: 30px; padding: 15px 0;">
+                <a href="index.html" class="dhda-logo">
+                    <img src="images/logos/logo TIME LUXE.png" alt="TimeLuxe Logo" style="height: 120px; width: 120px; object-fit: contain;">
                 </a>
-                <form class="dhda-search-bar" style="width: 100%; max-width: 420px; display: flex; justify-content: center;">
-                    <input type="text" placeholder="Tìm kiếm sản phẩm, thương hiệu..." style="flex: 1; max-width: 320px;" />
+                <!-- Menu ngang -->
+                <nav class="dhda-menu" style="flex: 1; display: flex; justify-content: center; max-width: 700px;">
+                    <ul class="dhda-menu-list" style="display: flex; gap: 25px; list-style: none; margin: 0; padding: 0; width: 100%; justify-content: space-evenly;">
+                        <li><a href="index.html#brands" class="menu-link" style="color: #000000; text-decoration: none; font-weight: 600; font-size: 15px; padding: 10px 15px; display: block; transition: all 0.3s; border-radius: 5px;">THƯƠNG HIỆU</a></li>
+                        <li><a href="donghotreotuong.html" class="menu-link" style="color: #000000; text-decoration: none; font-weight: 600; font-size: 15px; padding: 10px 15px; display: block; transition: all 0.3s; border-radius: 5px;">ĐỒNG HỒ TREO TƯỜNG</a></li>
+                        <li><a href="daydongho.html" class="menu-link" style="color: #000000; text-decoration: none; font-weight: 600; font-size: 15px; padding: 10px 15px; display: block; transition: all 0.3s; border-radius: 5px;">DÂY ĐỒNG HỒ</a></li>
+                        <li><a href="sanphamkhac.html" class="menu-link" style="color: #000000; text-decoration: none; font-weight: 600; font-size: 15px; padding: 10px 15px; display: block; transition: all 0.3s; border-radius: 5px;">SẢN PHẨM KHÁC</a></li>
+                    </ul>
+                </nav>
+                <form class="dhda-search-bar" style="display: flex; min-width: 300px;" id="searchForm">
+                    <input type="text" placeholder="Tìm kiếm sản phẩm, thương hiệu..." style="flex: 1;" id="searchInput">
                     <button type="submit"><i class="fas fa-search"></i></button>
                 </form>
             </div>
         </div>
-        <nav class="dhda-menu">
-            <div class="container">
-                <ul class="dhda-menu-list">
-                    <li><a href="index.html#brands">THƯƠNG HIỆU</a></li>
-                    <li><a href="donghotreotuong.html">ĐỒNG HỒ TREO TƯỜNG</a></li>
-                    <li><a href="daydongho.html">DÂY ĐỒNG HỒ</a></li>
-                    <li><a href="sanphamkhac.html">SẢN PHẨM KHÁC</a></li>
-
-                </ul>
-            </div>
-        </nav>
     </header>
     <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Về trang chủ</a>
     

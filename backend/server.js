@@ -20,6 +20,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const chatRoutes = require('./routes/chatRoutes');
+const discountController = require('./controllers/discountController');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -57,6 +58,9 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/chat', chatRoutes);
+
+// Validate discount code (public)
+app.post('/api/validate-discount-code', discountController.validateDiscountCode);
 
 // Test routes
 io.use((socket, next) => {

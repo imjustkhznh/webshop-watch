@@ -27,6 +27,9 @@
             <li class="nav-item"><a href="admin-stock.html" class="nav-link active"><i class="fas fa-warehouse"></i> Quản lý tồn kho</a></li>
             <li class="nav-item"><a href="admin-messages.html" class="nav-link"><i class="fas fa-comments"></i> Tin nhắn người dùng</a></li>
         </ul>
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+        </div>
     </div>
     <div class="main-content" id="stock">
         <div class="content-header">
@@ -37,10 +40,7 @@
             <div class="section-header">
                 <h2>Danh sách tồn kho</h2>
             </div>
-            <div class="search-box">
-                <input type="text" placeholder="Tìm kiếm sản phẩm...">
-                <button><i class="fas fa-search"></i></button>
-            </div>
+            <!-- search box removed -->
             <div class="table-wrapper">
                 <table class="table">
                     <thead>
@@ -85,6 +85,7 @@
             </div>
         </div>
     </div>
+    <script src="js/admin.js"></script>
     <script src="js/admin-stock.js"></script>
 </body>
 </html>

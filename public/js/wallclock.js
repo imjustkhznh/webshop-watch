@@ -96,19 +96,25 @@ function addToCart(productId, productName, productPrice, productImage) {
 }
 
 // Hiển thị sản phẩm loại treo tường
+// Use a more flexible match: normalize strings (remove diacritics) and check
+// category_name, category, product name and description for keywords like 'treo' or 'treo tuong'.
+function normalizeString(str) {
+    if (!str || typeof str !== 'string') return '';
+    // Normalize Unicode then remove diacritic marks
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
 async function loadWallClockProducts() {
-            const res = await fetch('/api/products');
+    const res = await fetch('/api/products');
     const data = await res.json();
-    // Lọc sản phẩm có category_name hoặc category là 'treo tường' (không phân biệt hoa thường)
-    const filtered = data.products.filter(p => {
-        if (p.category_name) {
-            return p.category_name.trim().toLowerCase().includes('treo tường');
-        }
-        if (p.category) {
-            return p.category.trim().toLowerCase().includes('treo tường');
-        }
-        return false;
+
+    const keyword = 'treo'; // match broader 'treo' so it catches 'treo tường', 'treo-tuong', etc.
+
+    const filtered = (data.products || []).filter(p => {
+        const candidates = [p.category_name, p.category, p.name, p.description].map(normalizeString);
+        return candidates.some(text => text.includes(keyword));
     });
+
     renderWallClockProducts(filtered);
 }
 
@@ -127,7 +133,7 @@ function renderWallClockProducts(products) {
         if (discount > 0) {
             salePrice = Math.round(originalPrice * (1 - discount / 100));
         }
-        const imageUrl = resolveImagePath(product.image);
+        const imageUrl = resolveImagePath(product.image || product.image_url || (product.images && product.images[0]));
         
         // Check if product is in wishlist
         const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');

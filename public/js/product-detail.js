@@ -195,13 +195,18 @@ async function addToCart(productId) {
             return;
         }
         
+        const cartImage = (typeof normalizeImage === 'function') ? normalizeImage(currentProduct.image) : (productImages && productImages[0]) || '';
+
         if (idx !== -1) {
             cart[idx].quantity += currentQuantity;
+            // ensure image exists on existing cart item
+            if (!cart[idx].image) cart[idx].image = cartImage;
         } else {
             cart.push({ 
                 id: productId, 
                 name: currentProduct.name, 
                 price: salePrice, 
+                image: cartImage,
                 quantity: currentQuantity 
             });
         }

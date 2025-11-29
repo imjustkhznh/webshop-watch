@@ -52,9 +52,9 @@ class Order {
         try {
             const [details] = await connection.execute(`
                 SELECT od.*, 
-                       p.name as product_name,
-                       p.image as product_image,
-                       b.name as brand_name
+                       p.id AS product_id,
+                       p.name AS product_name,
+                       b.name AS brand_name
                 FROM order_details od
                 LEFT JOIN products p ON od.product_id = p.id
                 LEFT JOIN brands b ON p.brand_id = b.id
