@@ -54,6 +54,7 @@ class Order {
                 SELECT od.*, 
                        p.id AS product_id,
                        p.name AS product_name,
+                       p.image_url AS product_image,
                        b.name AS brand_name
                 FROM order_details od
                 LEFT JOIN products p ON od.product_id = p.id
