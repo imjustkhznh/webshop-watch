@@ -24,6 +24,7 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
+    background: rgb(157, 157, 190);
     z-index: 1;
 }
 
@@ -34,7 +35,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background: rgb(157, 157, 190);
     z-index: -2;
 }
 
@@ -44,11 +45,6 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(255,255,255,0.05) 0%, transparent 50%);
-    animation: particleFloat 20s ease-in-out infinite;
 }
 
 @keyframes particleFloat {
@@ -79,7 +75,6 @@ body {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
     border-radius: 24px 24px 0 0;
 }
 
@@ -271,46 +266,43 @@ body {
 }
 
 /* Login button */
+/* Nút đăng nhập: nền xám nhạt, chữ đen, không gradient */
+/* Nút đăng nhập: nền xanh dương nổi bật, chữ trắng */
 .login-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: #2563eb;
+    color: #fff;
     border: none;
     padding: 16px;
     border-radius: 12px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
 }
 
-.login-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s;
-}
-
-.login-btn:hover::before {
-    left: 100%;
-}
-
+/* Hover: nền xám đậm hơn, không hiệu ứng nổi bật */
+/* Hover: xanh đậm hơn, bóng rõ hơn */
 .login-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    background: #1d4ed8;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.15);
 }
-
 .login-btn:active {
-    transform: translateY(0);
+    background: #2563eb;
+    color: #fff;
+}
+/* Khối đăng nhập nổi bật trên nền xám nhạt */
+.login-card {
+    background: #fff;
+    box-shadow: 0 6px 32px rgba(0,0,0,0.10);
+    border-radius: 18px;
 }
 
 .btn-loader {
@@ -376,6 +368,7 @@ body {
     gap: 12px;
 }
 
+/* Nút social: nền trắng, viền xám nhạt, chữ xám đậm, không đổi màu khi hover */
 .social-btn {
     flex: 1;
     display: flex;
@@ -383,28 +376,22 @@ body {
     justify-content: center;
     gap: 8px;
     padding: 12px;
-    border: 2px solid #e2e8f0;
-    background: white;
+    border: 1.5px solid #e2e8f0;
+    background: #fff;
     border-radius: 10px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
-    color: #4a5568;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+    color: #222;
 }
 
-.social-btn.google:hover {
-    border-color: #ea4335;
-    color: #ea4335;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(234, 67, 53, 0.2);
-}
-
-.social-btn.facebook:hover {
-    border-color: #1877f2;
-    color: #1877f2;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(24, 119, 242, 0.2);
+/* Hover: chỉ đổi nền xám nhạt, không đổi màu chữ/icon */
+.social-btn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #222;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 /* Register link */
@@ -418,15 +405,15 @@ body {
     font-size: 0.9rem;
 }
 
+/* Link đăng ký: màu xám đậm, không hiệu ứng nổi bật */
 .register-btn {
-    color: #667eea;
-    text-decoration: none;
+    color: #222;
+    text-decoration: underline;
     font-weight: 600;
-    transition: color 0.3s ease;
+    transition: color 0.2s;
 }
-
 .register-btn:hover {
-    color: #764ba2;
+    color: #555;
 }
 
 /* Footer */
