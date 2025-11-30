@@ -1,27 +1,20 @@
+const AdminService = require('../services/adminService');
+const DiscountService = require('../services/discountService');
+
+// Tạo mã giảm giá mới
+exports.createDiscountCode = async (req, res) => {
+    try {
+        const id = await DiscountService.createDiscountCode(req.body);
+        res.json({ success: true, id, message: 'Discount code created!' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
+
 // Cập nhật mã giảm giá
 exports.updateDiscountCode = async (req, res) => {
     try {
-        const id = req.params.id;
-        const {
-            code,
-            description,
-            discount_type,
-            discount_value,
-            min_order_amount,
-            max_uses,
-            valid_from,
-            valid_until
-        } = req.body;
-        await DiscountCode.updateDiscountCode(id, {
-            code,
-            description,
-            discount_type,
-            discount_value,
-            min_order_amount,
-            max_uses,
-            valid_from,
-            valid_until
-        });
+        await DiscountService.updateDiscountCode(req.params.id, req.body);
         res.json({ success: true, message: 'Discount code updated!' });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
@@ -31,72 +24,17 @@ exports.updateDiscountCode = async (req, res) => {
 // Xóa mã giảm giá
 exports.deleteDiscountCode = async (req, res) => {
     try {
-        const id = req.params.id;
-        await DiscountCode.deleteDiscountCode(id);
+        await DiscountService.deleteDiscountCode(req.params.id);
         res.json({ success: true, message: 'Discount code deleted!' });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
 };
-const DiscountCode = require('../models/DiscountCode');
 
-// Tạo mã giảm giá mới
-exports.createDiscountCode = async (req, res) => {
-    try {
-        const {
-            code,
-            description,
-            discount_type,
-            discount_value,
-            min_order_amount,
-            max_uses,
-            valid_from,
-            valid_until
-        } = req.body;
-        const id = await DiscountCode.createDiscountCode({
-            code,
-            description,
-            discount_type,
-            discount_value,
-            min_order_amount,
-            max_uses,
-            valid_from,
-            valid_until
-        });
-        res.json({ success: true, id, message: 'Discount code created!' });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
-};
-// Admin controller mẫu
-
-const Order = require('../models/Order');
-
+// Lấy tất cả đơn hàng cho admin
 exports.getOrders = async (req, res) => {
     try {
-        const orders = await Order.getAll();
-        const returnRequests = await Order.getReturnRequests();
-
-        const approvedReturnMap = new Set();
-        returnRequests.forEach(request => {
-            if (request.status === 'approved') {
-                approvedReturnMap.add(request.order_id);
-            }
-        });
-
-        // Gắn thêm thông tin sản phẩm cho từng đơn để hiển thị ở trang admin
-        for (const order of orders) {
-            if (approvedReturnMap.has(order.id)) {
-                order.status = 'returned';
-            }
-
-            const details = await Order.getOrderDetails(order.id);
-            // Chuỗi mô tả sản phẩm: "Tên SP xSố lượng, ..."
-            order.items = details && details.length
-                ? details.map(d => `${d.product_name || 'Sản phẩm'} x${d.quantity}`).join(', ')
-                : 'N/A';
-        }
-
+        const orders = await AdminService.getOrders();
         res.json({
             success: true,
             orders
@@ -106,9 +44,10 @@ exports.getOrders = async (req, res) => {
     }
 };
 
+// Lấy tất cả mã giảm giá cho admin
 exports.getDiscountCodes = async (req, res) => {
     try {
-        const discountCodes = await DiscountCode.getAllDiscountCodes();
+        const discountCodes = await AdminService.getDiscountCodes();
         res.json({ success: true, discountCodes });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });

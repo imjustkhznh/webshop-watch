@@ -1532,10 +1532,17 @@ if (addBrandForm) {
         const brandName = document.getElementById('brandName').value;
 
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showNotification('Lỗi: Vui lòng đăng nhập lại', 'error');
+                return;
+            }
+
             const response = await fetch('/api/brands', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     name: brandName
@@ -1598,8 +1605,17 @@ if (editBrandForm) {
 // Delete brand confirmation
 async function deleteBrandConfirm(brandId) {
     try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            showNotification('Lỗi: Vui lòng đăng nhập lại', 'error');
+            return;
+        }
+
         const response = await fetch(`/api/brands/${brandId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         });
 
         const result = await response.json();
