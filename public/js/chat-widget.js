@@ -250,6 +250,7 @@
         state.socket.on('chat:message', (message) => {
             if (message.conversation_id !== state.conversationId) return;
             const type = message.sender_type === 'admin' ? 'incoming' : 'outgoing';
+            // Display message from server (only source of truth - prevents duplicates)
             appendMessage(message.content, type, message.created_at);
         });
 
@@ -298,11 +299,14 @@
 
     const sendAttachmentMessage = (attachment) => {
         const payload = `${ATTACHMENT_PREFIX}${JSON.stringify(attachment)}`;
+        
+        // Send to server - message will be displayed when server broadcasts it back
         state.socket.emit('chat:message', {
             conversationId: state.conversationId,
             message: payload
         });
-        appendMessage(payload, 'outgoing');
+        
+        // Don't display optimistically - wait for server confirmation to avoid duplicates
     };
 
     const handleAttachmentSelection = async (file) => {
@@ -329,11 +333,14 @@
 
     const sendMessage = (text) => {
         if (!ensureReadyForSending()) return;
+        
+        // Send to server - message will be displayed when server broadcasts it back
         state.socket.emit('chat:message', {
             conversationId: state.conversationId,
             message: text
         });
-        appendMessage(text, 'outgoing');
+        
+        // Don't display optimistically - wait for server confirmation to avoid duplicates
     };
 
     const bindEvents = () => {
