@@ -1121,6 +1121,17 @@ async function loadOrders() {
             actionBtns += ` <button class='btn btn-danger btn-sm' onclick='deleteOrder(${order.id})' title='Xóa đơn hàng'>
                                 <i class="fas fa-trash"></i>
                             </button>`;
+            
+            // Hiển thị phương thức thanh toán với badge
+            let paymentMethodBadge = '';
+            if (order.payment_method === 'bank') {
+                paymentMethodBadge = '<span class="status-badge" style="background: #10b981; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;"><i class="fas fa-university"></i> Chuyển khoản</span>';
+            } else if (order.payment_method === 'cod') {
+                paymentMethodBadge = '<span class="status-badge" style="background: #f59e0b; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;"><i class="fas fa-money-bill-wave"></i> COD</span>';
+            } else {
+                paymentMethodBadge = '<span class="status-badge" style="background: #6b7280; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">' + (order.payment_method || 'N/A') + '</span>';
+            }
+            
             return `
                 <tr>
                     <td>#DH${order.id.toString().padStart(3, '0')}</td>
@@ -1136,6 +1147,7 @@ async function loadOrders() {
                     </td>
                     <td>${order.items || 'N/A'}</td>
                     <td>${totalStr}</td>
+                    <td>${paymentMethodBadge}</td>
                     <td>${statusLabel}</td>
                     <td>${actionBtns}</td>
                 </tr>
@@ -1251,6 +1263,16 @@ async function loadOrders() {
                             <span class="order-value">${totalStr}</span>
                         </div>
                         <div class="order-row">
+                            <span class="order-label">Phương thức thanh toán:</span>
+                            <span class="order-value">${
+                                order.payment_method === 'bank' 
+                                    ? '<span style="background: #10b981; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-block;"><i class="fas fa-university"></i> Chuyển khoản</span>' 
+                                    : order.payment_method === 'cod'
+                                    ? '<span style="background: #f59e0b; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-block;"><i class="fas fa-money-bill-wave"></i> COD</span>'
+                                    : (order.payment_method || 'N/A')
+                            }</span>
+                        </div>
+                        <div class="order-row">
                             <span class="order-label">Trạng thái:</span>
                             <span class="order-value">
                                 <span class="order-status ${statusClass}">${statusText}</span>
@@ -1269,7 +1291,7 @@ async function loadOrders() {
         // Render mobile cards cho orders page
         const ordersCardsContainer = document.querySelector('.orders-mobile-cards');
         if (ordersCardsContainer) {
-            const ordersMobileCardsHTML = recentOrders.map((order, index) => {
+            const ordersMobileCardsHTML = allOrders.map((order, index) => {
                 const d = new Date(order.order_date);
                 const dateStr = d.toLocaleDateString('vi-VN');
                 const totalStr = Number(order.total_amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -1333,6 +1355,16 @@ async function loadOrders() {
                         <div class="order-row">
                             <span class="order-label">Tổng tiền:</span>
                             <span class="order-value">${totalStr}</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="order-label">Phương thức thanh toán:</span>
+                            <span class="order-value">${
+                                order.payment_method === 'bank' 
+                                    ? '<span style="background: #10b981; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-block;"><i class="fas fa-university"></i> Chuyển khoản</span>' 
+                                    : order.payment_method === 'cod'
+                                    ? '<span style="background: #f59e0b; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-block;"><i class="fas fa-money-bill-wave"></i> COD</span>'
+                                    : (order.payment_method || 'N/A')
+                            }</span>
                         </div>
                         <div class="order-row">
                             <span class="order-label">Trạng thái:</span>
@@ -1854,7 +1886,13 @@ function showOrderDetail(orderId) {
                 <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
                     <p><strong>Ngày đặt:</strong> ${orderDate}</p>
                     <p><strong>Trạng thái:</strong> ${statusText}</p>
-                    <p><strong>Phương thức thanh toán:</strong> ${order.payment_method || 'N/A'}</p>
+                    <p><strong>Phương thức thanh toán:</strong> ${
+                        order.payment_method === 'bank' 
+                            ? '<span style="background: #10b981; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;"><i class="fas fa-university"></i> Chuyển khoản ngân hàng</span>' 
+                            : order.payment_method === 'cod'
+                            ? '<span style="background: #f59e0b; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;"><i class="fas fa-money-bill-wave"></i> Thanh toán khi nhận hàng (COD)</span>'
+                            : (order.payment_method || 'N/A')
+                    }</p>
                     <p><strong>Sản phẩm:</strong> ${order.items || 'N/A'}</p>
                     <p><strong>Tổng tiền:</strong> ${totalStr}</p>
                 </div>
@@ -1911,14 +1949,16 @@ async function loadReturnRequests() {
                     <td>${created}</td>
                     <td>${r.reason || ''}</td>
                     <td>${statusText}</td>
-                    <td style="white-space:nowrap; display:flex; gap:6px;">
-                        <button class="btn btn-success btn-sm" onclick="showReturnRequestDetail(${r.id})">
-                            Chi tiết
-                        </button>
-                        ${r.status === 'pending' ? `
-                            <button class="btn btn-primary btn-sm" onclick="handleReturnRequestAction(${r.id}, 'approve')">Đồng ý</button>
-                            <button class="btn btn-danger btn-sm" onclick="handleReturnRequestAction(${r.id}, 'reject')">Từ chối</button>
-                        ` : ''}
+                    <td>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+                            <button class="btn btn-success btn-sm" onclick="showReturnRequestDetail(${r.id})">
+                                Chi tiết
+                            </button>
+                            ${r.status === 'pending' ? `
+                                <button class="btn btn-primary btn-sm" onclick="handleReturnRequestAction(${r.id}, 'approve')">Đồng ý</button>
+                                <button class="btn btn-danger btn-sm" onclick="handleReturnRequestAction(${r.id}, 'reject')">Từ chối</button>
+                            ` : ''}
+                        </div>
                     </td>
                 </tr>
             `;

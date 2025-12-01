@@ -11,6 +11,125 @@
     <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Điều chỉnh kích thước cột cho bảng đơn hàng */
+        #orders .table th:nth-child(1),
+        #orders .table td:nth-child(1) {
+            width: 80px;
+            min-width: 80px;
+            max-width: 80px;
+            text-align: center;
+            font-size: 0.85rem;
+            padding: 12px 6px;
+        }
+        
+        #orders .table th:nth-child(2),
+        #orders .table td:nth-child(2) {
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+            font-size: 0.85rem;
+            padding: 12px 6px;
+        }
+        
+        #orders .table th:nth-child(3),
+        #orders .table td:nth-child(3) {
+            width: 180px;
+            min-width: 180px;
+        }
+        
+        #orders .table th:nth-child(4),
+        #orders .table td:nth-child(4) {
+            width: 200px;
+            min-width: 200px;
+        }
+        
+        #orders .table th:nth-child(5),
+        #orders .table td:nth-child(5) {
+            width: 150px;
+            min-width: 150px;
+        }
+        
+        #orders .table th:nth-child(6),
+        #orders .table td:nth-child(6) {
+            width: 130px;
+            min-width: 130px;
+            text-align: right;
+            font-weight: 600;
+            color: #7c6240;
+        }
+        
+        #orders .table th:nth-child(7),
+        #orders .table td:nth-child(7) {
+            width: 160px;
+            min-width: 160px;
+            text-align: center;
+        }
+        
+        #orders .table th:nth-child(8),
+        #orders .table td:nth-child(8) {
+            width: 130px;
+            min-width: 130px;
+            text-align: center;
+        }
+        
+        #orders .table th:nth-child(9),
+        #orders .table td:nth-child(9) {
+            width: 180px;
+            min-width: 180px;
+            text-align: center;
+        }
+        
+        /* Cải thiện hiển thị bảng */
+        #orders .table {
+            table-layout: fixed;
+            width: 100%;
+        }
+        
+        #orders .table td {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            padding: 12px 8px;
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+        
+        #orders .table th {
+            padding: 14px 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        /* Điều chỉnh badge phương thức thanh toán */
+        #orders .table td:nth-child(7) .status-badge {
+            white-space: nowrap;
+            display: inline-block;
+        }
+        
+        /* Cải thiện hiển thị mã đơn và ngày đặt */
+        #orders .table td:nth-child(1) {
+            font-weight: 600;
+            color: #7c6240;
+        }
+        
+        #orders .table td:nth-child(2) {
+            color: #666;
+        }
+        
+        /* Responsive cho mobile */
+        @media (max-width: 768px) {
+            #orders .table th:nth-child(1),
+            #orders .table td:nth-child(1),
+            #orders .table th:nth-child(2),
+            #orders .table td:nth-child(2) {
+                width: auto;
+                min-width: auto;
+                max-width: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -98,6 +217,7 @@
                             <th>Địa chỉ giao hàng</th>
                             <th>Sản phẩm</th>
                             <th>Tổng tiền</th>
+                            <th>Phương thức thanh toán</th>
                             <th>Trạng thái</th>
                             <th>Thao tác</th>
                         </tr>
